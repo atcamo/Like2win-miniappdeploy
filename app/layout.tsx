@@ -13,32 +13,66 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const URL = process.env.NEXT_PUBLIC_URL || "https://kiwik-ai.vercel.app";
-  const PROJECT_NAME = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "kiwik";
+  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win.vercel.app";
+  const PROJECT_NAME = "Like2Win";
   
-  // Mini App embed metadata for social sharing
+  // Like2Win Mini App embed metadata
   const miniAppEmbed = {
     version: "1",
-    imageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE || `${URL}/hero.png`,
+    imageUrl: `${URL}/hero.png`,
     button: {
       title: `Launch ${PROJECT_NAME}`,
       action: {
         type: "launch_frame",
         name: PROJECT_NAME,
-        url: URL,
-        splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE || `${URL}/hero.png`,
-        splashBackgroundColor:
-          process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || "#000000",
+        url: `${URL}/miniapp`,
+        splashImageUrl: `${URL}/splash.png`,
+        splashBackgroundColor: "#F59E0B", // Like2Win amber color
       },
     },
   };
   
   return {
-    title: PROJECT_NAME,
+    title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
     description:
-      "kiwik - Incubadora de talento Web3 y MiniKit app para Base blockchain",
+      "🎫 Like2Win: La forma más simple de ganar $DEGEN en Farcaster. Follow @Like2Win + Like posts = participar en sorteos bi-semanales. Zero friction, maximum fun!",
+    keywords: [
+      "Farcaster",
+      "DEGEN", 
+      "Like2Win",
+      "Social rewards",
+      "Crypto raffles",
+      "Web3 gamification",
+      "Base blockchain",
+      "MiniKit"
+    ],
+    authors: [{ name: "Like2Win Team" }],
+    creator: "Like2Win",
+    openGraph: {
+      title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
+      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster",
+      url: URL,
+      siteName: PROJECT_NAME,
+      images: [
+        {
+          url: `${URL}/hero.png`,
+          width: 1200,
+          height: 630,
+          alt: "Like2Win - Social Rewards on Farcaster"
+        }
+      ],
+      locale: "en_US",
+      type: "website"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
+      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster",
+      images: [`${URL}/hero.png`],
+      creator: "@Like2Win"
+    },
     other: {
-      // Mini App embed metadata (required for embed validation)
+      // Mini App embed metadata (required for Farcaster)
       "fc:miniapp": JSON.stringify(miniAppEmbed),
       // Frame metadata for backward compatibility
       "fc:frame": JSON.stringify({

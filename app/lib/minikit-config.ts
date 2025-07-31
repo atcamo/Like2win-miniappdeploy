@@ -73,13 +73,24 @@ export function createMiniKitConfig(overrides: Partial<MiniKitConfig> = {}): Min
     
     // Don't throw during build/static generation - only at runtime
     const isBuildTime = process.env.NODE_ENV === 'production' && typeof window === 'undefined';
+    const isServerSide = typeof window === 'undefined';
     
-    if (hasCriticalErrors && !isBuildTime) {
-      throw new MiniKitConfigError(
-        'Critical MiniKit configuration missing: ' + errors.join(', '),
-        'environment',
-        false
-      );
+    if (hasCriticalErrors && !isBuildTime && !isServerSide) {
+      console.error('❌ Like2Win: Missing environment variables. Check Vercel settings.');
+      console.error('Required variables:', errors);
+      
+      // Show user-friendly error instead of crashing
+      if (typeof window !== 'undefined') {
+        document.body.innerHTML = `
+          <div style="padding: 2rem; text-align: center; font-family: system-ui;">
+            <h1 style="color: #F59E0B;">⚠️ Like2Win Configuration Error</h1>
+            <p>Missing environment variables in Vercel deployment.</p>
+            <p>Please configure: <code>NEXT_PUBLIC_ONCHAINKIT_API_KEY</code>, <code>NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME</code>, <code>NEXT_PUBLIC_URL</code></p>
+            <p><small>Check Vercel Dashboard → Settings → Environment Variables</small></p>
+          </div>
+        `;
+      }
+      return DEFAULT_CONFIG; // Return default instead of throwing
     }
   }
 
@@ -96,12 +107,8 @@ export function createMiniKitConfig(overrides: Partial<MiniKitConfig> = {}): Min
   // Validate final configuration (skip during build time)
   const isBuildTime = process.env.NODE_ENV === 'production' && typeof window === 'undefined';
   
-  if (!config.apiKey && !isBuildTime) {
-    throw new MiniKitConfigError(
-      'OnchainKit API key is required',
-      'apiKey',
-      false
-    );
+  if (!config.apiKey && !isBuildTime && typeof window !== 'undefined') {
+    console.warn('⚠️ Like2Win: OnchainKit API key missing - some features may not work');
   }
 
   if (config.retryAttempts < 0 || config.retryAttempts > 10) {

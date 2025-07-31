@@ -40,6 +40,14 @@ model User {
   completionDate     DateTime?
   commitmentScore    Int?
   
+  // Like2Win Fields
+  fid                BigInt?        @unique
+  pfpUrl             String?
+  tipAllowanceEnabled Boolean       @default(false)
+  isFollowingLike2Win Boolean       @default(false)
+  totalLifetimeTickets Int          @default(0)
+  totalWinnings      Decimal?       @default(0) @db.Decimal(18,8)
+  
   comments           Comment[]
   engagement         Engagement[]
   projects           Project[]
@@ -47,8 +55,18 @@ model User {
   votes              Vote[]
   weeklyGoals        WeeklyGoal[]
   weeklyUpdates      WeeklyUpdate[]
+  // Like2Win Relations
+  userTickets        UserTickets[]
+  engagementLogs     EngagementLog[]
+  eventsLog          EventsLog?
+  firstPlaceWins     Raffle[]       @relation("FirstPlaceWinner")
+  secondPlaceWins    Raffle[]       @relation("SecondPlaceWinner") 
+  thirdPlaceWins     Raffle[]       @relation("ThirdPlaceWinner")
 
   @@index([appWallet, username, extWallet, email])
+  @@index([fid])
+  @@index([isFollowingLike2Win])
+  @@index([totalLifetimeTickets])
   @@map("users")
 }
 
@@ -204,6 +222,124 @@ model Comment {
   @@index([userId])
   @@index([parentId])
   @@map("comments")
+}
+
+// Like2Win Models
+model Raffle {
+  id                    String        @id @default(uuid())
+  weekPeriod            String        @unique
+  startDate             DateTime
+  endDate               DateTime
+  
+  // Pool Management
+  tipsReceived          Int           @default(0)
+  userContribution      Int           @default(0)
+  founderContribution   Int           @default(0)
+  operationalFee        Int           @default(0)
+  totalPool             Int           @default(0)
+  isSelfSustaining      Boolean       @default(false)
+  
+  // Participants
+  totalParticipants     Int           @default(0)
+  totalTickets          Int           @default(0)
+  
+  // Results
+  firstPlaceFid         BigInt?
+  secondPlaceFid        BigInt?
+  thirdPlaceFid         BigInt?
+  firstPrize            Int?
+  secondPrize           Int?
+  thirdPrize            Int?
+  
+  status                RaffleStatus  @default(ACTIVE)
+  randomSeed            String?
+  executedAt            DateTime?
+  createdAt             DateTime      @default(now())
+  
+  // Relations
+  firstPlaceWinner      User?         @relation("FirstPlaceWinner", fields: [firstPlaceFid], references: [fid])
+  secondPlaceWinner     User?         @relation("SecondPlaceWinner", fields: [secondPlaceFid], references: [fid])
+  thirdPlaceWinner      User?         @relation("ThirdPlaceWinner", fields: [thirdPlaceFid], references: [fid])
+  userTickets           UserTickets[]
+  engagementLogs        EngagementLog[]
+
+  @@index([weekPeriod])
+  @@index([status])
+  @@map("raffles")
+}
+
+model UserTickets {
+  id            String    @id @default(uuid())
+  raffleId      String
+  userFid       BigInt
+  ticketsCount  Int       @default(0)
+  firstLikeAt   DateTime?
+  lastLikeAt    DateTime?
+  
+  raffle        Raffle    @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  user          User      @relation(fields: [userFid], references: [fid], onDelete: Cascade)
+
+  @@unique([raffleId, userFid])
+  @@index([raffleId, userFid])
+  @@index([ticketsCount])
+  @@map("user_tickets")
+}
+
+model EngagementLog {
+  id                String    @id @default(uuid())
+  raffleId          String
+  userFid           BigInt
+  castHash          String
+  
+  // Engagement tracking
+  hasLiked          Boolean   @default(false)
+  hasCommented      Boolean   @default(false)
+  hasRecasted       Boolean   @default(false)
+  hasTipAllowance   Boolean   @default(false)
+  
+  // Ticket award
+  ticketAwarded     Boolean   @default(false)
+  ticketAwardedAt   DateTime?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  raffle            Raffle    @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  user              User      @relation(fields: [userFid], references: [fid], onDelete: Cascade)
+
+  @@unique([castHash, userFid])
+  @@index([raffleId])
+  @@index([userFid])
+  @@index([castHash])
+  @@index([ticketAwarded])
+  @@map("engagement_log")
+}
+
+model EventsLog {
+  id        String        @id @default(uuid())
+  userFid   BigInt        @unique
+  eventType EventType
+  eventData Json?
+  createdAt DateTime      @default(now())
+  
+  user      User          @relation(fields: [userFid], references: [fid], onDelete: Cascade)
+
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("events_log")
+}
+
+enum RaffleStatus {
+  ACTIVE
+  DRAWING
+  COMPLETED
+}
+
+enum EventType {
+  FOLLOW
+  LIKE
+  WIN
+  FRAME_VIEW
 }
 
 enum ProjectVisibility {
