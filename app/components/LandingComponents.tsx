@@ -96,44 +96,49 @@ export function HeroSection() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-7xl font-bold text-[var(--app-foreground)] leading-tight">
-                Turn Ideas Into{" "}
+                Like2Win{" "}
                 <span className="text-[var(--app-accent)] relative">
-                  Reality
+                  Farcaster
                   <LandingIcon name="sparkles" className="absolute -top-2 -right-8 text-[var(--app-accent)]" size="lg" />
                 </span>
               </h1>
               <p className="text-xl text-[var(--app-foreground-muted)] leading-relaxed max-w-lg">
-                The community-driven platform where creators, builders, and backers unite to bring innovative projects to life through microfunding on Base.
+                Follow @Like2Win y dale like a posts oficiales para participar en sorteos bi-semanales de $DEGEN. Zero friction, maximum fun!
               </p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
-              <Button size="lg" className="px-8 py-4 text-lg">
-                Start Building
-              </Button>
+              <a 
+                href="/miniapp" 
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg bg-[var(--app-accent)] text-white hover:bg-[var(--app-accent-hover)] transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                🎲 Participar Ahora
+              </a>
               <Button variant="outline" size="lg" className="px-8 py-4 text-lg">
-                Explore Projects
+                Ver Estadísticas
               </Button>
               <a 
-                href="/verano" 
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-2 border-orange-500 hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+                href="https://warpcast.com/like2win" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 text-white border-2 border-amber-500 hover:from-amber-600 hover:to-yellow-600 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
-                🌞 Proof of Verano
+                💜 Follow @Like2Win
               </a>
             </div>
 
             <div className="flex items-center gap-6 pt-8 border-t border-[var(--app-card-border)]">
               <div className="text-center">
-                <div className="text-2xl font-bold text-[var(--app-foreground)]">1.2K+</div>
-                <div className="text-sm text-[var(--app-foreground-muted)]">Projects</div>
+                <div className="text-2xl font-bold text-[var(--app-foreground)]">500+</div>
+                <div className="text-sm text-[var(--app-foreground-muted)]">Participantes</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-[var(--app-foreground)]">5.8K+</div>
-                <div className="text-sm text-[var(--app-foreground-muted)]">Creators</div>
+                <div className="text-2xl font-bold text-[var(--app-foreground)]">2x</div>
+                <div className="text-sm text-[var(--app-foreground-muted)]">Por Semana</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-[var(--app-foreground)]">$2.1M+</div>
-                <div className="text-sm text-[var(--app-foreground-muted)]">Funded</div>
+                <div className="text-2xl font-bold text-[var(--app-foreground)]">$DEGEN</div>
+                <div className="text-sm text-[var(--app-foreground-muted)]">Premios</div>
               </div>
             </div>
           </div>
@@ -176,19 +181,19 @@ export function HeroSection() {
 export function BenefitsSection() {
   const benefits = [
     {
-      icon: "users" as const,
-      title: "Community-Driven",
-      description: "Join a vibrant ecosystem of creators and supporters working together to bring ideas to life."
+      icon: "gift" as const,
+      title: "Zero Friction",
+      description: "Solo follow @Like2Win y dale like a posts oficiales. No wallet, no signup, no complications."
     },
     {
-      icon: "gift" as const,
-      title: "Microfunding Made Easy",
-      description: "Fund projects with small contributions that create big impact. Every dollar counts."
+      icon: "zap" as const,
+      title: "Sorteos Bi-semanales",
+      description: "Miércoles y domingo 8PM UTC. Premios reales en $DEGEN distribuidos automáticamente."
     },
     {
       icon: "shield" as const,
-      title: "Built on Base",
-      description: "Fast, secure, and cost-effective blockchain infrastructure you can trust."
+      title: "Transparente & Justo",
+      description: "Algoritmo público: más engagement = más tickets. VRF randomization para fairness."
     }
   ];
 
@@ -197,10 +202,10 @@ export function BenefitsSection() {
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-[var(--app-foreground)] mb-4">
-            Why Choose kiwik?
+            ¿Por qué Like2Win?
           </h2>
           <p className="text-xl text-[var(--app-foreground-muted)] max-w-2xl mx-auto">
-            Experience the future of collaborative creation and funding
+            La forma más simple de ganar $DEGEN en Farcaster
           </p>
         </div>
 
@@ -390,26 +395,26 @@ export function HowItWorksSection() {
   const steps = [
     {
       number: "01",
-      title: "Submit",
-      description: "Share your idea or skill set with our community",
-      icon: "code" as const
+      title: "Follow",
+      description: "Sigue @Like2Win en Farcaster para ser elegible",
+      icon: "users" as const
     },
     {
       number: "02", 
-      title: "Discover",
-      description: "AI matches projects with perfect collaborators",
+      title: "Like",
+      description: "Dale like a posts oficiales de @Like2Win",
       icon: "sparkles" as const
     },
     {
       number: "03",
-      title: "Fund", 
-      description: "Backers support with micro-contributions",
+      title: "Earn", 
+      description: "Recibe tickets automáticamente por tu engagement",
       icon: "gift" as const
     },
     {
       number: "04",
-      title: "Build",
-      description: "Turn concepts into reality with your team",
+      title: "Win",
+      description: "Participa en sorteos bi-semanales de $DEGEN",
       icon: "trending" as const
     }
   ];
@@ -419,10 +424,10 @@ export function HowItWorksSection() {
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-[var(--app-foreground)] mb-4">
-            How It Works
+            Cómo Funciona
           </h2>
           <p className="text-xl text-[var(--app-foreground-muted)] max-w-2xl mx-auto">
-            From idea to reality in four simple steps
+            De follow a premio en cuatro pasos simples
           </p>
         </div>
 
@@ -593,24 +598,32 @@ export function FinalCTASection() {
       <div className="container mx-auto max-w-4xl text-center">
         <div className="space-y-8">
           <h2 className="text-4xl lg:text-6xl font-bold text-[var(--app-foreground)] leading-tight">
-            Ready to Turn Your Ideas Into Reality?
+            ¿Listo para ganar $DEGEN?
           </h2>
           <p className="text-xl text-[var(--app-foreground-muted)] max-w-2xl mx-auto leading-relaxed">
-            Join thousands of creators and backers building the future together on kiwik.
+            Únete a cientos de usuarios que ya están participando en los sorteos bi-semanales de Like2Win.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="px-8 py-4 text-lg">
-              Get Started Now
-            </Button>
-            <Button variant="outline" size="lg" className="px-8 py-4 text-lg">
-              Learn More
-            </Button>
+            <a 
+              href="/miniapp" 
+              className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg bg-[var(--app-accent)] text-white hover:bg-[var(--app-accent-hover)] transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              🎲 Participar Ahora
+            </a>
+            <a 
+              href="https://warpcast.com/like2win" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-lg border-2 border-[var(--app-accent)] text-[var(--app-accent)] hover:bg-[var(--app-accent-light)] transition-all duration-200"
+            >
+              💜 Follow @Like2Win
+            </a>
           </div>
 
           <div className="pt-8 border-t border-[var(--app-card-border)]">
             <p className="text-sm text-[var(--app-foreground-muted)]">
-              No setup fees • Launch in minutes • Built on Base
+              Zero friction • Sorteos 2x/semana • Premios reales en $DEGEN
             </p>
           </div>
         </div>
@@ -628,27 +641,21 @@ export function NavigationHeader() {
       <div className="container mx-auto max-w-7xl px-4">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-[var(--app-accent)]">kiwik</div>
+            <div className="text-2xl font-bold text-[var(--app-accent)]">Like2Win</div>
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#projects" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
-              Projects
+            <a href="/miniapp" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
+              Participar
             </a>
-            <a href="#creators" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
-              Creators
+            <a href="https://warpcast.com/like2win" target="_blank" rel="noopener noreferrer" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
+              @Like2Win
             </a>
             <a href="#how-it-works" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
-              How It Works
+              Cómo Funciona
             </a>
-            <a 
-              href="/verano" 
-              className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-full text-sm font-semibold hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              🌞 Bootcamp
-            </a>
-            <a href="#about" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
-              About
+            <a href="#faq" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors">
+              FAQ
             </a>
           </nav>
 
