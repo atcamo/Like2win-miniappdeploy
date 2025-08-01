@@ -17,7 +17,7 @@ export class MiniKitConfigError extends Error {
 
 export const DEFAULT_CONFIG: MiniKitConfig = {
   apiKey: '',
-  projectName: 'kiwik',
+  projectName: 'Like2Win',
   autoInitialize: true,
   retryAttempts: 3,
   retryDelay: 1000,
@@ -25,21 +25,19 @@ export const DEFAULT_CONFIG: MiniKitConfig = {
 };
 
 /**
- * Validates required environment variables for MiniKit
+ * Validates required environment variables for Like2Win
  */
 export function validateEnvironment(): string[] {
   const errors: string[] = [];
   
-  if (!process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY) {
-    errors.push('NEXT_PUBLIC_ONCHAINKIT_API_KEY is required for OnchainKit integration');
+  // Only require URL for production deployment
+  if (!process.env.NEXT_PUBLIC_URL && process.env.NODE_ENV === 'production') {
+    errors.push('NEXT_PUBLIC_URL is required for production deployment');
   }
   
-  if (!process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME) {
-    errors.push('NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME is required for frame metadata');
-  }
-
-  if (!process.env.NEXT_PUBLIC_URL) {
-    errors.push('NEXT_PUBLIC_URL is required for frame manifest and callbacks');
+  // OnchainKit is optional for Like2Win - only warn if missing
+  if (!process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY && process.env.NODE_ENV === 'production') {
+    errors.push('NEXT_PUBLIC_ONCHAINKIT_API_KEY recommended for enhanced features');
   }
 
   // Validate Farcaster manifest variables if notifications are needed
@@ -66,48 +64,40 @@ export function createMiniKitConfig(overrides: Partial<MiniKitConfig> = {}): Min
   if (errors.length > 0) {
     console.warn('MiniKit configuration warnings:', errors);
     
-    // Only throw if critical variables are missing AND we're in runtime (not build time)
-    const hasCriticalErrors = errors.some(error => 
-      error.includes('ONCHAINKIT_API_KEY') || error.includes('PROJECT_NAME')
-    );
-    
-    // Don't throw during build/static generation - only at runtime
+    // In development, just warn - don't block the app
+    const isDevelopment = process.env.NODE_ENV === 'development';
     const isBuildTime = process.env.NODE_ENV === 'production' && typeof window === 'undefined';
     const isServerSide = typeof window === 'undefined';
     
-    if (hasCriticalErrors && !isBuildTime && !isServerSide) {
+    if (isDevelopment) {
+      // Just log warnings in development, don't block
+      console.warn('⚠️ Like2Win: Some environment variables are missing (this is OK for local development)');
+      console.warn('For full functionality, check ENVIRONMENT_SETUP.md');
+    } else if (!isBuildTime && !isServerSide && errors.length > 0) {
+      // Only show error in production client-side
       console.error('❌ Like2Win: Missing environment variables. Check Vercel settings.');
       console.error('Required variables:', errors);
-      
-      // Show user-friendly error instead of crashing
-      if (typeof window !== 'undefined') {
-        document.body.innerHTML = `
-          <div style="padding: 2rem; text-align: center; font-family: system-ui;">
-            <h1 style="color: #F59E0B;">⚠️ Like2Win Configuration Error</h1>
-            <p>Missing environment variables in Vercel deployment.</p>
-            <p>Please configure: <code>NEXT_PUBLIC_ONCHAINKIT_API_KEY</code>, <code>NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME</code>, <code>NEXT_PUBLIC_URL</code></p>
-            <p><small>Check Vercel Dashboard → Settings → Environment Variables</small></p>
-          </div>
-        `;
-      }
-      return DEFAULT_CONFIG; // Return default instead of throwing
     }
+    
+    // Always return config, never crash the app
+    // return DEFAULT_CONFIG;
   }
 
   const config: MiniKitConfig = {
     ...DEFAULT_CONFIG,
     apiKey: process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || '',
     projectName: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || DEFAULT_CONFIG.projectName,
-    iconUrl: process.env.NEXT_PUBLIC_ICON_URL,
-    splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL,
-    splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
+    iconUrl: process.env.NEXT_PUBLIC_ICON_URL || `${process.env.NEXT_PUBLIC_URL || ''}/icon.png`,
+    splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL || `${process.env.NEXT_PUBLIC_URL || ''}/splash.png`,
+    splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || '#F59E0B',
     ...overrides,
   };
 
   // Validate final configuration (skip during build time)
   const isBuildTime = process.env.NODE_ENV === 'production' && typeof window === 'undefined';
+  const isDevelopment = process.env.NODE_ENV === 'development';
   
-  if (!config.apiKey && !isBuildTime && typeof window !== 'undefined') {
+  if (!config.apiKey && !isBuildTime && typeof window !== 'undefined' && !isDevelopment) {
     console.warn('⚠️ Like2Win: OnchainKit API key missing - some features may not work');
   }
 

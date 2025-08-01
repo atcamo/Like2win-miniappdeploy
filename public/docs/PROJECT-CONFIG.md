@@ -1,23 +1,24 @@
-# Kiwik Project Configuration
+# Like2Win Project Configuration
 
 ## Project Overview
 
-**kiwik** is a Farcaster-native MiniKit application implementing the **FruteroKit Design System** for the Frutero Club ecosystem. This document outlines the complete project configuration and development standards.
+**Like2Win** is a Farcaster-native MiniKit application that gamifies social engagement through bi-weekly $DEGEN raffles. Users earn tickets by following @Like2Win and liking official posts - zero friction, maximum fun! This document outlines the complete project configuration and development standards.
 
 ## 🎨 Design System Configuration
 
-### FruteroKit Integration Status
-- ✅ **OKLCH Color System**: Fully implemented with primary/secondary/accent colors
-- ✅ **Typography System**: Funnel Display, Space Grotesk, Raleway, Ledger fonts configured
-- ✅ **Layout Architecture**: Page/Container/Section structure implemented
-- ✅ **Component Patterns**: Rounded buttons, card styles, spacing system
-- ✅ **CSS Variables**: All design tokens available in CSS custom properties
+### Like2Win Visual Identity Status
+- ✅ **Amber/Gold Theme**: Fully implemented with consistent color palette
+- ✅ **Typography System**: Geist font family for clean, modern appearance
+- ✅ **Component Library**: Like2WinComponents with buttons, cards, logos, animations
+- ✅ **Responsive Design**: Mobile-first approach optimized for Farcaster
+- ✅ **CSS Variables**: Complete theme system with amber/gold design tokens
 
 ### Required Design Assets
-- **Fonts**: Funnel Display, Space Grotesk (Google Fonts), Raleway (Google Fonts), Ledger
-- **Colors**: OKLCH-based palette with verde vibrante, naranja energético, verde menta
-- **Icons**: Lucide React (exclusive icon library)
-- **Images**: Frutero Club logos, brand assets
+- **Fonts**: Geist font family (primary), system fallbacks
+- **Colors**: Amber (#F59E0B), Gold (#EAB308), Orange accent (#F97316)
+- **Animations**: Signature falling coins, sparkle effects, like-to-coin transitions
+- **Icons**: Custom emoji-based iconography (🎫, 💰, 🎲, etc.)
+- **Branding**: Like2Win logos, raffle graphics, winner celebration assets
 
 ## 🛠️ Technical Stack Configuration
 
@@ -26,8 +27,8 @@
 {
   "framework": "Next.js 15+",
   "language": "TypeScript",
-  "styling": "TailwindCSS + FruteroKit",
-  "ui_library": "shadcn/ui + FruteroKit",
+  "styling": "TailwindCSS + Like2Win Theme",
+  "ui_library": "Custom Like2WinComponents",
   "package_manager": "bun"
 }
 ```
@@ -35,27 +36,25 @@
 ### Key Dependencies
 ```json
 {
-  "design_system": [
+  "styling": [
     "tailwindcss",
     "tailwindcss-animate", 
     "clsx",
     "tailwind-merge"
   ],
-  "ui_components": [
-    "lucide-react",
-    "class-variance-authority"
-  ],
   "farcaster": [
     "@farcaster/frame-sdk",
-    "@coinbase/onchainkit"
+    "@neynar/nodejs-sdk"
   ],
   "database": [
     "@prisma/client",
     "@supabase/supabase-js"
   ],
-  "state_management": [
-    "@tanstack/react-query",
-    "zustand"
+  "caching": [
+    "@upstash/redis"
+  ],
+  "authentication": [
+    "@privy-io/react-auth"
   ]
 }
 ```
@@ -65,32 +64,29 @@
 #### Current Production Environment Variables
 ```bash
 # Core App Configuration
-NEXT_PUBLIC_URL=                           # Deployment URL
-NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=kiwik  # Project identifier
-NEXT_PUBLIC_APP_OG_TITLE=kiwik            # OpenGraph title
-NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=#000000 # Splash screen bg
+NEXT_PUBLIC_URL=https://like2win.vercel.app  # Deployment URL
+NEXT_PUBLIC_APP_OG_TITLE=Like2Win            # OpenGraph title
+NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=#F59E0B  # Like2Win amber splash
 
-# Database Configuration (Railway + Supabase)
-DATABASE_URL=postgresql://postgres:HyRLevcdHUrwUYmzFLgowtnKmEmkPjnj@junction.proxy.rlwy.net:40276/railway
-DIRECT_URL=postgresql://postgres.gijaagkrjuwmsxtnoxhs:n717knEv8vmlQNmq@aws-0-us-east-1.pooler.supabase.com:5432/postgres
-NEXT_PUBLIC_SUPABASE_URL=https://gijaagkrjuwmsxtnoxhs.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+# Database Configuration (Supabase)
+DATABASE_URL=postgresql://...               # Supabase connection string
+NEXT_PUBLIC_SUPABASE_URL=https://...supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIs...
 
-# Blockchain Integration
-NEXT_PUBLIC_ONCHAINKIT_API_KEY=gWCiprBwBK41KiJVaOlyCS7jGyByg0HV
-NEXT_PUBLIC_ALCHEMY_API_KEY=73znTLTk8Q20geErS3U-irkbn62MjYZh
+# Caching (Upstash Redis)
+REDIS_URL=rediss://...upstash.io:6380
+REDIS_TOKEN=...
 
-# Smart Contract Addresses
-NEXT_PUBLIC_PROOF_OF_VERANO_ADDRESS=0xc50dc3d7a967393a4ebf7944b0c6c819d10aa250
+# Farcaster Integration (Neynar)
+NEYNAR_API_KEY=...                          # Farcaster protocol access
 
-# Authentication & Identity
+# Authentication (Privy)
 PRIVY_APP_ID=cmdiwm78p00udle0j7qen46ge
 PRIVY_APP_SECRET=2vEg5ksCKFptbdEomQxKyFU18EmJ4Vtru2Cmb9jfnXAnu2dUPxoBjKNt33grUTD6bgaeR3wvYsJvm8QYptSka28t
-NEXT_PUBLIC_DYNAMIC_ENV_ID=e367040e-5b5d-446b-9d3c-3f1e29eea933
 
 # Deployment Integration
-VERCEL_OIDC_TOKEN=                        # Auto-generated by Vercel CLI
+VERCEL_OIDC_TOKEN=                          # Auto-generated by Vercel CLI
 ```
 
 #### Environment Setup Instructions
@@ -110,39 +106,43 @@ The project includes automatic environment validation in `app/lib/minikit-config
 ## 📁 File Structure Standards
 
 ```
-kiwik/
+like2win-app/
 ├── app/
-│   ├── components/          # React components
-│   │   ├── ui/             # shadcn/ui components
-│   │   ├── layout/         # Layout components
-│   │   ├── auth/           # Authentication components
-│   │   └── features/       # Feature-specific components
-│   ├── globals.css         # FruteroKit CSS implementation
-│   ├── layout.tsx          # Root layout with fonts
-│   └── page.tsx            # Landing page
+│   ├── api/
+│   │   └── raffle/         # Raffle system API endpoints
+│   ├── components/
+│   │   ├── Like2WinComponents.tsx  # Core Like2Win UI components
+│   │   ├── FrameAwareLanding.tsx   # Smart landing page
+│   │   └── LandingComponents.tsx   # Additional landing sections
+│   ├── miniapp/            # Main Like2Win MiniApp
+│   ├── theme.css           # Like2Win amber/gold theme
+│   ├── layout.tsx          # Root layout with Like2Win metadata
+│   └── page.tsx            # Landing page (FrameAwareLanding)
 ├── lib/
-│   ├── fonts.ts            # Font configuration
+│   ├── hooks/              # Custom React hooks (raffle, engagement)
 │   ├── utils.ts            # Utility functions
-│   └── prisma.ts           # Database client
+│   └── fonts.ts            # Font configuration
 ├── public/
-│   ├── docs/               # Project documentation
-│   │   ├── guidelines/     # Design and development guidelines
-│   │   ├── todos/          # Implementation tickets
-│   │   └── implementation-plans/
-│   └── fonts/              # Custom font files (when available)
+│   ├── docs/               # Like2Win documentation
+│   │   ├── project-documentation.md    # Complete PRD
+│   │   ├── like2win-getting-started.md # User guide
+│   │   └── todos/          # Development tickets
+│   └── fonts/              # Font files
 ├── prisma/
-│   └── schema.prisma       # Database schema
-└── tailwind.config.ts      # FruteroKit + shadcn/ui config
+│   └── schema.prisma       # Like2Win database schema
+├── scripts/
+│   └── init-raffle.ts      # Raffle system initialization
+└── tailwind.config.ts      # Like2Win theme configuration
 ```
 
 ## 🎯 Development Standards
 
 ### Component Development Rules
-1. **MANDATORY**: Follow FruteroKit design guidelines
+1. **MANDATORY**: Follow Like2Win visual identity (amber/gold theme)
 2. **MANDATORY**: Use TypeScript for all components
-3. **MANDATORY**: Implement responsive design (mobile-first)
-4. **MANDATORY**: Use Lucide React icons exclusively
-5. **MANDATORY**: Follow PageWrapper → Container → Section layout
+3. **MANDATORY**: Implement responsive design (mobile-first, Farcaster-optimized)
+4. **MANDATORY**: Use emoji-based iconography (🎫, 💰, 🎲, etc.)
+5. **MANDATORY**: Include appropriate animations for user feedback
 
 ### Code Quality Standards
 ```json
@@ -212,21 +212,21 @@ style(colors): implement OKLCH color system
 ## 🎨 Design System Compliance
 
 ### Mandatory Requirements
-1. **Color Usage**: Only FruteroKit OKLCH colors
-2. **Typography**: Only FruteroKit font hierarchy
-3. **Layout**: PageWrapper structure required
-4. **Components**: shadcn/ui + FruteroKit patterns
-5. **Icons**: Lucide React exclusively
-6. **Spacing**: FruteroKit spacing system
-7. **Buttons**: Always `rounded-full`
-8. **Responsiveness**: Mobile-first approach
+1. **Color Usage**: Only Like2Win amber/gold theme colors
+2. **Typography**: Geist font family with system fallbacks
+3. **Components**: Like2WinComponents patterns
+4. **Icons**: Emoji-based iconography exclusively
+5. **Animations**: Include falling coins and sparkle effects where appropriate
+6. **Buttons**: Consistent amber/gold styling with hover effects
+7. **Cards**: Glassmorphism and gradient variants
+8. **Responsiveness**: Mobile-first, Farcaster-optimized
 
 ### Prohibited Patterns
-- ❌ Hard-coded colors (use design tokens)
-- ❌ Custom fonts (use FruteroKit hierarchy)
+- ❌ Hard-coded colors (use CSS variables)
+- ❌ Non-amber theme colors (maintain brand consistency)
 - ❌ Fixed layouts (use responsive patterns)
-- ❌ Non-Lucide icons
-- ❌ Square buttons (must be rounded-full)
+- ❌ SVG icons (use emoji-based iconography)
+- ❌ No animations (include user feedback)
 - ❌ Inline styles (use Tailwind classes)
 
 ## 🚀 Performance Targets
@@ -318,8 +318,8 @@ workflows:
 
 ---
 
-**Configuration Version**: 1.0  
-**Last Updated**: 2025-07-25  
-**Maintained by**: kiwik Development Team
+**Configuration Version**: 2.0  
+**Last Updated**: 2025-08-01  
+**Maintained by**: Like2Win Development Team
 
-*This configuration enforces FruteroKit design system compliance and Farcaster MiniKit best practices across the entire development lifecycle.*
+*This configuration enforces Like2Win brand identity and Farcaster MiniKit best practices for social gamification and raffle systems.*

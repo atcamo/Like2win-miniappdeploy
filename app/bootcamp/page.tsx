@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import { useProofOfVerano } from '@/lib/hooks/useProofOfVerano';
+// Note: This component is deprecated as Like2Win has replaced the bootcamp system
 
 interface RegisteredStudent {
   id: string;
@@ -31,9 +31,11 @@ export default function BootcampDashboard() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [registrationMessage, setRegistrationMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   
-  // Wallet and NFT status
+  // Wallet status
   const { address, isConnected } = useAccount();
-  const { studentInfo, isLoading: isLoadingNFT } = useProofOfVerano();
+  // Legacy bootcamp system - now redirects to Like2Win
+  const studentInfo = null;
+  const isLoadingNFT = false;
   
   // Check if current user is registered in database
   const currentUserInDB = students.find(s => 
@@ -143,7 +145,7 @@ export default function BootcampDashboard() {
             Dashboard Bootcamp
           </h1>
           <p className="text-[var(--app-foreground-muted)]">
-            Estudiantes registrados en Proof of Verano
+            Like2Win - Sistema de sorteos y rewards
           </p>
         </div>
 
@@ -189,9 +191,9 @@ export default function BootcampDashboard() {
                     </div>
                   )}
                   <div>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">NFT de Certificación</p>
+                    <p className="text-sm text-[var(--app-foreground-muted)]">Sistema Legacy</p>
                     <p className="text-xs font-medium">
-                      {isLoadingNFT ? 'Verificando...' : studentInfo?.completed ? 'Otorgado ✅' : 'No completado'}
+                      Migrado a Like2Win
                     </p>
                   </div>
                 </div>
@@ -247,16 +249,16 @@ export default function BootcampDashboard() {
                 <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-medium text-yellow-800">¡NFT Disponible!</h3>
+                      <h3 className="font-medium text-yellow-800">¡Like2Win Disponible!</h3>
                       <p className="text-sm text-yellow-600">
-                        Ya completaste el bootcamp. Puedes acuñar tu NFT de certificación.
+                        El sistema de bootcamp ha sido reemplazado por Like2Win.
                       </p>
                     </div>
                     <a
-                      href="/verano"
+                      href="/miniapp"
                       className="px-4 py-2 rounded-lg font-medium bg-yellow-600 text-white hover:bg-yellow-700 transition-colors"
                     >
-                      Ir a Acuñar NFT
+                      Ir a Like2Win
                     </a>
                   </div>
                 </div>
@@ -309,14 +311,14 @@ export default function BootcampDashboard() {
                     <div>
                       <h3 className="font-medium text-blue-800">¿Quieres participar?</h3>
                       <p className="text-sm text-blue-600">
-                        Regístrate en el bootcamp Proof of Verano y obtén tu certificación NFT.
+                        Únete a Like2Win y gana $DEGEN con engagement social.
                       </p>
                     </div>
                     <a
-                      href="/verano"
+                      href="/miniapp"
                       className="px-4 py-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                     >
-                      Inscribirme Ahora
+                      Ir a Like2Win
                     </a>
                   </div>
                 </div>
