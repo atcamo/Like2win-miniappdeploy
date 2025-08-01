@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useMiniKit } from '@farcaster/minikit-react';
+import { sdk } from '@farcaster/frame-sdk';
 import { 
   MainTitle, 
   Like2WinCard, 
@@ -16,14 +16,31 @@ import { useRaffleStatus, useRaffleParticipation, useLeaderboard } from '@/lib/h
 
 export default function Like2WinMiniApp() {
   const [showFallingAnimation, setShowFallingAnimation] = useState(false);
-  const { user, context, isAuthenticated } = useMiniKit();
+  const [context, setContext] = useState<any>(null);
+  const [isSDKLoaded, setIsSDKLoaded] = useState(false);
 
-  // Get user FID from MiniKit context or default to null
-  const userFid = user?.fid || null;
+  // Get user FID from Frame SDK context or default to null
+  const userFid = context?.user?.fid || null;
 
   const { data: raffleData, isLoading: raffleLoading, refresh: refreshRaffle } = useRaffleStatus(userFid);
   const { participate, isParticipating } = useRaffleParticipation();
   const { data: leaderboardData, isLoading: leaderboardLoading } = useLeaderboard();
+
+  // Initialize Frame SDK
+  useEffect(() => {
+    const initializeSDK = async () => {
+      try {
+        const frameContext = await sdk.context;
+        setContext(frameContext);
+        setIsSDKLoaded(true);
+      } catch (error) {
+        console.error('Failed to initialize Frame SDK:', error);
+        setIsSDKLoaded(true); // Set to true anyway to show fallback UI
+      }
+    };
+
+    initializeSDK();
+  }, []);
 
   // Trigger falling animation occasionally
   useEffect(() => {
@@ -57,8 +74,20 @@ export default function Like2WinMiniApp() {
     }
   };
 
-  // Show authentication prompt if not authenticated
-  if (!isAuthenticated || !userFid) {
+  // Show loading while SDK initializes
+  if (!isSDKLoaded) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-900/20 dark:via-yellow-900/20 dark:to-orange-900/20 flex items-center justify-center">
+        <div className="text-center">
+          <Like2WinLogo size="lg" animated={true} />
+          <p className="mt-4 text-[var(--app-foreground-muted)]">Initializing Like2Win...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show authentication prompt if not in frame context
+  if (!context || !userFid) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-900/20 dark:via-yellow-900/20 dark:to-orange-900/20 flex items-center justify-center">
         <div className="text-center">
@@ -120,8 +149,8 @@ export default function Like2WinMiniApp() {
           <div className="text-right">
             <div className="text-xs text-[var(--app-foreground-muted)]">Your FID</div>
             <div className="font-mono text-sm text-amber-600">{userFid}</div>
-            {user?.username && (
-              <div className="text-xs text-[var(--app-foreground-muted)]">@{user.username}</div>
+            {context?.user?.username && (
+              <div className="text-xs text-[var(--app-foreground-muted)]">@{context.user.username}</div>
             )}
           </div>
         </div>
