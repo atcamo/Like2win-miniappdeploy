@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useMiniKit } from '@farcaster/minikit-react';
 import { 
   MainTitle, 
   Like2WinCard, 
@@ -13,14 +14,14 @@ import {
 } from '@/app/components/Like2WinComponents';
 import { useRaffleStatus, useRaffleParticipation, useLeaderboard } from '@/lib/hooks/useRaffleStatus';
 
-// Mock FID for development - in production this would come from Farcaster context
-const MOCK_USER_FID = 12345;
-
 export default function Like2WinMiniApp() {
   const [showFallingAnimation, setShowFallingAnimation] = useState(false);
-  const [mockUserFid] = useState(MOCK_USER_FID);
+  const { user, context, isAuthenticated } = useMiniKit();
 
-  const { data: raffleData, isLoading: raffleLoading, refresh: refreshRaffle } = useRaffleStatus(mockUserFid);
+  // Get user FID from MiniKit context or default to null
+  const userFid = user?.fid || null;
+
+  const { data: raffleData, isLoading: raffleLoading, refresh: refreshRaffle } = useRaffleStatus(userFid);
   const { participate, isParticipating } = useRaffleParticipation();
   const { data: leaderboardData, isLoading: leaderboardLoading } = useLeaderboard();
 
@@ -36,13 +37,16 @@ export default function Like2WinMiniApp() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleParticipate = async () => {
-    const mockCastHash = `0x${Math.random().toString(16).substring(2)}`;
+  const handleParticipate = async (castHash: string) => {
+    if (!userFid) {
+      console.error('No user FID available');
+      return;
+    }
     
-    const result = await participate(mockUserFid, mockCastHash, {
+    const result = await participate(userFid, castHash, {
       has_liked: true,
-      has_commented: Math.random() > 0.5, // Random for demo
-      has_recasted: Math.random() > 0.5,  // Random for demo
+      has_commented: false, // Will be detected via API
+      has_recasted: false,  // Will be detected via API
       tip_allowance: raffleData?.user.tipAllowanceEnabled || false
     });
 
@@ -52,6 +56,29 @@ export default function Like2WinMiniApp() {
       refreshRaffle(); // Refresh data after participation
     }
   };
+
+  // Show authentication prompt if not authenticated
+  if (!isAuthenticated || !userFid) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-900/20 dark:via-yellow-900/20 dark:to-orange-900/20 flex items-center justify-center">
+        <div className="text-center">
+          <Like2WinLogo size="lg" animated={true} />
+          <MainTitle className="text-3xl mt-4">Like2Win</MainTitle>
+          <p className="mt-4 text-[var(--app-foreground-muted)] max-w-md mx-auto">
+            Para participar en los sorteos de $DEGEN, necesitas abrir esta app desde Farcaster.
+          </p>
+          <div className="mt-6 bg-amber-100 dark:bg-amber-900/30 border border-amber-300 rounded-lg p-4 max-w-md mx-auto">
+            <p className="text-amber-800 dark:text-amber-200 text-sm">
+              💡 <strong>Cómo participar:</strong><br/>
+              1. Abre en Farcaster client<br/>
+              2. Sigue @Like2Win<br/>
+              3. Dale like a posts oficiales
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (raffleLoading) {
     return (
@@ -92,7 +119,10 @@ export default function Like2WinMiniApp() {
           
           <div className="text-right">
             <div className="text-xs text-[var(--app-foreground-muted)]">Your FID</div>
-            <div className="font-mono text-sm text-amber-600">{mockUserFid}</div>
+            <div className="font-mono text-sm text-amber-600">{userFid}</div>
+            {user?.username && (
+              <div className="text-xs text-[var(--app-foreground-muted)]">@{user.username}</div>
+            )}
           </div>
         </div>
       </header>
@@ -117,17 +147,44 @@ export default function Like2WinMiniApp() {
                 <p className="text-amber-800 dark:text-amber-200 font-semibold mb-3">
                   ⚠️ Necesitas seguir @Like2Win para participar
                 </p>
-                <Like2WinButton variant="gradient" size="lg">
+                <Like2WinButton 
+                  variant="gradient" 
+                  size="lg"
+                  onClick={() => {
+                    // Open Farcaster profile for Like2Win
+                    window.open('https://warpcast.com/like2win', '_blank');
+                  }}
+                >
                   Follow @Like2Win
                 </Like2WinButton>
+                <p className="text-xs text-amber-700 dark:text-amber-300 mt-2">
+                  Se abrirá en Farcaster para seguir
+                </p>
               </div>
             ) : (
-              <ParticipationButton
-                onParticipate={handleParticipate}
-                isParticipating={isParticipating}
-                userFid={mockUserFid}
-                postHash="demo-post"
-              />
+              <div className="space-y-4">
+                <p className="text-green-600 font-semibold">
+                  ✅ ¡Ya sigues @Like2Win! Ahora puedes participar:
+                </p>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 rounded-lg p-4">
+                  <p className="text-sm text-green-700 dark:text-green-300 mb-3">
+                    Para ganar tickets, busca posts oficiales de @Like2Win y dale like. 
+                    {raffleData?.user.tipAllowanceEnabled ? 
+                      ' Con tip allowance, cada like = 1 ticket automático.' : 
+                      ' Sin tip allowance, necesitas like + comment + recast.'
+                    }
+                  </p>
+                  <Like2WinButton 
+                    variant="gradient" 
+                    size="md"
+                    onClick={() => {
+                      window.open('https://warpcast.com/like2win', '_blank');
+                    }}
+                  >
+                    Ver Posts de @Like2Win
+                  </Like2WinButton>
+                </div>
+              </div>
             )}
           </div>
         </Like2WinCard>
@@ -183,14 +240,22 @@ export default function Like2WinMiniApp() {
           </div>
           
           <div className="mt-6 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-lg p-4">
-            <p className="text-center text-sm">
-              <strong>Sorteos:</strong> Miércoles y Domingo 8PM UTC • 
-              <strong> Premios:</strong> 60% / 30% / 10% • 
-              <strong> Tu status:</strong> {' '}
-              <span className={raffleData?.user.tipAllowanceEnabled ? 'text-green-600' : 'text-amber-600'}>
-                {raffleData?.user.tipAllowanceEnabled ? 'CON tips' : 'SIN tips'}
-              </span>
-            </p>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div className="space-y-1">
+                <p><strong>Sorteos:</strong> Miércoles y Domingo 8PM UTC</p>
+                <p><strong>Premios:</strong> 60% / 30% / 10% del pool</p>
+                <p><strong>Pool actual:</strong> {raffleData?.raffle.prizePool || 0} $DEGEN</p>
+              </div>
+              <div className="space-y-1">
+                <p><strong>Tu status:</strong> {' '}
+                  <span className={raffleData?.user.tipAllowanceEnabled ? 'text-green-600' : 'text-amber-600'}>
+                    {raffleData?.user.tipAllowanceEnabled ? 'CON tip allowance' : 'SIN tip allowance'}
+                  </span>
+                </p>
+                <p><strong>Próximo sorteo:</strong> {raffleData?.raffle.timeUntilEnd || 'Calculando...'}</p>
+                <p><strong>Participantes:</strong> {raffleData?.raffle.totalParticipants || 0}</p>
+              </div>
+            </div>
           </div>
         </Like2WinCard>
 
@@ -204,7 +269,7 @@ export default function Like2WinMiniApp() {
               tickets: p.tickets,
               profilePicture: p.profilePicture
             }))}
-            currentUserFid={mockUserFid}
+            currentUserFid={userFid}
           />
         )}
 
