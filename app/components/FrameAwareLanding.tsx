@@ -10,11 +10,8 @@ import {
   NavigationHeader,
   HeroSection,
   BenefitsSection,
-  MarketplaceSection,
-  AISection,
   HowItWorksSection,
   FAQSection,
-  ProofOfVeranoSection,
   FinalCTASection,
   Footer,
 } from './LandingComponents';
@@ -74,82 +71,82 @@ export function FrameAwareLanding() {
         <FrameHeader variant="minimal" />
         
         <main className="pt-20 pb-8">
-          {/* Verano Hero Section for Frame - Top Priority */}
-          <section className="px-4 py-6 bg-gradient-to-br from-orange-50 to-yellow-50">
+          {/* Like2Win Hero Section for Frame - Top Priority */}
+          <section className="px-4 py-6 bg-gradient-to-br from-amber-50 to-yellow-50">
             <div className="max-w-2xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-                <span className="text-lg">🌞</span>
-                <span>NUEVO BOOTCAMP</span>
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <span className="text-lg">🎫</span>
+                <span>SOCIAL REWARDS</span>
               </div>
               
-              <h2 className="text-3xl lg:text-4xl font-bold text-orange-900 mb-3">
-                Proof of Verano
+              <h2 className="text-3xl lg:text-4xl font-bold text-amber-900 mb-3">
+                Like2Win
               </h2>
-              <h3 className="text-xl text-orange-800 mb-4">
-                Aprende Web3 este verano
+              <h3 className="text-xl text-amber-800 mb-4">
+                Follow + Like = Win $DEGEN
               </h3>
-              <p className="text-base text-orange-700 mb-6">
-                4 semanas intensivas • Certificación NFT • Completamente gratis
+              <p className="text-base text-amber-700 mb-6">
+                Zero friction • Sorteos bi-semanales • Solo para seguidores
               </p>
               
               <div className="flex justify-center mb-6">
                 <a 
-                  href="/verano" 
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-gradient-to-r from-orange-500 to-yellow-500 text-white hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  href="/miniapp" 
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  🚀 Únete al Bootcamp
+                  🎲 Únete al Sorteo
                 </a>
               </div>
               
-              <div className="flex justify-center gap-6 text-center text-sm text-orange-600 mb-6">
+              <div className="flex justify-center gap-6 text-center text-sm text-amber-600 mb-6">
                 <div>
-                  <div className="font-bold">25+</div>
-                  <div>Estudiantes</div>
+                  <div className="font-bold">500+</div>
+                  <div>Participants</div>
                 </div>
                 <div>
-                  <div className="font-bold">4 Sem</div>
-                  <div>Duración</div>
+                  <div className="font-bold">2x/sem</div>
+                  <div>Sorteos</div>
                 </div>
                 <div>
-                  <div className="font-bold">NFT</div>
-                  <div>Certificado</div>
+                  <div className="font-bold">$DEGEN</div>
+                  <div>Premios</div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Compact Hero Section for Frame */}
+          {/* Like2Win Core Value Proposition */}
           <section className="px-4 py-8">
             <div className="max-w-2xl mx-auto text-center">
               <h1 className="text-3xl lg:text-4xl font-bold text-[var(--app-foreground)] mb-4">
-                Turn Ideas Into{" "}
-                <span className="text-[var(--app-accent)]">Reality</span>
+                La forma más simple de ganar{" "}
+                <span className="text-[var(--app-accent)]">$DEGEN</span>
               </h1>
               <p className="text-lg text-[var(--app-foreground-muted)] mb-6">
-                Community-driven platform for Web3 innovation through microfunding on Base
+                Solo sigue @Like2Win y dale like a posts oficiales. Zero friction, maximum fun!
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-                <button className="bg-[var(--app-accent)] text-white px-6 py-3 rounded-lg font-medium hover:bg-[var(--app-accent-hover)] transition-colors">
-                  Start Building
-                </button>
+                <a href="/miniapp" className="bg-[var(--app-accent)] text-white px-6 py-3 rounded-lg font-medium hover:bg-[var(--app-accent-hover)] transition-colors">
+                  🎲 Participar Ahora
+                </a>
                 <button className="border border-[var(--app-accent)] text-[var(--app-accent)] px-6 py-3 rounded-lg font-medium hover:bg-[var(--app-accent-light)] transition-colors">
-                  Explore Projects
+                  Ver Estadísticas
                 </button>
               </div>
 
               <div className="flex justify-center gap-8 text-center mb-8">
                 <div>
-                  <div className="text-xl font-bold text-[var(--app-foreground)]">1.2K+</div>
-                  <div className="text-sm text-[var(--app-foreground-muted)]">Projects</div>
+                  <div className="text-xl font-bold text-[var(--app-foreground)]">500+</div>
+                  <div className="text-sm text-[var(--app-foreground-muted)]">Participants</div>
                 </div>
                 <div>
-                  <div className="text-xl font-bold text-[var(--app-foreground)]">5.8K+</div>
-                  <div className="text-sm text-[var(--app-foreground-muted)]">Creators</div>
+                  <div className="text-xl font-bold text-[var(--app-foreground)]">2x</div>
+                  <div className="text-sm text-[var(--app-foreground-muted)]">Per Week</div>
                 </div>
                 <div>
-                  <div className="text-xl font-bold text-[var(--app-foreground)]">$2.1M+</div>
-                  <div className="text-sm text-[var(--app-foreground-muted)]">Funded</div>
+                  <div className="text-xl font-bold text-[var(--app-foreground)]">$DEGEN</div>
+                  <div className="text-sm text-[var(--app-foreground-muted)]">Rewards</div>
                 </div>
               </div>
             </div>
@@ -162,98 +159,90 @@ export function FrameAwareLanding() {
             </div>
           </section>
 
-          {/* Quick Features for Frame */}
+          {/* Like2Win Features */}
           <section className="px-4 py-6">
             <div className="max-w-2xl mx-auto">
               <h2 className="text-2xl font-bold text-center text-[var(--app-foreground)] mb-6">
-                Why Choose kiwik?
+                ¿Por qué Like2Win?
               </h2>
               
               <div className="grid gap-4">
-                <a href="/verano" className="block">
-                  <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-lg border-2 border-orange-300 hover:border-orange-400 transition-all hover:shadow-lg">
-                    <div className="text-2xl">🌞</div>
-                    <div>
-                      <h3 className="font-semibold text-orange-800">NEW: Proof of Verano Bootcamp</h3>
-                      <p className="text-sm text-orange-700">Learn Web3 & earn your NFT certificate</p>
-                    </div>
-                  </div>
-                </a>
-                
-                <div className="flex items-center gap-3 p-4 bg-[var(--app-card-bg)] rounded-lg border border-[var(--app-card-border)]">
-                  <div className="text-2xl">👥</div>
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-lg border-2 border-amber-300 hover:border-amber-400 transition-all hover:shadow-lg">
+                  <div className="text-2xl">🎫</div>
                   <div>
-                    <h3 className="font-semibold text-[var(--app-foreground)]">Community-Driven</h3>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Vibrant ecosystem of creators and supporters</p>
+                    <h3 className="font-semibold text-amber-800">Zero Friction Participation</h3>
+                    <p className="text-sm text-amber-700">Solo follow + like. No wallet, no signup, no complications</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-3 p-4 bg-[var(--app-card-bg)] rounded-lg border border-[var(--app-card-border)]">
                   <div className="text-2xl">💰</div>
                   <div>
-                    <h3 className="font-semibold text-[var(--app-foreground)]">Microfunding Made Easy</h3>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Small contributions, big impact</p>
+                    <h3 className="font-semibold text-[var(--app-foreground)]">Real $DEGEN Rewards</h3>
+                    <p className="text-sm text-[var(--app-foreground-muted)]">Sorteos bi-semanales con premios reales</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-3 p-4 bg-[var(--app-card-bg)] rounded-lg border border-[var(--app-card-border)]">
-                  <div className="text-2xl">🔷</div>
+                  <div className="text-2xl">📈</div>
                   <div>
-                    <h3 className="font-semibold text-[var(--app-foreground)]">Built on Base</h3>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Fast, secure blockchain infrastructure</p>
+                    <h3 className="font-semibold text-[var(--app-foreground)]">Transparent Algorithm</h3>
+                    <p className="text-sm text-[var(--app-foreground-muted)]">Más engagement = más tickets. Simple y justo</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-[var(--app-card-bg)] rounded-lg border border-[var(--app-card-border)]">
+                  <div className="text-2xl">🎯</div>
+                  <div>
+                    <h3 className="font-semibold text-[var(--app-foreground)]">Farcaster Native</h3>
+                    <p className="text-sm text-[var(--app-foreground-muted)]">Integrado perfectamente en tu experiencia social</p>
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Sample Projects in Frame */}
+          {/* Recent Winners */}
           <section className="px-4 py-6">
             <div className="max-w-2xl mx-auto">
               <h2 className="text-2xl font-bold text-center text-[var(--app-foreground)] mb-6">
-                Featured Projects
+                Ganadores Recientes
               </h2>
               
               <div className="grid gap-4">
                 <div className="bg-[var(--app-card-bg)] rounded-lg p-4 border border-[var(--app-card-border)]">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="text-2xl">🏦</div>
+                    <div className="text-2xl">🎉</div>
                     <div>
-                      <h3 className="font-semibold text-[var(--app-foreground)]">DeFi Dashboard</h3>
-                      <p className="text-sm text-[var(--app-foreground-muted)]">by @alice</p>
+                      <h3 className="font-semibold text-[var(--app-foreground)]">@alice.eth</h3>
+                      <p className="text-sm text-[var(--app-foreground-muted)]">Sorteo #42 - Hace 3 días</p>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-lg font-bold text-[var(--app-accent)]">$4,520</span>
-                    <span className="text-sm text-[var(--app-foreground-muted)]">92% funded</span>
-                  </div>
-                  <div className="w-full bg-[var(--app-gray)] rounded-full h-2">
-                    <div className="bg-[var(--app-accent)] h-2 rounded-full w-[92%]"></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-[var(--app-accent)]">2,500 $DEGEN</span>
+                    <span className="text-sm text-[var(--app-foreground-muted)]">127 tickets</span>
                   </div>
                 </div>
 
                 <div className="bg-[var(--app-card-bg)] rounded-lg p-4 border border-[var(--app-card-border)]">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="text-2xl">🎨</div>
+                    <div className="text-2xl">🏆</div>
                     <div>
-                      <h3 className="font-semibold text-[var(--app-foreground)]">NFT Marketplace</h3>
-                      <p className="text-sm text-[var(--app-foreground-muted)]">by @bob</p>
+                      <h3 className="font-semibold text-[var(--app-foreground)]">@cryptobob</h3>
+                      <p className="text-sm text-[var(--app-foreground-muted)]">Sorteo #41 - Hace 1 semana</p>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-lg font-bold text-[var(--app-accent)]">$8,150</span>
-                    <span className="text-sm text-[var(--app-foreground-muted)]">67% funded</span>
-                  </div>
-                  <div className="w-full bg-[var(--app-gray)] rounded-full h-2">
-                    <div className="bg-[var(--app-accent)] h-2 rounded-full w-[67%]"></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-[var(--app-accent)]">1,800 $DEGEN</span>
+                    <span className="text-sm text-[var(--app-foreground-muted)]">89 tickets</span>
                   </div>
                 </div>
               </div>
 
               <div className="text-center mt-6">
-                <button className="bg-[var(--app-accent)] text-white px-6 py-2 rounded-lg font-medium hover:bg-[var(--app-accent-hover)] transition-colors">
-                  View All Projects
-                </button>
+                <a href="/miniapp" className="bg-[var(--app-accent)] text-white px-6 py-2 rounded-lg font-medium hover:bg-[var(--app-accent-hover)] transition-colors">
+                  Ver Leaderboard
+                </a>
               </div>
             </div>
           </section>
@@ -271,10 +260,7 @@ export function FrameAwareLanding() {
         
         <main>
           <HeroSection />
-          <ProofOfVeranoSection />
           <BenefitsSection />
-          <MarketplaceSection />
-          <AISection />
           <HowItWorksSection />
           <FAQSection />
           <FinalCTASection />

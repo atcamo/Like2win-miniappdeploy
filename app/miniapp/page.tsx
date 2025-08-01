@@ -8,11 +8,10 @@ import {
   Like2WinButton, 
   Like2WinLogo,
   RaffleStatusCard,
-  ParticipationButton,
   Leaderboard,
   FallingAnimation
 } from '@/app/components/Like2WinComponents';
-import { useRaffleStatus, useRaffleParticipation, useLeaderboard } from '@/lib/hooks/useRaffleStatus';
+import { useRaffleStatus, useLeaderboard } from '@/lib/hooks/useRaffleStatus';
 
 export default function Like2WinMiniApp() {
   const [showFallingAnimation, setShowFallingAnimation] = useState(false);
@@ -21,8 +20,7 @@ export default function Like2WinMiniApp() {
   // Get user FID from MiniKit context or default to null
   const userFid = context?.user?.fid || null;
 
-  const { data: raffleData, isLoading: raffleLoading, refresh: refreshRaffle } = useRaffleStatus(userFid);
-  const { participate, isParticipating } = useRaffleParticipation();
+  const { data: raffleData, isLoading: raffleLoading } = useRaffleStatus(userFid);
   const { data: leaderboardData, isLoading: leaderboardLoading } = useLeaderboard();
 
   // Initialize Frame
@@ -44,25 +42,6 @@ export default function Like2WinMiniApp() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleParticipate = async (castHash: string) => {
-    if (!userFid) {
-      console.error('No user FID available');
-      return;
-    }
-    
-    const result = await participate(userFid, castHash, {
-      has_liked: true,
-      has_commented: false, // Will be detected via API
-      has_recasted: false,  // Will be detected via API
-      tip_allowance: raffleData?.user.tipAllowanceEnabled || false
-    });
-
-    if (result?.ticketAwarded) {
-      setShowFallingAnimation(true);
-      setTimeout(() => setShowFallingAnimation(false), 3000);
-      refreshRaffle(); // Refresh data after participation
-    }
-  };
 
   // Show loading while Frame initializes
   if (!isFrameReady) {
