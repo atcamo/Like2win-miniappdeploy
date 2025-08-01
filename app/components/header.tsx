@@ -15,12 +15,8 @@ export function Header() {
       label: 'Inicio',
     },
     {
-      href: '/bootcamp',
-      label: 'Dashboard',
-    },
-    {
-      href: '/verano',
-      label: 'Proof of Verano',
+      href: '/miniapp',
+      label: 'Participar',
     },
   ];
 
@@ -30,8 +26,8 @@ export function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-[var(--app-accent)]">🥝</span>
-            <span className="text-xl font-semibold text-[var(--app-foreground)]">kiwik</span>
+            <span className="text-2xl font-bold text-[var(--app-accent)]">🎫</span>
+            <span className="text-xl font-semibold text-[var(--app-foreground)]">Like2Win</span>
           </Link>
 
           {/* Desktop Navigation */}

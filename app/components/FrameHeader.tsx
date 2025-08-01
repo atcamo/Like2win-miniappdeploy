@@ -43,7 +43,7 @@ export function FrameHeader({
       <header className={`flex items-center justify-between p-4 bg-[var(--app-card-bg)] backdrop-blur-md border-b border-[var(--app-card-border)] ${className}`}>
         {showLogo && (
           <div className="flex items-center gap-2">
-            <div className="text-xl font-bold text-[var(--app-accent)]">kiwik</div>
+            <div className="text-xl font-bold text-[var(--app-accent)]">Like2Win</div>
             {showStatus && (
               <FrameStatusIndicator size="sm" />
             )}
@@ -84,7 +84,7 @@ export function FrameHeader({
           <div className="flex items-center space-x-4">
             {showLogo && (
               <div className="flex items-center space-x-2">
-                <div className="text-2xl font-bold text-[var(--app-accent)]">kiwik</div>
+                <div className="text-2xl font-bold text-[var(--app-accent)]">Like2Win</div>
                 {!isReady && (
                   <div className="text-xs text-[var(--app-foreground-muted)] animate-pulse">
                     Loading...

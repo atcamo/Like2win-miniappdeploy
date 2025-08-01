@@ -469,28 +469,28 @@ export function FAQSection() {
 
   const faqs = [
     {
-      question: "What is kiwik?",
-      answer: "kiwik is a community-driven platform that connects creators, builders, and backers to bring innovative projects to life through microfunding on the Base blockchain."
+      question: "¿Qué es Like2Win?",
+      answer: "Like2Win es una MiniApp de Farcaster que convierte tus likes en tickets para sorteos bi-semanales de $DEGEN. Solo sigue @Like2Win y dale like a posts oficiales."
     },
     {
-      question: "How does microfunding work?",
-      answer: "Microfunding allows many people to contribute small amounts to projects they believe in. These small contributions add up to provide meaningful funding for creators while spreading risk across many supporters."
+      question: "¿Cómo funciona el sistema de tickets?",
+      answer: "Con tip allowance: cada like = 1 ticket automático. Sin tip allowance: like + comment + recast = 1 ticket. Más engagement = más oportunidades de ganar."
     },
     {
-      question: "What blockchain network do you use?",
-      answer: "We're built on Base, Coinbase's Layer 2 network that provides fast, secure, and cost-effective transactions while maintaining Ethereum compatibility."
+      question: "¿Cuándo son los sorteos?",
+      answer: "Los sorteos se realizan cada miércoles y domingo a las 8PM UTC. Los premios se distribuyen automáticamente: 60% al primer lugar, 30% al segundo, 10% al tercero."
     },
     {
-      question: "How do I get started?",
-      answer: "Simply connect your wallet, browse projects to support, or submit your own project idea. Our AI will help match you with relevant opportunities."
+      question: "¿Cómo empiezo a participar?",
+      answer: "Es súper simple: 1) Sigue @Like2Win en Farcaster, 2) Dale like a posts oficiales de @Like2Win, 3) Recibe tickets automáticamente, 4) Participa en sorteos."
     },
     {
-      question: "What fees do you charge?",
-      answer: "We charge a small platform fee of 2.5% on successfully funded projects. This helps us maintain the platform and continue developing new features."
+      question: "¿Hay costos o comisiones?",
+      answer: "¡No! Like2Win es completamente gratis. No hay costos de participación, no necesitas wallet, no hay signup. Solo follow + like = participar."
     },
     {
-      question: "How does the AI matching work?",
-      answer: "Our AI analyzes project requirements, creator skills, and backer preferences to make intelligent recommendations that increase the likelihood of successful collaborations."
+      question: "¿Cómo se financian los premios?",
+      answer: "Like2Win redistribuye el 90% de los tips recibidos como premios. Cuando el pool supera 5000 $DEGEN, el sistema se vuelve auto-sustentable."
     }
   ];
 
@@ -499,10 +499,10 @@ export function FAQSection() {
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-[var(--app-foreground)] mb-4">
-            Frequently Asked Questions
+            Preguntas Frecuentes
           </h2>
           <p className="text-xl text-[var(--app-foreground-muted)]">
-            Everything you need to know about kiwik
+            Todo lo que necesitas saber sobre Like2Win
           </p>
         </div>
 
@@ -537,60 +537,6 @@ export function FAQSection() {
 }
 
 // Final CTA Section Component
-// Proof of Verano Section
-export function ProofOfVeranoSection() {
-  return (
-    <section className="py-20 px-4 bg-gradient-to-br from-orange-50 to-yellow-50">
-      <div className="container mx-auto max-w-7xl">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          <div className="grid lg:grid-cols-2">
-            <div className="p-12 flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 text-orange-600 font-semibold mb-4">
-                <span className="text-2xl">🌞</span>
-                <span>NUEVO BOOTCAMP</span>
-              </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Proof of Verano En Cadena
-              </h2>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Aprende Web3 este verano y obtén tu certificación NFT on-chain. 
-                Un bootcamp intensivo de 4 semanas donde dominarás smart contracts, 
-                DApps y todo el ecosistema blockchain.
-              </p>
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <span className="text-orange-500">✓</span>
-                  <span className="text-gray-700">Certificación NFT única en Base</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-orange-500">✓</span>
-                  <span className="text-gray-700">Aprendizaje práctico y mentorías</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-orange-500">✓</span>
-                  <span className="text-gray-700">Comunidad exclusiva de graduados</span>
-                </div>
-              </div>
-              <a 
-                href="/verano" 
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-gradient-to-r from-orange-500 to-yellow-500 text-white hover:from-orange-600 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl w-fit"
-              >
-                Inscríbete Ahora →
-              </a>
-            </div>
-            <div className="bg-gradient-to-br from-orange-400 to-yellow-400 p-12 flex items-center justify-center">
-              <div className="text-center text-white">
-                <div className="text-9xl mb-4">🏆</div>
-                <h3 className="text-2xl font-bold mb-2">NFT Certificado</h3>
-                <p className="text-orange-100">Tu logro on-chain para siempre</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function FinalCTASection() {
   return (
@@ -723,54 +669,42 @@ export function Footer() {
   return (
     <footer className="bg-[var(--app-foreground)] text-[var(--app-background)] py-16 px-4">
       <div className="container mx-auto max-w-7xl">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <div className="space-y-4">
-            <div className="text-2xl font-bold text-[var(--app-accent)]">kiwik</div>
+            <div className="text-2xl font-bold text-[var(--app-accent)]">Like2Win</div>
             <p className="text-gray-300 leading-relaxed">
-              The community-driven platform for turning ideas into reality through microfunding.
+              Donde cada like se convierte en una oportunidad real de ganar $DEGEN en Farcaster.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">Discord</a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">GitHub</a>
+              <a href="https://warpcast.com/like2win" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Farcaster</a>
+              <a href="/miniapp" className="text-gray-300 hover:text-white transition-colors">MiniApp</a>
             </div>
           </div>
           
           <div>
-            <h3 className="font-bold mb-4">Platform</h3>
+            <h3 className="font-bold mb-4">Participar</h3>
             <div className="space-y-2">
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Browse Projects</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Find Creators</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Submit Project</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">How It Works</a>
+              <a href="/miniapp" className="block text-gray-300 hover:text-white transition-colors">Dashboard</a>
+              <a href="https://warpcast.com/like2win" target="_blank" rel="noopener noreferrer" className="block text-gray-300 hover:text-white transition-colors">Follow @Like2Win</a>
+              <a href="#how-it-works" className="block text-gray-300 hover:text-white transition-colors">Cómo Funciona</a>
+              <a href="#faq" className="block text-gray-300 hover:text-white transition-colors">FAQ</a>
             </div>
           </div>
           
           <div>
-            <h3 className="font-bold mb-4">Resources</h3>
+            <h3 className="font-bold mb-4">Información</h3>
             <div className="space-y-2">
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Documentation</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">API</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Blog</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Support</a>
               <Link href="/?view=frame-info" className="block text-gray-300 hover:text-white transition-colors">Farcaster Frame</Link>
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="font-bold mb-4">Company</h3>
-            <div className="space-y-2">
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">About</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Careers</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Terms</a>
+              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Estadísticas</a>
+              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Leaderboard</a>
+              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Ganadores</a>
             </div>
           </div>
         </div>
         
         <div className="border-t border-gray-700 mt-12 pt-8 text-center">
           <p className="text-gray-300">
-            © 2024 kiwik. Built on Base with ❤️ for the Web3 community.
+            © 2024 Like2Win. Built on Base with ❤️ for the Farcaster community.
           </p>
         </div>
       </div>
