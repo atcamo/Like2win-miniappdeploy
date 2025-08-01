@@ -152,21 +152,21 @@ export function HeroSection() {
                       <LandingIcon name="code" className="text-white" size="sm" />
                     </div>
                     <div>
-                      <div className="font-semibold text-[var(--app-foreground)]">AI Todo App</div>
-                      <div className="text-sm text-[var(--app-foreground-muted)]">by @creator</div>
+                      <div className="font-semibold text-[var(--app-foreground)]">Like2Win Raffle</div>
+                      <div className="text-sm text-[var(--app-foreground-muted)]">by @Like2Win</div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold text-[var(--app-accent)]">$2,340</div>
-                    <div className="text-sm text-[var(--app-foreground-muted)]">85% funded</div>
+                    <div className="text-lg font-bold text-[var(--app-accent)]">2,500 $DEGEN</div>
+                    <div className="text-sm text-[var(--app-foreground-muted)]">Premio actual</div>
                   </div>
                 </div>
                 <div className="w-full bg-[var(--app-gray)] rounded-full h-2">
                   <div className="bg-[var(--app-accent)] h-2 rounded-full w-[85%]"></div>
                 </div>
                 <div className="flex justify-between text-sm text-[var(--app-foreground-muted)]">
-                  <span>127 backers</span>
-                  <span>3 days left</span>
+                  <span>500+ participantes</span>
+                  <span>2 días restantes</span>
                 </div>
               </div>
             </div>
