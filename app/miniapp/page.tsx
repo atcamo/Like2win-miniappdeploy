@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { sdk } from '@farcaster/frame-sdk';
+import { useMiniKit } from '@coinbase/onchainkit/minikit';
 import { 
   MainTitle, 
   Like2WinCard, 
@@ -16,31 +16,21 @@ import { useRaffleStatus, useRaffleParticipation, useLeaderboard } from '@/lib/h
 
 export default function Like2WinMiniApp() {
   const [showFallingAnimation, setShowFallingAnimation] = useState(false);
-  const [context, setContext] = useState<any>(null);
-  const [isSDKLoaded, setIsSDKLoaded] = useState(false);
+  const { setFrameReady, isFrameReady, context } = useMiniKit();
 
-  // Get user FID from Frame SDK context or default to null
+  // Get user FID from MiniKit context or default to null
   const userFid = context?.user?.fid || null;
 
   const { data: raffleData, isLoading: raffleLoading, refresh: refreshRaffle } = useRaffleStatus(userFid);
   const { participate, isParticipating } = useRaffleParticipation();
   const { data: leaderboardData, isLoading: leaderboardLoading } = useLeaderboard();
 
-  // Initialize Frame SDK
+  // Initialize Frame
   useEffect(() => {
-    const initializeSDK = async () => {
-      try {
-        const frameContext = await sdk.context;
-        setContext(frameContext);
-        setIsSDKLoaded(true);
-      } catch (error) {
-        console.error('Failed to initialize Frame SDK:', error);
-        setIsSDKLoaded(true); // Set to true anyway to show fallback UI
-      }
-    };
-
-    initializeSDK();
-  }, []);
+    if (!isFrameReady) {
+      setFrameReady();
+    }
+  }, [setFrameReady, isFrameReady]);
 
   // Trigger falling animation occasionally
   useEffect(() => {
@@ -74,8 +64,8 @@ export default function Like2WinMiniApp() {
     }
   };
 
-  // Show loading while SDK initializes
-  if (!isSDKLoaded) {
+  // Show loading while Frame initializes
+  if (!isFrameReady) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-900/20 dark:via-yellow-900/20 dark:to-orange-900/20 flex items-center justify-center">
         <div className="text-center">

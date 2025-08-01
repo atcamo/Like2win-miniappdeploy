@@ -74,7 +74,7 @@ export interface LeaderboardData {
   };
 }
 
-export function useRaffleStatus(fid: number) {
+export function useRaffleStatus(fid: number | null) {
   const [data, setData] = useState<RaffleStatusData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
