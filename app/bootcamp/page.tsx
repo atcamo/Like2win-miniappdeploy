@@ -42,8 +42,8 @@ export default function BootcampDashboard() {
     s.appWallet?.toLowerCase() === address?.toLowerCase()
   );
   
-  // User has NFT but not in database
-  const needsRegistration = isConnected && studentInfo?.completed && !currentUserInDB;
+  // Legacy: User registration no longer needed for Like2Win
+  const needsRegistration = false;
 
   useEffect(() => {
     fetchStudents();
