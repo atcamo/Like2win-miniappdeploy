@@ -34,7 +34,6 @@ export default function BootcampDashboard() {
   // Wallet status
   const { address, isConnected } = useAccount();
   // Legacy bootcamp system - now redirects to Like2Win
-  const studentInfo = null;
   const isLoadingNFT = false;
   
   // Check if current user is registered in database
@@ -177,7 +176,7 @@ export default function BootcampDashboard() {
                     <div className="p-2 rounded-full bg-gray-100">
                       <div className="w-5 h-5 border-2 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
                     </div>
-                  ) : studentInfo?.completed ? (
+                  ) : false ? (
                     <div className="p-2 rounded-full bg-green-100">
                       <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -223,17 +222,17 @@ export default function BootcampDashboard() {
               </div>
               
               {/* NFT Token ID Display */}
-              {studentInfo?.completed && currentUserInDB?.nftTokenId && (
+              {false && currentUserInDB?.nftTokenId && (
                 <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-medium text-green-800">Tu NFT de Certificación</h3>
                       <p className="text-sm text-green-600">
-                        Token ID: <span className="font-mono">{currentUserInDB.nftTokenId}</span>
+                        Token ID: <span className="font-mono">{currentUserInDB?.nftTokenId}</span>
                       </p>
                     </div>
                     <a
-                      href={`https://sepolia.basescan.org/tx/${currentUserInDB.nftTokenId}`}
+                      href={`https://sepolia.basescan.org/tx/${currentUserInDB?.nftTokenId}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-4 py-2 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
@@ -245,7 +244,7 @@ export default function BootcampDashboard() {
               )}
               
               {/* Mint NFT CTA */}
-              {studentInfo?.completed && !currentUserInDB && (
+              {false && !currentUserInDB && (
                 <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                   <div className="flex items-center justify-between">
                     <div>
@@ -305,7 +304,7 @@ export default function BootcampDashboard() {
               )}
               
               {/* Sign Up CTA for Non-Participants */}
-              {isConnected && !studentInfo?.signedUp && (
+              {isConnected && true && (
                 <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
                   <div className="flex items-center justify-between">
                     <div>
