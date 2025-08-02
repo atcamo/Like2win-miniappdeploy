@@ -31,9 +31,6 @@ export default function Like2WinMiniApp() {
 
   const { setFrameReady, isFrameReady, context } = miniKitData || {};
 
-  // Get user FID from MiniKit context or default to null
-  const userFid = context?.user?.fid || null;
-
   // Initialize Frame
   useEffect(() => {
     if (!isFrameReady && setFrameReady && mounted) {
@@ -69,10 +66,6 @@ export default function Like2WinMiniApp() {
           </div>
           <div className="space-y-2">
             <button 
-              id="retry-button"
-              name="retry"
-              type="button"
-              aria-label="Retry loading MiniApp"
               onClick={() => {
                 setError(null);
                 window.location.reload();
@@ -104,7 +97,7 @@ export default function Like2WinMiniApp() {
   }
 
   // Show authentication prompt if not in frame context
-  if (!context || !userFid) {
+  if (!context || !context.user?.fid) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 flex items-center justify-center p-4">
         <div className="max-w-md text-center">
@@ -127,6 +120,8 @@ export default function Like2WinMiniApp() {
   }
 
   // Main app content
+  const userFid = context.user.fid;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-hidden">
       
@@ -146,7 +141,7 @@ export default function Like2WinMiniApp() {
           <div className="text-right">
             <div className="text-xs text-amber-600">Your FID</div>
             <div className="font-mono text-sm text-amber-700">{userFid}</div>
-            {context?.user?.username && (
+            {context.user.username && (
               <div className="text-xs text-amber-600">@{context.user.username}</div>
             )}
           </div>

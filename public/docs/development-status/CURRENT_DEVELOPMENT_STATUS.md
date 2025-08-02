@@ -48,7 +48,7 @@
 
 ### Current Application Structure
 ```
-kiwik/
+like2win-app/
 ├── app/                     # ✅ Next.js 15 App Router
 │   ├── challenges/         # ✅ Builder Challenge System (PR #29)
 │   ├── verano/            # ✅ Proof of Verano Bootcamp

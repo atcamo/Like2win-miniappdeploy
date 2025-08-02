@@ -12,7 +12,7 @@ function withValidProperties(
 }
 
 export async function GET() {
-  const URL = process.env.NEXT_PUBLIC_URL || "https://kiwik-ai.vercel.app";
+  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win.vercel.app";
 
   return Response.json({
     accountAssociation: {
@@ -22,7 +22,7 @@ export async function GET() {
     },
     frame: withValidProperties({
       version: "1",
-      name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "kiwik",
+      name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Like2Win",
       subtitle: process.env.NEXT_PUBLIC_APP_SUBTITLE || "talent launchpad",
       description: process.env.NEXT_PUBLIC_APP_DESCRIPTION || "talent launchpad",
       screenshotUrls: process.env.NEXT_PUBLIC_APP_SCREENSHOT_URLS?.split(',') || [`${URL}/screenshot.png`],
@@ -35,7 +35,7 @@ export async function GET() {
       tags: [],
       heroImageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE || `${URL}/image.png`,
       tagline: process.env.NEXT_PUBLIC_APP_TAGLINE || "Incubadora de talento",
-      ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE || "kiwik - Incubadora de talento test",
+      ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE || "Like2Win - Social Gamification Platform",
       ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
       ogImageUrl: process.env.NEXT_PUBLIC_APP_OG_IMAGE,
       buttonTitle: "Iniciar",

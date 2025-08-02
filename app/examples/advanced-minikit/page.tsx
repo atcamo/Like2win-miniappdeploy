@@ -70,7 +70,7 @@ export default function AdvancedMiniKitExample() {
     try {
       const timestamp = new Date().toLocaleTimeString();
       await frameActions.sendNotification({
-        title: `🚀 kiwik Update ${timestamp}`,
+        title: `🚀 Like2Win Update ${timestamp}`,
         body: `Hey ${userInfo?.displayName || 'there'}! Check out what's new in your favorite projects.`,
       });
       

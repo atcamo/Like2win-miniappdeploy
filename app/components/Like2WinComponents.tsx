@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useState } from "react";
-import { HeartIcon, TrophyIcon, SparklesIcon, CoinsIcon } from "lucide-react";
+import { HeartIcon, TrophyIcon, SparklesIcon } from "lucide-react";
 
 type Like2WinButtonProps = {
   children: ReactNode;
@@ -46,9 +46,11 @@ export function Like2WinButton({
 
   return (
     <button
+      type="button"
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       onClick={onClick}
       disabled={disabled || loading}
+      aria-label={typeof children === 'string' ? children : 'Like2Win button'}
     >
       {loading ? (
         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
@@ -118,9 +120,11 @@ export function Like2WinLogo({
 
   return (
     <div className={`relative ${sizeClasses[size]} ${className}`}>
-      <div className={`flex items-center justify-center ${sizeClasses[size]} ${animated ? 'animate-pulse' : ''}`}>
-        <CoinsIcon className="text-amber-500 w-full h-full" />
-      </div>
+      <img 
+        src="/logo.png" 
+        alt="Like2Win Logo" 
+        className={`${sizeClasses[size]} object-contain ${animated ? 'animate-pulse' : ''}`}
+      />
       {animated && (
         <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full opacity-20 animate-ping"></div>
       )}

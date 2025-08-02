@@ -51,7 +51,7 @@ export function FrameActions({
     setIsSendingNotification(true);
     try {
       await sendNotification({
-        title: '🎉 kiwik Notification',
+        title: '🎉 Like2Win Notification',
         body: 'Your project is gaining momentum! Check out the latest updates.',
       });
       setNotificationSent(true);
@@ -130,7 +130,7 @@ export function FrameActions({
                 Save Frame
               </h3>
               <p className="text-xs text-[var(--app-foreground-muted)]">
-                Add kiwik to your mini apps for quick access
+                Add Like2Win to your mini apps for quick access
               </p>
             </div>
             <Button

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Vercel Environment Variables Setup Script
-# Run this script to set up all required environment variables for kiwik deployment
+# Run this script to set up all required environment variables for Like2Win deployment
 
-echo "🚀 Setting up Vercel environment variables for kiwik..."
+echo "🚀 Setting up Vercel environment variables for Like2Win..."
 echo "⚠️  You'll need to provide the actual values when prompted"
 echo ""
 

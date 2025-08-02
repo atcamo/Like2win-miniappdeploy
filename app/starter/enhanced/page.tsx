@@ -31,7 +31,7 @@ export default function EnhancedStarterApp() {
         {/* Enhanced Header with Frame Status */}
         <header className="flex justify-between items-center mb-3 h-16 px-4 bg-[var(--app-card-bg)] border-b border-[var(--app-card-border)]">
           <div className="flex items-center space-x-3">
-            <div className="text-lg font-bold text-[var(--app-accent)]">kiwik</div>
+            <div className="text-lg font-bold text-[var(--app-accent)]">Like2Win</div>
             <FrameStatusIndicator size="sm" />
           </div>
           

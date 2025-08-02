@@ -34,7 +34,7 @@ vercel env add NEXT_PUBLIC_PROOF_OF_VERANO_ADDRESS production preview developmen
 #### 📱 App Branding Variables
 ```bash
 vercel env add NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME production preview development
-# Enter: kiwik
+# Enter: Like2Win
 
 vercel env add NEXT_PUBLIC_APP_SUBTITLE production preview development
 # Enter: "Cultivando ideas y generando impacto"

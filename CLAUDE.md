@@ -9,12 +9,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Current Development Status
 
 **Current Branch**: main (production-ready)
-- **Last Update**: Complete migration from kiwik to Like2Win identity
+- **Last Update**: Complete Like2Win identity implementation
 - **Recent Changes**: 
   - Replaced main landing page with Like2Win social gamification focus
   - Updated FrameAwareLanding to showcase Like2Win features only
   - Applied amber/gold theme consistently across all components  
-  - Removed all kiwik and Proof of Verano references
+  - Removed all legacy references and implemented Like2Win branding
   - Maintained Like2Win MiniApp at `/miniapp` route
 
 **Migration Status**: COMPLETED - Full Like2Win brand identity implementation

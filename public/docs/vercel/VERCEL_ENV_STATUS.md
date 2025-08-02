@@ -6,7 +6,7 @@ All environment variables from your `.env` file have been automatically configur
 
 ### Core Application
 - ✅ `NEXT_PUBLIC_ONCHAINKIT_API_KEY` - Coinbase API key  
-- ✅ `NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME` - "kiwik"
+- ✅ `NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME` - "Like2Win"
 - ✅ `NEXT_PUBLIC_PROOF_OF_VERANO_ADDRESS` - Smart contract address
 
 ### Database & Backend
@@ -22,7 +22,7 @@ All environment variables from your `.env` file have been automatically configur
 
 ### UI/Branding  
 - ✅ `NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR` - "#000000"
-- ✅ `NEXT_PUBLIC_APP_OG_TITLE` - "kiwik"
+- ✅ `NEXT_PUBLIC_APP_OG_TITLE` - "Like2Win"
 
 ## ⚠️ Still Need Configuration (Empty in .env)
 

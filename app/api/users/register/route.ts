@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
         farcasterId: user.farcasterId,
         farcasterUsername: user.farcasterUsername,
         avatarUrl: user.avatarUrl,
-        bootcampCompleted: user.bootcampCompleted,
         nftTokenId: user.nftTokenId,
         powerBadge: user.powerBadge,
         followerCount: user.followerCount,

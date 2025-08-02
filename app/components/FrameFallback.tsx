@@ -41,7 +41,7 @@ export function FrameFallback({
               <LandingIcon name="sparkles" className="text-[var(--app-accent)]" size="xl" />
             </div>
             <h2 className="text-2xl font-bold text-[var(--app-foreground)] mb-2">
-              kiwik Mini App
+              Like2Win Mini App
             </h2>
             <p className="text-[var(--app-foreground-muted)] leading-relaxed">
               This is a Farcaster Mini App designed to run within the Farcaster ecosystem. 
@@ -53,11 +53,11 @@ export function FrameFallback({
             <div className="space-y-4">
               <div className="bg-[var(--app-accent-light)] rounded-lg p-4 border border-[var(--app-accent)]">
                 <h3 className="font-semibold text-[var(--app-accent)] mb-2">
-                  How to access kiwik:
+                  How to access Like2Win:
                 </h3>
                 <ol className="text-sm text-[var(--app-accent)] text-left space-y-1">
                   <li>1. Open the Farcaster app</li>
-                  <li>2. Search for &quot;kiwik&quot; or find our frame</li>
+                  <li>2. Search for &quot;Like2Win&quot; or find our frame</li>
                   <li>3. Tap to launch the mini app</li>
                   <li>4. Enjoy the full experience!</li>
                 </ol>

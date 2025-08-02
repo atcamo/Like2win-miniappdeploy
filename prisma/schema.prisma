@@ -34,9 +34,8 @@ model User {
   powerBadge         Boolean        @default(false)
   verifiedAddresses  Json?
   
-  // NFT Integration Fields
+  // Legacy NFT Fields (for migration purposes)
   nftTokenId         String?
-  bootcampCompleted  Boolean        @default(false)
   completionDate     DateTime?
   commitmentScore    Int?
   

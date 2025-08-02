@@ -26,7 +26,11 @@ export function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-[var(--app-accent)]">🎫</span>
+            <img 
+              src="/logo.png" 
+              alt="Like2Win Logo" 
+              className="w-8 h-8 object-contain"
+            />
             <span className="text-xl font-semibold text-[var(--app-foreground)]">Like2Win</span>
           </Link>
 
@@ -57,6 +61,10 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
+            id="mobile-menu-button"
+            name="mobile-menu-toggle"
+            aria-label="Toggle mobile menu"
+            type="button"
             className="md:hidden p-2 rounded-md text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] hover:bg-[var(--app-card-bg)]"
             onClick={() => {
               // Toggle mobile menu

@@ -43,7 +43,6 @@ export const userService = {
     powerBadge?: boolean
     verifiedAddresses?: Prisma.InputJsonValue
     nftTokenId?: string
-    bootcampCompleted?: boolean
     completionDate?: Date
     commitmentScore?: number
   }) {
@@ -71,7 +70,6 @@ export const userService = {
     powerBadge: boolean
     verifiedAddresses: Prisma.InputJsonValue
     nftTokenId: string
-    bootcampCompleted: boolean
     completionDate: Date
     commitmentScore: number
   }>) {
@@ -103,9 +101,8 @@ export const userService = {
     })
   },
 
-  async getUsersByBootcampStatus(completed: boolean) {
+  async getUsersByRaffleParticipation() {
     return prisma.user.findMany({
-      where: { bootcampCompleted: completed },
       orderBy: { createdAt: 'desc' },
     })
   },

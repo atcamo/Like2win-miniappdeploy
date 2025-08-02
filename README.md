@@ -1,15 +1,16 @@
-# kiwik - mvp
+# Like2Win - Social Gamification Platform
 
-## overview
+## Overview
 
-kiwik is a community-driven hub where you can:
+Like2Win is a Farcaster MiniKit app that gamifies social engagement through bi-weekly $DEGEN raffles. Users simply follow @Like2Win and like official posts to earn raffle tickets - zero friction, maximum fun!
 
-- Turn ideas into products and solutions
-- Collaborate with builders and founders
-- Access microfunding to scale your impact
+**Key Features:**
+- Follow @Like2Win to become eligible for raffles
+- Earn tickets by liking official posts
+- Bi-weekly $DEGEN prize pools
+- Zero wallet connection required for participation
 
-This mvp showcases the platform's features and provides an entry point for users to join the regenerative community.
-This is a [Next.js](https://nextjs.org) project for the kiwik landing page, bootstrapped with [`create-onchain --mini`](https://docs.base.org/base-app/build-with-minikit/overview), configured with:
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-onchain --mini`](https://docs.base.org/base-app/build-with-minikit/overview), configured with:
 
 ## how it's built
 
@@ -33,7 +34,7 @@ This is a [Next.js](https://nextjs.org) project for the kiwik landing page, boot
 
 ```bash
 git clone <repository-url>
-cd kiwik
+cd like2win-app
 bun install
 ```
 
@@ -50,7 +51,7 @@ Configure the following environment variables:
 ```bash
 # OnchainKit configuration
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_coinbase_api_key
-NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=kiwik
+NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=Like2Win
 
 # App metadata
 NEXT_PUBLIC_URL=https://your-domain.com
@@ -63,7 +64,7 @@ NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=#10B981
 NEXT_PUBLIC_APP_PRIMARY_CATEGORY=social
 NEXT_PUBLIC_APP_HERO_IMAGE=https://your-domain.com/hero.png
 NEXT_PUBLIC_APP_TAGLINE="descubre el jardín infinito de la regeneración"
-NEXT_PUBLIC_APP_OG_TITLE="kiwik | jardín infinito de regeneración"
+NEXT_PUBLIC_APP_OG_TITLE="Like2Win - Social Gamification Platform"
 NEXT_PUBLIC_APP_OG_DESCRIPTION="talento colectivo que cultiva ideas y genera impacto"
 NEXT_PUBLIC_APP_OG_IMAGE=https://your-domain.com/og-image.png
 
@@ -90,10 +91,10 @@ Open [http://localhost:3000](http://localhost:3000) to view the landing page.
 ### Landing Page Sections
 
 - **Hero Section**: Main value proposition with call-to-action
-- **What is kiwik?**: Feature overview with responsive accordion on mobile
+- **What is Like2Win?**: Feature overview with responsive accordion on mobile
 - **Features**: Grid showcasing core platform capabilities
 - **How It Works**: Step-by-step process timeline
-- **Who is kiwik for?**: Target audience personas
+- **Who is Like2Win for?**: Target audience personas
 - **Testimonials**: Community feedback carousel
 - **Call to Action**: Final conversion section
 - **Footer**: Navigation and social links
