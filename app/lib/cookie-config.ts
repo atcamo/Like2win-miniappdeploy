@@ -10,6 +10,7 @@ export const COOKIE_CONFIG = {
     secure: true,
     httpOnly: false, // Allow client-side access for frame communication
     partitioned: true, // Chrome's new partitioned cookies
+    maxAge: undefined as number | undefined, // Allow maxAge to be set
   },
 
   // Cookie names used by the app
