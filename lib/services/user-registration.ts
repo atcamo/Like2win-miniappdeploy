@@ -26,9 +26,14 @@ interface NFTAwardContext {
 interface UserRegistrationData {
   appWallet: string;
   nftTokenId: string;
-  bootcampCompleted: boolean;
   completionDate: Date;
   commitmentScore?: number;
+  
+  // Like2Win specific fields
+  fid?: number;
+  pfpUrl?: string;
+  tipAllowanceEnabled?: boolean;
+  isFollowingLike2Win?: boolean;
   
   // Farcaster data
   farcasterId?: string;
@@ -146,7 +151,6 @@ export class UserRegistrationService {
       // Core NFT data
       appWallet: walletAddress.toLowerCase(),
       nftTokenId: tokenId,
-      bootcampCompleted: true,
       completionDate: new Date(),
       commitmentScore,
       
@@ -226,7 +230,6 @@ export class UserRegistrationService {
     const fallbackData = {
       appWallet: walletAddress.toLowerCase(),
       nftTokenId: tokenId,
-      bootcampCompleted: true,
       completionDate: new Date(),
       commitmentScore,
       username: `user_${walletAddress.slice(-8).toLowerCase()}`, // Generate basic username
@@ -272,7 +275,6 @@ export class UserRegistrationService {
     const userData: UserRegistrationData = {
       appWallet: data.walletAddress?.toLowerCase() || '',
       nftTokenId: data.tokenId || '',
-      bootcampCompleted: !!data.tokenId,
       completionDate: data.tokenId ? new Date() : new Date(),
       
       // Use provided data or enriched data

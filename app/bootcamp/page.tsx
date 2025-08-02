@@ -12,7 +12,9 @@ interface RegisteredStudent {
   farcasterUsername?: string;
   avatarUrl?: string;
   appWallet?: string;
-  bootcampCompleted: boolean;
+  // Legacy - replaced with Like2Win system
+  isFollowingLike2Win?: boolean;
+  totalLifetimeTickets?: number;
   completionDate?: string;
   commitmentScore?: number;
   nftTokenId?: string;
@@ -69,15 +71,15 @@ export default function BootcampDashboard() {
   const filteredStudents = students.filter(student => {
     switch (filter) {
       case 'completed':
-        return student.bootcampCompleted;
+        return student.isFollowingLike2Win;
       case 'registered':
-        return !student.bootcampCompleted;
+        return !student.isFollowingLike2Win;
       default:
         return true;
     }
   });
 
-  const completedCount = students.filter(s => s.bootcampCompleted).length;
+  const completedCount = students.filter(s => s.isFollowingLike2Win).length;
   const registeredCount = students.length - completedCount;
 
   if (loading) {
@@ -492,11 +494,11 @@ export default function BootcampDashboard() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-[var(--app-foreground-muted)]">Estado:</span>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      student.bootcampCompleted
+                      student.isFollowingLike2Win
                         ? 'bg-green-100 text-green-800'
                         : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {student.bootcampCompleted ? '✅ Completado' : '🔄 En Progreso'}
+                      {student.isFollowingLike2Win ? '✅ Following Like2Win' : '🔄 Not Following'}
                     </span>
                   </div>
 

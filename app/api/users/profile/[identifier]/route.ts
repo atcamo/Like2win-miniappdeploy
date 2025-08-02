@@ -59,8 +59,15 @@ export async function GET(
       followingCount: user.followingCount,
       powerBadge: user.powerBadge,
       
-      // Bootcamp data
-      bootcampCompleted: user.bootcampCompleted,
+      // Like2Win specific data
+      fid: user.fid?.toString(),
+      pfpUrl: user.pfpUrl,
+      tipAllowanceEnabled: user.tipAllowanceEnabled,
+      isFollowingLike2Win: user.isFollowingLike2Win,
+      totalLifetimeTickets: user.totalLifetimeTickets,
+      totalWinnings: user.totalWinnings?.toString(),
+      
+      // Legacy data (kept for migration purposes)
       completionDate: user.completionDate,
       commitmentScore: user.commitmentScore,
       nftTokenId: user.nftTokenId,

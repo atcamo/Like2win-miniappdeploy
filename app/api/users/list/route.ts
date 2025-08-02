@@ -8,7 +8,7 @@ export async function GET() {
     // Get all users from database
     const users = await userService.getAllUsers();
 
-    // Transform data for the dashboard
+    // Transform data for the dashboard - Like2Win focused
     const transformedUsers = users.map(user => ({
       id: user.id,
       username: user.username,
@@ -17,7 +17,14 @@ export async function GET() {
       farcasterUsername: user.farcasterUsername,
       avatarUrl: user.avatarUrl,
       appWallet: user.appWallet,
-      bootcampCompleted: user.bootcampCompleted,
+      // Like2Win specific fields
+      fid: user.fid?.toString(),
+      pfpUrl: user.pfpUrl,
+      tipAllowanceEnabled: user.tipAllowanceEnabled,
+      isFollowingLike2Win: user.isFollowingLike2Win,
+      totalLifetimeTickets: user.totalLifetimeTickets,
+      totalWinnings: user.totalWinnings?.toString(),
+      // Legacy fields (kept for migration purposes)
       completionDate: user.completionDate?.toISOString(),
       commitmentScore: user.commitmentScore,
       nftTokenId: user.nftTokenId,
@@ -34,8 +41,10 @@ export async function GET() {
       success: true,
       users: transformedUsers,
       total: users.length,
-      completed: users.filter(u => u.bootcampCompleted).length,
-      inProgress: users.filter(u => !u.bootcampCompleted).length
+      // Like2Win specific metrics
+      activeParticipants: users.filter(u => u.isFollowingLike2Win).length,
+      withTipAllowance: users.filter(u => u.tipAllowanceEnabled).length,
+      totalTicketsAwarded: users.reduce((sum, u) => sum + (u.totalLifetimeTickets || 0), 0)
     });
 
   } catch (error) {
@@ -63,11 +72,15 @@ export async function POST(req: NextRequest) {
     let users;
     
     switch (filter) {
-      case 'completed':
-        users = await userService.getUsersByBootcampStatus(true);
+      case 'active':
+        // Users following Like2Win
+        users = await userService.getAllUsers();
+        users = users.filter(u => u.isFollowingLike2Win);
         break;
-      case 'registered':
-        users = await userService.getUsersByBootcampStatus(false);
+      case 'tip-enabled':
+        // Users with tip allowance
+        users = await userService.getAllUsers();
+        users = users.filter(u => u.tipAllowanceEnabled);
         break;
       case 'farcaster':
         users = await userService.getUsersWithFarcaster();
@@ -92,7 +105,14 @@ export async function POST(req: NextRequest) {
       farcasterUsername: user.farcasterUsername,
       avatarUrl: user.avatarUrl,
       appWallet: user.appWallet,
-      bootcampCompleted: user.bootcampCompleted,
+      // Like2Win specific fields
+      fid: user.fid?.toString(),
+      pfpUrl: user.pfpUrl,
+      tipAllowanceEnabled: user.tipAllowanceEnabled,
+      isFollowingLike2Win: user.isFollowingLike2Win,
+      totalLifetimeTickets: user.totalLifetimeTickets,
+      totalWinnings: user.totalWinnings?.toString(),
+      // Legacy fields (kept for migration purposes)
       completionDate: user.completionDate?.toISOString(),
       commitmentScore: user.commitmentScore,
       nftTokenId: user.nftTokenId,
