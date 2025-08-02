@@ -8,10 +8,29 @@ import {
   Like2WinLogo
 } from '@/app/components/Like2WinComponents';
 
+// Types for Farcaster context
+interface FarcasterUser {
+  fid?: number;
+  username?: string;
+  displayName?: string;
+}
+
+interface FarcasterContext {
+  user?: FarcasterUser;
+}
+
+interface FarcasterSDKWindow extends Window {
+  sdk?: {
+    actions?: {
+      ready?: () => void;
+    };
+  };
+}
+
 export default function SimpleLike2WinApp() {
   const [mounted, setMounted] = useState(false);
   const [sdkReady, setSdkReady] = useState(false);
-  const [userContext, setUserContext] = useState<any>(null);
+  const [userContext, setUserContext] = useState<FarcasterContext | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -30,13 +49,14 @@ export default function SimpleLike2WinApp() {
             if (window.parent && window.parent !== window) {
               window.parent.postMessage({ type: 'FRAME_READY' }, '*');
             }
-          } catch (e) {
-            console.log('No parent frame access');
+          } catch (error) {
+            console.log('No parent frame access:', error);
           }
 
           // Check for MiniKit SDK
-          if ((window as any).sdk?.actions?.ready) {
-            (window as any).sdk.actions.ready();
+          const sdkWindow = window as FarcasterSDKWindow;
+          if (sdkWindow.sdk?.actions?.ready) {
+            sdkWindow.sdk.actions.ready();
             setSdkReady(true);
             console.log('Farcaster SDK ready called');
           } else {
@@ -146,7 +166,7 @@ export default function SimpleLike2WinApp() {
                 <li>• SDK Ready: {sdkReady ? 'Yes' : 'No'}</li>
                 <li>• User Context: {userContext ? 'Available' : 'None'}</li>
                 <li>• Environment: {process.env.NODE_ENV}</li>
-                <li>• Window SDK: {typeof window !== 'undefined' && (window as any).sdk ? 'Present' : 'Missing'}</li>
+                <li>• Window SDK: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk ? 'Present' : 'Missing'}</li>
               </ul>
             </div>
           </div>
