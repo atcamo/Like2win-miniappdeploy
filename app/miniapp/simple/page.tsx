@@ -147,6 +147,8 @@ export default function SimpleLike2WinApp() {
               <Like2WinButton 
                 variant="gradient" 
                 size="lg"
+                id="follow-like2win-button"
+                name="followLike2Win"
                 onClick={() => {
                   window.open('https://warpcast.com/like2win', '_blank');
                 }}

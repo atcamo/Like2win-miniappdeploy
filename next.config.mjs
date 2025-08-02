@@ -13,8 +13,8 @@ const nextConfig = {
     
     const cspDirectives = [
       "default-src 'self'",
-      // Note: 'unsafe-eval' needed for OnchainKit and Wagmi libraries
-      `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : "'unsafe-eval'"} https://*.coinbase.com https://*.vercel.app https://*.vercel.com https://challenges.cloudflare.com https://minikit.farcaster.com https://*.farcaster.xyz`,
+      // Note: 'unsafe-eval' needed for OnchainKit and Wagmi libraries in development
+      `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://*.coinbase.com https://*.vercel.app https://*.vercel.com https://challenges.cloudflare.com https://minikit.farcaster.com https://*.farcaster.xyz`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https: http:",

@@ -12,6 +12,8 @@ type Like2WinButtonProps = {
   disabled?: boolean;
   loading?: boolean;
   icon?: ReactNode;
+  id?: string;
+  name?: string;
 }
 
 export function Like2WinButton({
@@ -23,6 +25,8 @@ export function Like2WinButton({
   disabled = false,
   loading = false,
   icon,
+  id,
+  name,
 }: Like2WinButtonProps) {
   const baseClasses =
     "inline-flex items-center justify-center font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:pointer-events-none transform hover:scale-105";
@@ -47,6 +51,8 @@ export function Like2WinButton({
   return (
     <button
       type="button"
+      id={id}
+      name={name || id}
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       onClick={onClick}
       disabled={disabled || loading}
