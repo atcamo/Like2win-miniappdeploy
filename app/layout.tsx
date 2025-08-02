@@ -91,6 +91,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script 
+          src="https://minikit.farcaster.com/minikit.js" 
+          async
+          defer
+        />
+      </head>
       <body 
         className={`bg-background ${fonts.funnelDisplay.variable} ${fonts.ledger.variable} ${fonts.raleway.variable} ${fonts.spaceGrotesk.variable}`}
       >

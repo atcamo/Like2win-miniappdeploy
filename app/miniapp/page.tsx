@@ -36,7 +36,26 @@ export default function Like2WinMiniApp() {
   useEffect(() => {
     if (mounted) {
       try {
-        // MiniKit is now available
+        // Wait for MiniKit SDK to be available
+        const initMiniKit = () => {
+          if (typeof window !== 'undefined') {
+            // Check if Farcaster SDK is available
+            if ((window as any).sdk) {
+              console.log('Farcaster SDK detected:', (window as any).sdk);
+              
+              // Call ready function if available
+              if ((window as any).sdk.actions?.ready) {
+                (window as any).sdk.actions.ready();
+                console.log('Called sdk.actions.ready()');
+              }
+            } else {
+              // Retry after a short delay
+              setTimeout(initMiniKit, 100);
+            }
+          }
+        };
+        
+        initMiniKit();
       } catch (err) {
         console.error('MiniKit initialization error:', err);
         setError(err instanceof Error ? err.message : 'MiniKit initialization failed');
@@ -49,10 +68,11 @@ export default function Like2WinMiniApp() {
   // Get user FID from MiniKit context or default to null
   const userFid = context?.user?.fid || null;
 
-  // Initialize Frame
+  // Initialize OnchainKit Frame
   useEffect(() => {
-    if (!isFrameReady && setFrameReady && mounted) {
+    if (mounted && setFrameReady && !isFrameReady) {
       try {
+        console.log('Calling OnchainKit setFrameReady()');
         setFrameReady();
       } catch (err) {
         console.error('setFrameReady error:', err);
