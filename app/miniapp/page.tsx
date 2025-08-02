@@ -9,25 +9,40 @@ import {
   Like2WinLogo
 } from '@/app/components/Like2WinComponents';
 
+// Type for MiniKit hook return value
+interface MiniKitHookResult {
+  setFrameReady: () => void;
+  isFrameReady: boolean;
+  context: {
+    user?: {
+      fid?: number;
+      username?: string;
+      displayName?: string;
+    };
+  } | null;
+}
+
 export default function Like2WinMiniApp() {
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Always call useMiniKit at the top level
+  const miniKitData = useMiniKit() as MiniKitHookResult;
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  let miniKitData: any = null;
-  try {
+  useEffect(() => {
     if (mounted) {
-      miniKitData = useMiniKit();
+      try {
+        // MiniKit is now available
+      } catch (err) {
+        console.error('MiniKit initialization error:', err);
+        setError(err instanceof Error ? err.message : 'MiniKit initialization failed');
+      }
     }
-  } catch (err) {
-    console.error('MiniKit initialization error:', err);
-    if (!error) {
-      setError(err instanceof Error ? err.message : 'MiniKit initialization failed');
-    }
-  }
+  }, [mounted]);
 
   const { setFrameReady, isFrameReady, context } = miniKitData || {};
 

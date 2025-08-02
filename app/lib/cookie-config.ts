@@ -39,7 +39,7 @@ export function setSecureCookie(
   };
 
   const optionsString = Object.entries(cookieOptions)
-    .filter(([_, value]) => value !== undefined)
+    .filter(([, value]) => value !== undefined)
     .map(([key, value]) => {
       if (typeof value === 'boolean') {
         return value ? key : '';

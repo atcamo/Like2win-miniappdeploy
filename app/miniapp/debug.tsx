@@ -3,31 +3,46 @@
 import { useState, useEffect } from 'react';
 import { useMiniKit } from '@coinbase/onchainkit/minikit';
 
+// Type for MiniKit hook return value
+interface MiniKitHookResult {
+  setFrameReady: () => void;
+  isFrameReady: boolean;
+  context: {
+    user?: {
+      fid?: number;
+      username?: string;
+      displayName?: string;
+    };
+  } | null;
+}
+
 // Componente simple de debug para la miniapp
 export default function MiniAppDebug() {
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [initStep, setInitStep] = useState('mounting');
 
+  // Always call useMiniKit at the top level
+  const miniKitHook = useMiniKit() as MiniKitHookResult;
+
   useEffect(() => {
     setMounted(true);
     setInitStep('mounted');
   }, []);
 
-  // Solo usar useMiniKit después de que el componente esté montado
-  let miniKitHook: any = null;
-  try {
+  useEffect(() => {
     if (mounted) {
-      miniKitHook = useMiniKit();
-      setInitStep('minikit-initialized');
+      try {
+        setInitStep('minikit-initialized');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to initialize MiniKit');
+        setInitStep('minikit-error');
+      }
     }
-  } catch (err) {
-    setError(err instanceof Error ? err.message : 'Failed to initialize MiniKit');
-    setInitStep('minikit-error');
-  }
+  }, [mounted]);
 
   useEffect(() => {
-    if (miniKitHook && !miniKitHook.isFrameReady) {
+    if (mounted && miniKitHook && !miniKitHook.isFrameReady) {
       try {
         setInitStep('setting-frame-ready');
         miniKitHook.setFrameReady();
@@ -37,7 +52,7 @@ export default function MiniAppDebug() {
         setInitStep('frame-ready-error');
       }
     }
-  }, [miniKitHook]);
+  }, [mounted, miniKitHook]);
 
   if (!mounted) {
     return (
@@ -72,7 +87,7 @@ export default function MiniAppDebug() {
     );
   }
 
-  const { setFrameReady, isFrameReady, context } = miniKitHook || {};
+  const { isFrameReady, context } = miniKitHook || {};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 p-4">
