@@ -27,6 +27,14 @@ interface FarcasterSDKWindow extends Window {
   };
 }
 
+interface WindowWithGlobalSDK extends Window {
+  sdk?: {
+    actions?: {
+      ready?: () => void;
+    };
+  };
+}
+
 export default function SimpleLike2WinApp() {
   const [mounted, setMounted] = useState(false);
   const [sdkReady, setSdkReady] = useState(false);
@@ -61,9 +69,10 @@ export default function SimpleLike2WinApp() {
         }
 
         // Method 2: Check for global sdk
-        if ((window as any).sdk?.actions?.ready) {
+        const globalWindow = window as WindowWithGlobalSDK;
+        if (globalWindow.sdk?.actions?.ready) {
           console.log('✅ SDK found via global sdk');
-          (window as any).sdk.actions.ready();
+          globalWindow.sdk.actions.ready();
           setSdkReady(true);
           if (intervalId) clearInterval(intervalId);
           return true;
@@ -81,12 +90,15 @@ export default function SimpleLike2WinApp() {
 
         // Method 4: Direct call to parent's SDK
         try {
-          if (window.parent && (window.parent as any).sdk?.actions?.ready) {
-            console.log('✅ SDK found in parent frame');
-            (window.parent as any).sdk.actions.ready();
-            setSdkReady(true);
-            if (intervalId) clearInterval(intervalId);
-            return true;
+          if (window.parent && window.parent !== window) {
+            const parentWindow = window.parent as WindowWithGlobalSDK;
+            if (parentWindow.sdk?.actions?.ready) {
+              console.log('✅ SDK found in parent frame');
+              parentWindow.sdk.actions.ready();
+              setSdkReady(true);
+              if (intervalId) clearInterval(intervalId);
+              return true;
+            }
           }
         } catch (error) {
           console.log('Cannot access parent SDK:', error);
