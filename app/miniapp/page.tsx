@@ -22,6 +22,20 @@ interface MiniKitHookResult {
   } | null;
 }
 
+// Type for Farcaster SDK
+interface FarcasterSDK {
+  actions?: {
+    ready?: () => void;
+  };
+}
+
+// Extend Window interface for Farcaster SDK
+declare global {
+  interface Window {
+    sdk?: FarcasterSDK;
+  }
+}
+
 export default function Like2WinMiniApp() {
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,12 +54,12 @@ export default function Like2WinMiniApp() {
         const initMiniKit = () => {
           if (typeof window !== 'undefined') {
             // Check if Farcaster SDK is available
-            if ((window as any).sdk) {
-              console.log('Farcaster SDK detected:', (window as any).sdk);
+            if (window.sdk) {
+              console.log('Farcaster SDK detected:', window.sdk);
               
               // Call ready function if available
-              if ((window as any).sdk.actions?.ready) {
-                (window as any).sdk.actions.ready();
+              if (window.sdk.actions?.ready) {
+                window.sdk.actions.ready();
                 console.log('Called sdk.actions.ready()');
               }
             } else {
