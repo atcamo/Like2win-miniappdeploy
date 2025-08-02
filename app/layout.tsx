@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
       action: {
         type: "launch_frame",
         name: PROJECT_NAME,
-        url: `${URL}/miniapp`,
+        url: `${URL}/miniapp/simple`,
         splashImageUrl: `${URL}/splash.png`,
         splashBackgroundColor: "#F59E0B", // Like2Win amber color
       },
@@ -74,12 +74,12 @@ export async function generateMetadata(): Promise<Metadata> {
     other: {
       // Mini App embed metadata (required for Farcaster)
       "fc:miniapp": JSON.stringify(miniAppEmbed),
-      // Frame metadata for backward compatibility
-      "fc:frame": JSON.stringify({
-        version: "next",
-        imageUrl: miniAppEmbed.imageUrl,
-        button: miniAppEmbed.button,
-      }),
+      // Frame metadata for backward compatibility  
+      "fc:frame": "vNext",
+      "fc:frame:image": miniAppEmbed.imageUrl,
+      "fc:frame:button:1": "Launch Like2Win",
+      "fc:frame:button:1:action": "launch_frame",
+      "fc:frame:button:1:target": `${URL}/miniapp/simple`,
     },
   };
 }
@@ -96,6 +96,17 @@ export default function RootLayout({
           src="https://minikit.farcaster.com/minikit.js" 
           async
           defer
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('message', function(event) {
+                if (event.data?.type === 'FARCASTER_FRAME_READY') {
+                  console.log('Farcaster frame ready message received');
+                }
+              });
+            `
+          }}
         />
       </head>
       <body 
