@@ -39,49 +39,106 @@ export default function SimpleLike2WinApp() {
   useEffect(() => {
     if (!mounted) return;
 
-    // Simple SDK initialization without OnchainKit dependencies
+    let retryCount = 0;
+    const maxRetries = 50; // 10 seconds max
+    let intervalId: NodeJS.Timeout;
+
+    // More aggressive SDK initialization
     const initFarcasterSDK = () => {
+      console.log('Initializing Farcaster SDK, attempt:', retryCount + 1);
+      
       if (typeof window !== 'undefined') {
-        // Check for Farcaster context first
-        const checkFarcasterContext = () => {
-          // Try to get context from parent frame
-          try {
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage({ type: 'FRAME_READY' }, '*');
-            }
-          } catch (error) {
-            console.log('No parent frame access:', error);
-          }
+        // Try multiple approaches to call ready()
+        const sdkWindow = window as FarcasterSDKWindow;
+        
+        // Method 1: Direct SDK call
+        if (sdkWindow.sdk?.actions?.ready) {
+          console.log('✅ SDK found via window.sdk');
+          sdkWindow.sdk.actions.ready();
+          setSdkReady(true);
+          if (intervalId) clearInterval(intervalId);
+          return true;
+        }
 
-          // Check for MiniKit SDK
-          const sdkWindow = window as FarcasterSDKWindow;
-          if (sdkWindow.sdk?.actions?.ready) {
-            sdkWindow.sdk.actions.ready();
+        // Method 2: Check for global sdk
+        if ((window as any).sdk?.actions?.ready) {
+          console.log('✅ SDK found via global sdk');
+          (window as any).sdk.actions.ready();
+          setSdkReady(true);
+          if (intervalId) clearInterval(intervalId);
+          return true;
+        }
+
+        // Method 3: Try parent frame communication
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'FRAME_READY' }, '*');
+            console.log('📤 Sent FRAME_READY to parent');
+          }
+        } catch (error) {
+          console.log('No parent frame access:', error);
+        }
+
+        // Method 4: Direct call to parent's SDK
+        try {
+          if (window.parent && (window.parent as any).sdk?.actions?.ready) {
+            console.log('✅ SDK found in parent frame');
+            (window.parent as any).sdk.actions.ready();
             setSdkReady(true);
-            console.log('Farcaster SDK ready called');
-          } else {
-            // Retry in 200ms
-            setTimeout(checkFarcasterContext, 200);
+            if (intervalId) clearInterval(intervalId);
+            return true;
           }
-        };
+        } catch (error) {
+          console.log('Cannot access parent SDK:', error);
+        }
 
-        checkFarcasterContext();
+        return false;
+      }
+      return false;
+    };
 
-        // Listen for messages from parent frame
-        const handleMessage = (event: MessageEvent) => {
-          if (event.data?.type === 'FARCASTER_USER_CONTEXT') {
-            setUserContext(event.data.context);
-            console.log('Received user context:', event.data.context);
+    // Try immediately
+    if (!initFarcasterSDK()) {
+      // Setup retry interval
+      intervalId = setInterval(() => {
+        retryCount++;
+        console.log(`🔄 Retry ${retryCount}/${maxRetries} - Looking for Farcaster SDK...`);
+        
+        if (initFarcasterSDK() || retryCount >= maxRetries) {
+          clearInterval(intervalId);
+          if (retryCount >= maxRetries) {
+            console.warn('⚠️ Max retries reached, SDK may not be available');
+            // Force ready state to avoid infinite splash
+            setSdkReady(true);
           }
-        };
+        }
+      }, 200);
+    }
 
-        window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
+    // Listen for messages from parent frame
+    const handleMessage = (event: MessageEvent) => {
+      console.log('📨 Received message:', event.data);
+      
+      if (event.data?.type === 'FARCASTER_USER_CONTEXT') {
+        setUserContext(event.data.context);
+        console.log('👤 Received user context:', event.data.context);
+      }
+      
+      // Handle SDK ready confirmation
+      if (event.data?.type === 'SDK_READY' || event.data?.type === 'FRAME_READY_ACK') {
+        console.log('✅ SDK ready confirmed by parent');
+        setSdkReady(true);
+        if (intervalId) clearInterval(intervalId);
       }
     };
 
-    const cleanup = initFarcasterSDK();
-    return cleanup;
+    window.addEventListener('message', handleMessage);
+
+    // Cleanup
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      window.removeEventListener('message', handleMessage);
+    };
   }, [mounted]);
 
   if (!mounted) {
@@ -169,6 +226,10 @@ export default function SimpleLike2WinApp() {
                 <li>• User Context: {userContext ? 'Available' : 'None'}</li>
                 <li>• Environment: {process.env.NODE_ENV}</li>
                 <li>• Window SDK: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk ? 'Present' : 'Missing'}</li>
+                <li>• Window SDK Actions: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk?.actions ? 'Present' : 'Missing'}</li>
+                <li>• Window SDK Ready Fn: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk?.actions?.ready ? 'Present' : 'Missing'}</li>
+                <li>• Is in Frame: {typeof window !== 'undefined' && window.parent !== window ? 'Yes' : 'No'}</li>
+                <li>• Parent SDK: {typeof window !== 'undefined' && window.parent !== window ? 'Checking...' : 'N/A'}</li>
               </ul>
             </div>
           </div>
