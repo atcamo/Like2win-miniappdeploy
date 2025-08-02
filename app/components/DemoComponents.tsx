@@ -325,6 +325,8 @@ function TodoList() {
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
           <input
+            id="new-todo-input"
+            name="newTodo"
             type="text"
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}

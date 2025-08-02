@@ -162,6 +162,8 @@ export function ChallengeFilters({ filters, onFiltersChange }: ChallengeFiltersP
             <div>
               <label className="text-xs text-gray-600">Min days: {localFilters.duration.min || 0}</label>
               <input
+                id="min-duration-range"
+                name="minDuration"
                 type="range"
                 min="0"
                 max="30"
@@ -173,6 +175,8 @@ export function ChallengeFilters({ filters, onFiltersChange }: ChallengeFiltersP
             <div>
               <label className="text-xs text-gray-600">Max days: {localFilters.duration.max || 30}</label>
               <input
+                id="max-duration-range"
+                name="maxDuration"
                 type="range"
                 min="0"
                 max="30"
@@ -189,6 +193,8 @@ export function ChallengeFilters({ filters, onFiltersChange }: ChallengeFiltersP
       <div className="space-y-3">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
+            id="has-spots-checkbox"
+            name="hasSpots"
             type="checkbox"
             checked={localFilters.hasSpots}
             onChange={() => toggleFilter('hasSpots')}
@@ -199,6 +205,8 @@ export function ChallengeFilters({ filters, onFiltersChange }: ChallengeFiltersP
         
         <label className="flex items-center gap-3 cursor-pointer">
           <input
+            id="starting-soon-checkbox"
+            name="startingSoon"
             type="checkbox"
             checked={localFilters.startingSoon}
             onChange={() => toggleFilter('startingSoon')}

@@ -146,6 +146,8 @@ export default function FarcasterPage() {
         <form onSubmit={handleSubmit} className="mb-8">
           <div className="flex gap-2">
             <input
+              id="username-search"
+              name="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -252,6 +254,8 @@ export default function FarcasterPage() {
               </h3>
               
               <textarea
+                id="cast-text-area"
+                name="castText"
                 value={castText}
                 onChange={(e) => setCastText(e.target.value)}
                 placeholder="¿Qué está pasando?"
