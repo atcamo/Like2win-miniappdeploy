@@ -7,7 +7,6 @@ import { FrameActions } from './FrameActions';
 import { FrameFallback, LoadingFallback, ConnectionFallback } from './FrameFallback';
 import { isFrameEnvironment } from '@/app/lib/minikit-config';
 import {
-  NavigationHeader,
   HeroSection,
   BenefitsSection,
   HowItWorksSection,
@@ -256,8 +255,6 @@ export function FrameAwareLanding() {
     // Show full landing page (default for regular website)
     return (
       <div className="min-h-screen bg-[var(--app-background)] text-[var(--app-foreground)]">
-        <NavigationHeader />
-        
         <main>
           <HeroSection />
           <BenefitsSection />
