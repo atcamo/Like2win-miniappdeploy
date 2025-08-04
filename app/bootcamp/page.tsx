@@ -209,9 +209,12 @@ export default function Like2WinDashboard() {
                 <p className="text-amber-700 mb-4">
                   Sorteo #{stats.currentRaffleId} • Bi-semanal
                 </p>
-                <Like2WinButton href="/miniapp" variant="primary">
+                <a 
+                  href="/miniapp" 
+                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-[var(--app-primary-amber)] hover:bg-[var(--app-accent-hover)] text-white rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                >
                   Participar Ahora
-                </Like2WinButton>
+                </a>
               </Like2WinCard>
 
               <Like2WinCard variant="glassmorphism" className="text-center">
@@ -340,9 +343,12 @@ export default function Like2WinDashboard() {
             <p className="text-amber-700 mb-6">
               Sigue @Like2Win y dale like a posts oficiales para ganar tickets
             </p>
-            <Like2WinButton href="/miniapp" variant="primary" size="lg">
+            <a 
+              href="/miniapp" 
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 hover:from-amber-600 hover:via-yellow-600 hover:to-orange-600 text-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            >
               🎲 Participar en Like2Win
-            </Like2WinButton>
+            </a>
           </Like2WinCard>
         </div>
 
