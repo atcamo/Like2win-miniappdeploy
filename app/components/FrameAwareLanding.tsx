@@ -66,7 +66,7 @@ export function FrameAwareLanding() {
   if (showFrameContent) {
     return (
       <div className="min-h-screen bg-[var(--app-background)] text-[var(--app-foreground)]">
-        <main className="pt-16 pb-8">
+        <main className="pt-8 pb-8">
           {/* Like2Win Hero Section for Frame - Top Priority */}
           <section className="px-4 py-6 bg-gradient-to-br from-amber-50 to-yellow-50">
             <div className="max-w-2xl mx-auto text-center">
