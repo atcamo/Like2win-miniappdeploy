@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useFarcasterFrame } from '@/app/hooks/useFarcasterFrame';
-import { FrameHeader } from './FrameHeader';
 import { FrameActions } from './FrameActions';
 import { FrameFallback, LoadingFallback, ConnectionFallback } from './FrameFallback';
 import { isFrameEnvironment } from '@/app/lib/minikit-config';
@@ -67,8 +66,6 @@ export function FrameAwareLanding() {
   if (showFrameContent) {
     return (
       <div className="min-h-screen bg-[var(--app-background)] text-[var(--app-foreground)]">
-        <FrameHeader variant="minimal" />
-        
         <main className="pt-20 pb-8">
           {/* Like2Win Hero Section for Frame - Top Priority */}
           <section className="px-4 py-6 bg-gradient-to-br from-amber-50 to-yellow-50">
