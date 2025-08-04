@@ -167,35 +167,8 @@ export default function SimpleLike2WinApp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-hidden">
       
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 backdrop-blur-lg border-b border-amber-200/30">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Like2WinLogo size="md" animated={true} />
-            <div>
-              <MainTitle className="text-2xl">Like2Win</MainTitle>
-              <p className="text-sm text-amber-600">
-                Follow + Like = Win $DEGEN
-              </p>
-            </div>
-          </div>
-          
-          <div className="text-right">
-            <div className="text-xs text-amber-600">
-              {sdkReady ? "✅ SDK Ready" : "⏳ Loading..."}
-            </div>
-            {userContext?.user?.fid && (
-              <>
-                <div className="font-mono text-sm text-amber-700">{userContext.user.fid}</div>
-                <div className="text-xs text-amber-600">@{userContext.user.username || 'user'}</div>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
-
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-20">
         
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
