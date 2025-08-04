@@ -180,17 +180,17 @@ export default function Like2WinDashboard() {
               <div className="text-amber-700">Participantes Activos</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="glass" className="text-center">
+            <Like2WinCard variant="glassmorphism" className="text-center">
               <div className="text-3xl font-bold text-amber-900 mb-2">#{stats.currentRaffleId}</div>
               <div className="text-amber-700">Sorteo Actual</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="outline" className="text-center">
+            <Like2WinCard variant="default" className="text-center">
               <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalTicketsDistributed.toLocaleString()}</div>
               <div className="text-amber-700">Tickets Distribuidos</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="solid" className="text-center">
+            <Like2WinCard variant="gradient" className="text-center">
               <div className="text-3xl font-bold text-white mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
               <div className="text-amber-100">$DEGEN Otorgados</div>
             </Like2WinCard>
@@ -214,7 +214,7 @@ export default function Like2WinDashboard() {
                 </Like2WinButton>
               </Like2WinCard>
 
-              <Like2WinCard variant="glass" className="text-center">
+              <Like2WinCard variant="glassmorphism" className="text-center">
                 <h3 className="text-xl font-bold text-amber-900 mb-4">🏆 Último Ganador</h3>
                 <div className="text-lg font-semibold text-amber-800 mb-2">
                   {stats.lastWinner.username}
@@ -276,7 +276,7 @@ export default function Like2WinDashboard() {
         )}
 
         {/* Leaderboard */}
-        <Like2WinCard variant="glass" className="mb-8">
+        <Like2WinCard variant="glassmorphism" className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-amber-900">🏆 Leaderboard</h2>
             <span className="text-amber-700">
