@@ -5,7 +5,6 @@ import { useAccount } from 'wagmi';
 import { 
   MainTitle, 
   Like2WinCard, 
-  Like2WinButton, 
   Like2WinLogo 
 } from '@/app/components/Like2WinComponents';
 
