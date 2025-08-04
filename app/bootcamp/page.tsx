@@ -2,552 +2,350 @@
 
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
-// Note: This component is deprecated as Like2Win has replaced the bootcamp system
+import { 
+  MainTitle, 
+  Like2WinCard, 
+  Like2WinButton, 
+  Like2WinLogo 
+} from '@/app/components/Like2WinComponents';
 
-interface RegisteredStudent {
+interface LeaderboardEntry {
   id: string;
-  username?: string;
-  displayName?: string;
-  farcasterId?: string;
-  farcasterUsername?: string;
+  username: string;
+  displayName: string;
   avatarUrl?: string;
-  appWallet?: string;
-  // Legacy - replaced with Like2Win system
-  isFollowingLike2Win?: boolean;
-  totalLifetimeTickets?: number;
-  completionDate?: string;
-  commitmentScore?: number;
-  nftTokenId?: string;
-  powerBadge: boolean;
-  followerCount?: number;
-  followingCount?: number;
-  createdAt: string;
-  updatedAt: string;
+  tickets: number;
+  position: number;
+  isFollowing: boolean;
+  totalLikes: number;
+  joinDate: string;
 }
 
-export default function BootcampDashboard() {
-  const [students, setStudents] = useState<RegisteredStudent[]>([]);
+interface RaffleStats {
+  totalParticipants: number;
+  currentRaffleId: number;
+  nextRaffleDate: string;
+  totalTicketsDistributed: number;
+  totalDegenAwarded: number;
+  lastWinner: {
+    username: string;
+    amount: number;
+    date: string;
+  };
+}
+
+export default function Like2WinDashboard() {
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [stats, setStats] = useState<RaffleStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'completed' | 'registered'>('all');
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [registrationMessage, setRegistrationMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [timeFilter, setTimeFilter] = useState<'week' | 'month' | 'all'>('week');
   
-  // Wallet status
   const { address, isConnected } = useAccount();
-  // Legacy bootcamp system - now redirects to Like2Win
-  const isLoadingNFT = false;
   
-  // Check if current user is registered in database
-  const currentUserInDB = students.find(s => 
-    s.appWallet?.toLowerCase() === address?.toLowerCase()
+  // Find current user in leaderboard
+  const currentUser = leaderboard.find(entry => 
+    entry.username.toLowerCase().includes(address?.slice(-4)?.toLowerCase() || '')
   );
-  
-  // Legacy: User registration no longer needed for Like2Win
-  const needsRegistration = false;
 
   useEffect(() => {
-    fetchStudents();
-  }, []);
+    fetchDashboardData();
+  }, [timeFilter]);
 
-  const fetchStudents = async () => {
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    setError(null);
+    
     try {
-      setLoading(true);
-      const response = await fetch('/api/users/list');
+      // Fetch leaderboard
+      const leaderboardResponse = await fetch(`/api/raffle/leaderboard?period=${timeFilter}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
       
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+      if (leaderboardResponse.ok) {
+        const leaderboardData = await leaderboardResponse.json();
+        setLeaderboard(leaderboardData.leaderboard || []);
       }
 
-      const data = await response.json();
-      setStudents(data.users || []);
+      // Fetch raffle stats (mock data for now)
+      setStats({
+        totalParticipants: 547,
+        currentRaffleId: 42,
+        nextRaffleDate: '2025-01-08T20:00:00Z',
+        totalTicketsDistributed: 12847,
+        totalDegenAwarded: 45600,
+        lastWinner: {
+          username: '@alice.eth',
+          amount: 2500,
+          date: '2025-01-01T20:00:00Z'
+        }
+      });
+      
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar estudiantes');
+      console.error('Error fetching dashboard data:', err);
+      setError('Error al cargar los datos del dashboard');
+      
+      // Mock data for development
+      setLeaderboard([
+        {
+          id: '1',
+          username: '@alice.eth',
+          displayName: 'Alice',
+          avatarUrl: '/avatars/alice.png',
+          tickets: 127,
+          position: 1,
+          isFollowing: true,
+          totalLikes: 89,
+          joinDate: '2024-12-15'
+        },
+        {
+          id: '2',
+          username: '@cryptobob',
+          displayName: 'CryptoBob',
+          avatarUrl: '/avatars/bob.png',
+          tickets: 94,
+          position: 2,
+          isFollowing: true,
+          totalLikes: 67,
+          joinDate: '2024-12-10'
+        },
+        {
+          id: '3',
+          username: '@like2winner',
+          displayName: 'Like2Winner',
+          avatarUrl: '/avatars/winner.png',
+          tickets: 78,
+          position: 3,
+          isFollowing: true,
+          totalLikes: 52,
+          joinDate: '2024-12-08'
+        }
+      ]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredStudents = students.filter(student => {
-    switch (filter) {
-      case 'completed':
-        return student.isFollowingLike2Win;
-      case 'registered':
-        return !student.isFollowingLike2Win;
-      default:
-        return true;
-    }
-  });
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
-  const completedCount = students.filter(s => s.isFollowingLike2Win).length;
-  const registeredCount = students.length - completedCount;
+  const getPositionEmoji = (position: number) => {
+    switch (position) {
+      case 1: return '🥇';
+      case 2: return '🥈';
+      case 3: return '🥉';
+      default: return `#${position}`;
+    }
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--app-background)] p-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--app-accent)] mx-auto"></div>
-            <p className="mt-4 text-[var(--app-foreground-muted)]">Cargando estudiantes...</p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 flex items-center justify-center">
+        <div className="text-center">
+          <Like2WinLogo size="lg" animated={true} />
+          <p className="mt-4 text-amber-700">Cargando estadísticas...</p>
         </div>
       </div>
     );
   }
 
-  const handleRegistration = async () => {
-    if (!address) return;
-    
-    setIsRegistering(true);
-    setRegistrationMessage(null);
-    
-    try {
-      const response = await fetch('/api/users/sync', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          walletAddress: address
-        })
-      });
-      
-      const result = await response.json();
-      
-      if (response.ok && result.synced) {
-        setRegistrationMessage({
-          type: 'success',
-          text: '¡Registro exitoso! Tu NFT ha sido sincronizado con la base de datos.'
-        });
-        // Refresh students list
-        await fetchStudents();
-      } else {
-        setRegistrationMessage({
-          type: 'error',
-          text: result.message || 'Error al registrar. Por favor intenta de nuevo.'
-        });
-      }
-    } catch {
-      setRegistrationMessage({
-        type: 'error',
-        text: 'Error de conexión. Por favor intenta de nuevo.'
-      });
-    } finally {
-      setIsRegistering(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-[var(--app-background)] p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 pt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-[var(--app-foreground)] mb-2">
-            Dashboard Bootcamp
-          </h1>
-          <p className="text-[var(--app-foreground-muted)]">
-            Like2Win - Sistema de sorteos y rewards
+        <div className="mb-8 text-center">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Like2WinLogo size="lg" animated={true} />
+            <MainTitle className="text-4xl text-amber-900">Like2Win Dashboard</MainTitle>
+          </div>
+          <p className="text-lg text-amber-700">
+            Leaderboard, estadísticas y próximos sorteos
           </p>
         </div>
 
-        {/* User Status Banner */}
-        {isConnected && (
-          <div className="mb-8">
-            <div className="bg-[var(--app-card-bg)] rounded-xl p-6 border border-[var(--app-card-border)]">
-              <h2 className="text-lg font-semibold text-[var(--app-foreground)] mb-4">
-                Tu Estado en el Bootcamp
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Wallet Status */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-full bg-green-100">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Wallet Conectada</p>
-                    <p className="text-xs font-mono">{address?.slice(0, 6)}...{address?.slice(-4)}</p>
-                  </div>
-                </div>
-                
-                {/* NFT Status */}
-                <div className="flex items-center space-x-3">
-                  {isLoadingNFT ? (
-                    <div className="p-2 rounded-full bg-gray-100">
-                      <div className="w-5 h-5 border-2 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  ) : false ? (
-                    <div className="p-2 rounded-full bg-green-100">
-                      <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                  ) : (
-                    <div className="p-2 rounded-full bg-yellow-100">
-                      <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Sistema Legacy</p>
-                    <p className="text-xs font-medium">
-                      Migrado a Like2Win
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Database Status */}
-                <div className="flex items-center space-x-3">
-                  {currentUserInDB ? (
-                    <div className="p-2 rounded-full bg-green-100">
-                      <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                  ) : (
-                    <div className="p-2 rounded-full bg-red-100">
-                      <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm text-[var(--app-foreground-muted)]">Registro en Base de Datos</p>
-                    <p className="text-xs font-medium">
-                      {currentUserInDB ? 'Registrado ✅' : 'No registrado'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* NFT Token ID Display */}
-              {false && currentUserInDB?.nftTokenId && (
-                <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-medium text-green-800">Tu NFT de Certificación</h3>
-                      <p className="text-sm text-green-600">
-                        Token ID: <span className="font-mono">{currentUserInDB?.nftTokenId}</span>
-                      </p>
-                    </div>
-                    <a
-                      href={`https://sepolia.basescan.org/tx/${currentUserInDB?.nftTokenId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
-                    >
-                      Ver en Explorer
-                    </a>
-                  </div>
-                </div>
-              )}
-              
-              {/* Mint NFT CTA */}
-              {false && !currentUserInDB && (
-                <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-medium text-yellow-800">¡Like2Win Disponible!</h3>
-                      <p className="text-sm text-yellow-600">
-                        El sistema de bootcamp ha sido reemplazado por Like2Win.
-                      </p>
-                    </div>
-                    <a
-                      href="/miniapp"
-                      className="px-4 py-2 rounded-lg font-medium bg-yellow-600 text-white hover:bg-yellow-700 transition-colors"
-                    >
-                      Ir a Like2Win
-                    </a>
-                  </div>
-                </div>
-              )}
-              
-              {/* Registration CTA */}
-              {needsRegistration && (
-                <div className="mt-6 p-4 bg-[var(--app-accent-light)] rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-medium text-[var(--app-accent)]">¡Completa tu registro!</h3>
-                      <p className="text-sm text-[var(--app-accent)] opacity-80">
-                        Tienes un NFT pero no estás en nuestra base de datos.
-                      </p>
-                    </div>
-                    <button
-                      onClick={handleRegistration}
-                      disabled={isRegistering}
-                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                        isRegistering
-                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-[var(--app-accent)] text-white hover:bg-[var(--app-accent-hover)]'
-                      }`}
-                    >
-                      {isRegistering ? 'Registrando...' : 'Registrarme Ahora'}
-                    </button>
-                  </div>
-                </div>
-              )}
-              
-              {/* Registration Message */}
-              {registrationMessage && (
-                <div className={`mt-4 p-4 rounded-lg ${
-                  registrationMessage.type === 'success' 
-                    ? 'bg-green-50 border border-green-200' 
-                    : 'bg-red-50 border border-red-200'
-                }`}>
-                  <p className={`text-sm ${
-                    registrationMessage.type === 'success' ? 'text-green-800' : 'text-red-800'
-                  }`}>
-                    {registrationMessage.text}
-                  </p>
-                </div>
-              )}
-              
-              {/* Sign Up CTA for Non-Participants */}
-              {isConnected && true && (
-                <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-medium text-blue-800">¿Quieres participar?</h3>
-                      <p className="text-sm text-blue-600">
-                        Únete a Like2Win y gana $DEGEN con engagement social.
-                      </p>
-                    </div>
-                    <a
-                      href="/miniapp"
-                      className="px-4 py-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-                    >
-                      Ir a Like2Win
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
+        {/* Stats Overview */}
+        {stats && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Like2WinCard variant="gradient" className="text-center">
+              <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalParticipants}</div>
+              <div className="text-amber-700">Participantes Activos</div>
+            </Like2WinCard>
+            
+            <Like2WinCard variant="glass" className="text-center">
+              <div className="text-3xl font-bold text-amber-900 mb-2">#{stats.currentRaffleId}</div>
+              <div className="text-amber-700">Sorteo Actual</div>
+            </Like2WinCard>
+            
+            <Like2WinCard variant="outline" className="text-center">
+              <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalTicketsDistributed.toLocaleString()}</div>
+              <div className="text-amber-700">Tickets Distribuidos</div>
+            </Like2WinCard>
+            
+            <Like2WinCard variant="solid" className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
+              <div className="text-amber-100">$DEGEN Otorgados</div>
+            </Like2WinCard>
           </div>
         )}
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-[var(--app-card-bg)] rounded-xl p-6 border border-[var(--app-card-border)]">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-[var(--app-accent)] bg-opacity-10">
-                <svg className="w-6 h-6 text-[var(--app-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-[var(--app-foreground-muted)]">Total Registrados</p>
-                <p className="text-2xl font-bold text-[var(--app-foreground)]">{students.length}</p>
-              </div>
-            </div>
-          </div>
+        {/* Next Raffle & Last Winner */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {stats && (
+            <>
+              <Like2WinCard variant="gradient" className="text-center">
+                <h3 className="text-xl font-bold text-amber-900 mb-4">🎲 Próximo Sorteo</h3>
+                <div className="text-2xl font-bold text-amber-800 mb-2">
+                  {formatDate(stats.nextRaffleDate)}
+                </div>
+                <p className="text-amber-700 mb-4">
+                  Sorteo #{stats.currentRaffleId} • Bi-semanal
+                </p>
+                <Like2WinButton href="/miniapp" variant="primary">
+                  Participar Ahora
+                </Like2WinButton>
+              </Like2WinCard>
 
-          <div className="bg-[var(--app-card-bg)] rounded-xl p-6 border border-[var(--app-card-border)]">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-green-500 bg-opacity-10">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-[var(--app-foreground-muted)]">Bootcamp Completado</p>
-                <p className="text-2xl font-bold text-green-500">{completedCount}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-[var(--app-card-bg)] rounded-xl p-6 border border-[var(--app-card-border)]">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-yellow-500 bg-opacity-10">
-                <svg className="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-[var(--app-foreground-muted)]">En Progreso</p>
-                <p className="text-2xl font-bold text-yellow-500">{registeredCount}</p>
-              </div>
-            </div>
-          </div>
+              <Like2WinCard variant="glass" className="text-center">
+                <h3 className="text-xl font-bold text-amber-900 mb-4">🏆 Último Ganador</h3>
+                <div className="text-lg font-semibold text-amber-800 mb-2">
+                  {stats.lastWinner.username}
+                </div>
+                <div className="text-2xl font-bold text-amber-900 mb-2">
+                  {stats.lastWinner.amount.toLocaleString()} $DEGEN
+                </div>
+                <p className="text-amber-700">
+                  {formatDate(stats.lastWinner.date)}
+                </p>
+              </Like2WinCard>
+            </>
+          )}
         </div>
 
-        {/* Filters */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'all'
-                  ? 'bg-[var(--app-accent)] text-white'
-                  : 'bg-[var(--app-card-bg)] text-[var(--app-foreground)] border border-[var(--app-card-border)] hover:bg-[var(--app-accent)] hover:text-white'
-              }`}
-            >
-              Todos ({students.length})
-            </button>
-            <button
-              onClick={() => setFilter('completed')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'completed'
-                  ? 'bg-green-500 text-white'
-                  : 'bg-[var(--app-card-bg)] text-[var(--app-foreground)] border border-[var(--app-card-border)] hover:bg-green-500 hover:text-white'
-              }`}
-            >
-              Completados ({completedCount})
-            </button>
-            <button
-              onClick={() => setFilter('registered')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'registered'
-                  ? 'bg-yellow-500 text-white'
-                  : 'bg-[var(--app-card-bg)] text-[var(--app-foreground)] border border-[var(--app-card-border)] hover:bg-yellow-500 hover:text-white'
-              }`}
-            >
-              En Progreso ({registeredCount})
-            </button>
-          </div>
-        </div>
-
-        {/* Error State */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-800">{error}</p>
-                <button
-                  onClick={fetchStudents}
-                  className="mt-2 text-sm text-red-600 hover:text-red-500 underline"
-                >
-                  Intentar de nuevo
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Students Grid */}
-        {filteredStudents.length === 0 ? (
-          <div className="text-center py-12">
-            <svg className="mx-auto h-12 w-12 text-[var(--app-foreground-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            <h3 className="mt-2 text-sm font-medium text-[var(--app-foreground)]">No hay estudiantes</h3>
-            <p className="mt-1 text-sm text-[var(--app-foreground-muted)]">
-              {filter === 'all' ? 'Aún no hay estudiantes registrados.' : `No hay estudiantes en la categoría "${filter}".`}
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredStudents.map((student) => (
-              <div
-                key={student.id}
-                className="bg-[var(--app-card-bg)] rounded-xl p-6 border border-[var(--app-card-border)] hover:shadow-lg transition-shadow"
+        {/* Time Filter */}
+        <div className="flex justify-center mb-6">
+          <div className="bg-white rounded-lg p-1 shadow-sm border border-amber-200">
+            {(['week', 'month', 'all'] as const).map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setTimeFilter(filter)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  timeFilter === filter
+                    ? 'bg-amber-500 text-white'
+                    : 'text-amber-700 hover:bg-amber-50'
+                }`}
               >
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    {student.avatarUrl ? (
-                      <img
-                        className="h-12 w-12 rounded-full object-cover"
-                        src={student.avatarUrl}
-                        alt={student.displayName || student.username || 'Avatar'}
-                      />
-                    ) : (
-                      <div className="h-12 w-12 rounded-full bg-[var(--app-accent)] bg-opacity-10 flex items-center justify-center">
-                        <svg className="h-6 w-6 text-[var(--app-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-2">
-                      <h3 className="text-sm font-medium text-[var(--app-foreground)] truncate">
-                        {student.displayName || student.username || 'Usuario Anónimo'}
-                      </h3>
-                      {student.powerBadge && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
-                          ⚡
-                        </span>
-                      )}
-                    </div>
-                    
-                    {student.farcasterUsername && (
-                      <p className="text-sm text-[var(--app-foreground-muted)]">@{student.farcasterUsername}</p>
-                    )}
-                    
-                    {student.appWallet && (
-                      <p className="text-xs text-[var(--app-foreground-muted)] font-mono mt-1">
-                        {student.appWallet.slice(0, 6)}...{student.appWallet.slice(-4)}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                {filter === 'week' ? 'Esta Semana' : 
+                 filter === 'month' ? 'Este Mes' : 'Todo el Tiempo'}
+              </button>
+            ))}
+          </div>
+        </div>
 
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[var(--app-foreground-muted)]">Estado:</span>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      student.isFollowingLike2Win
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {student.isFollowingLike2Win ? '✅ Following Like2Win' : '🔄 Not Following'}
+        {/* Current User Stats */}
+        {isConnected && currentUser && (
+          <Like2WinCard variant="gradient" className="mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">
+                    {currentUser.displayName.charAt(0)}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-amber-900">Tu Posición</h3>
+                  <p className="text-amber-700">{currentUser.username}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-amber-900 mb-1">
+                  {getPositionEmoji(currentUser.position)} {currentUser.tickets} tickets
+                </div>
+                <p className="text-amber-700">{currentUser.totalLikes} likes dados</p>
+              </div>
+            </div>
+          </Like2WinCard>
+        )}
+
+        {/* Leaderboard */}
+        <Like2WinCard variant="glass" className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-amber-900">🏆 Leaderboard</h2>
+            <span className="text-amber-700">
+              Período: {timeFilter === 'week' ? 'Esta Semana' : 
+                       timeFilter === 'month' ? 'Este Mes' : 'Todo el Tiempo'}
+            </span>
+          </div>
+          
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-red-700">{error}</p>
+              <p className="text-red-600 text-sm mt-1">Mostrando datos de ejemplo</p>
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {leaderboard.map((entry) => (
+              <div 
+                key={entry.id}
+                className="flex items-center justify-between p-4 bg-white rounded-lg border border-amber-200 hover:border-amber-300 transition-colors"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="text-2xl font-bold text-amber-600 min-w-[50px]">
+                    {getPositionEmoji(entry.position)}
+                  </div>
+                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                    <span className="text-amber-800 font-semibold">
+                      {entry.displayName.charAt(0)}
                     </span>
                   </div>
-
-                  {student.commitmentScore !== null && student.commitmentScore !== undefined && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-[var(--app-foreground-muted)]">Score:</span>
-                      <span className="text-sm font-medium text-[var(--app-foreground)]">
-                        {student.commitmentScore}/10
-                      </span>
-                    </div>
-                  )}
-
-                  {student.followerCount !== null && student.followerCount !== undefined && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-[var(--app-foreground-muted)]">Seguidores:</span>
-                      <span className="text-sm font-medium text-[var(--app-foreground)]">
-                        {student.followerCount.toLocaleString()}
-                      </span>
-                    </div>
-                  )}
-
-                  {student.completionDate && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-[var(--app-foreground-muted)]">Completado:</span>
-                      <span className="text-sm font-medium text-[var(--app-foreground)]">
-                        {new Date(student.completionDate).toLocaleDateString()}
-                      </span>
-                    </div>
-                  )}
-
-                  {student.nftTokenId && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-[var(--app-foreground-muted)]">NFT:</span>
-                      <span className="text-xs font-mono text-[var(--app-accent)]">
-                        {student.nftTokenId.slice(0, 8)}...
-                      </span>
-                    </div>
-                  )}
+                  <div>
+                    <h3 className="font-semibold text-amber-900">{entry.displayName}</h3>
+                    <p className="text-amber-700 text-sm">{entry.username}</p>
+                  </div>
                 </div>
-
-                <div className="mt-4 pt-4 border-t border-[var(--app-card-border)]">
-                  <p className="text-xs text-[var(--app-foreground-muted)]">
-                    Registrado: {new Date(student.createdAt).toLocaleDateString()}
+                <div className="text-right">
+                  <div className="text-lg font-bold text-amber-900">
+                    {entry.tickets} tickets
+                  </div>
+                  <p className="text-amber-700 text-sm">
+                    {entry.totalLikes} likes • Desde {formatDate(entry.joinDate)}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-        )}
+
+          {leaderboard.length === 0 && !error && (
+            <div className="text-center py-8">
+              <p className="text-amber-700">No hay datos disponibles para este período</p>
+            </div>
+          )}
+        </Like2WinCard>
+
+        {/* Call to Action */}
+        <div className="text-center mb-8">
+          <Like2WinCard variant="gradient" className="max-w-md mx-auto">
+            <h3 className="text-xl font-bold text-amber-900 mb-4">
+              ¿Quieres aparecer en el leaderboard?
+            </h3>
+            <p className="text-amber-700 mb-6">
+              Sigue @Like2Win y dale like a posts oficiales para ganar tickets
+            </p>
+            <Like2WinButton href="/miniapp" variant="primary" size="lg">
+              🎲 Participar en Like2Win
+            </Like2WinButton>
+          </Like2WinCard>
+        </div>
+
       </div>
     </div>
   );
