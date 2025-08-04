@@ -67,49 +67,6 @@ export function FrameAwareLanding() {
     return (
       <div className="min-h-screen bg-[var(--app-background)] text-[var(--app-foreground)]">
         <main className="pt-8 pb-8">
-          {/* Like2Win Hero Section for Frame - Top Priority */}
-          <section className="px-4 py-6 bg-gradient-to-br from-amber-50 to-yellow-50">
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
-                <span className="text-lg">🎫</span>
-                <span>SOCIAL REWARDS</span>
-              </div>
-              
-              <h2 className="text-3xl lg:text-4xl font-bold text-amber-900 mb-3">
-                Like2Win
-              </h2>
-              <h3 className="text-xl text-amber-800 mb-4">
-                Follow + Like = Win $DEGEN
-              </h3>
-              <p className="text-base text-amber-700 mb-6">
-                Zero friction • Sorteos bi-semanales • Solo para seguidores
-              </p>
-              
-              <div className="flex justify-center mb-6">
-                <a 
-                  href="/miniapp" 
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  🎲 Únete al Sorteo
-                </a>
-              </div>
-              
-              <div className="flex justify-center gap-6 text-center text-sm text-amber-600 mb-6">
-                <div>
-                  <div className="font-bold">500+</div>
-                  <div>Participants</div>
-                </div>
-                <div>
-                  <div className="font-bold">2x/sem</div>
-                  <div>Sorteos</div>
-                </div>
-                <div>
-                  <div className="font-bold">$DEGEN</div>
-                  <div>Premios</div>
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* Like2Win Core Value Proposition */}
           <section className="px-4 py-8">
