@@ -3,7 +3,18 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
-import { ConnectWallet } from '@coinbase/onchainkit/wallet';
+import { 
+  ConnectWallet,
+  Wallet,
+  WalletDropdown,
+  WalletDropdownDisconnect,
+} from '@coinbase/onchainkit/wallet';
+import {
+  Address,
+  Avatar,
+  Name,
+  Identity,
+} from '@coinbase/onchainkit/identity';
 
 export function Header() {
   const pathname = usePathname();
@@ -56,7 +67,20 @@ export function Header() {
 
           {/* Wallet Connection */}
           <div className="flex items-center">
-            <ConnectWallet />
+            <Wallet>
+              <ConnectWallet className="!px-3 !py-2 !text-sm !font-medium !bg-[var(--app-accent)] !text-white !border-none !rounded-lg hover:!bg-[var(--app-accent-hover)] !transition-colors">
+                <Avatar className="h-6 w-6" />
+                <Name className="!text-sm !font-medium !max-w-[100px] !truncate" />
+              </ConnectWallet>
+              <WalletDropdown>
+                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+                  <Avatar />
+                  <Name />
+                  <Address className="!text-xs !text-gray-500" />
+                </Identity>
+                <WalletDropdownDisconnect />
+              </WalletDropdown>
+            </Wallet>
           </div>
 
           {/* Mobile Menu Button */}
