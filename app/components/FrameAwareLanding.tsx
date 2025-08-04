@@ -14,8 +14,6 @@ import {
   Footer,
 } from './LandingComponents';
 import {
-  MainTitle,
-  Like2WinCard,
   Like2WinLogo
 } from './Like2WinComponents';
 
