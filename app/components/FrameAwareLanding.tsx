@@ -70,196 +70,208 @@ export function FrameAwareLanding() {
   // Frame environment - show optimized content
   if (showFrameContent) {
     return (
-      <div className="min-h-screen bg-[var(--app-background)] text-[var(--app-foreground)]">
-        <main className="pt-8 pb-8">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 text-gray-900">
+        <main className="pt-4 pb-4">
 
-          {/* Hero Section - Like2Win Value Proposition */}
-          <section className="px-4 py-8">
-            <div className="max-w-2xl mx-auto">
-              <Like2WinCard variant="gradient" className="text-center mb-8">
-                <div className="flex items-center justify-center gap-3 mb-6">
-                  <Like2WinLogo size="md" animated={true} />
-                  <MainTitle className="text-3xl">Like2Win</MainTitle>
+          {/* Hero Section - Impactful & Professional */}
+          <section className="px-4 py-4">
+            <div className="max-w-md mx-auto">
+              {/* Premium Header */}
+              <div className="relative bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 p-[1px] rounded-2xl mb-4 shadow-xl">
+                <div className="bg-white rounded-2xl p-6 relative overflow-hidden">
+                  {/* Subtle pattern overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-transparent"></div>
+                  
+                  <div className="relative z-10 text-center">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <Like2WinLogo size="sm" animated={true} />
+                      <h1 className="text-2xl font-black bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        Like2Win
+                      </h1>
+                    </div>
+                    
+                    <h2 className="text-lg font-bold text-gray-800 mb-2 leading-tight">
+                      Convierte likes en <span className="text-amber-600">$DEGEN</span>
+                    </h2>
+                    
+                    <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                      Sigue @Like2Win, dale like a posts oficiales y participa en sorteos bi-semanales
+                    </p>
+                    
+                    {/* Inline stats - more compact */}
+                    <div className="flex justify-center gap-6 text-center mb-4 py-3 bg-amber-50/80 rounded-xl">
+                      <div>
+                        <div className="text-lg font-black text-amber-600">500+</div>
+                        <div className="text-xs text-gray-500">Usuarios</div>
+                      </div>
+                      <div className="w-px bg-amber-200"></div>
+                      <div>
+                        <div className="text-lg font-black text-amber-600">2x/sem</div>
+                        <div className="text-xs text-gray-500">Sorteos</div>
+                      </div>
+                      <div className="w-px bg-amber-200"></div>
+                      <div>
+                        <div className="text-lg font-black text-amber-600">$DEGEN</div>
+                        <div className="text-xs text-gray-500">Premios</div>
+                      </div>
+                    </div>
+                    
+                    {/* Primary CTA */}
+                    <a 
+                      href="/miniapp" 
+                      className="block w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-4 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <span className="text-lg">🎲</span> Participar Ahora
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Frame Actions - Compact Integration */}
+          <section className="px-4 py-3">
+            <div className="max-w-md mx-auto">
+              <div className="bg-white/70 backdrop-blur-sm border border-amber-200/50 rounded-xl p-4 shadow-sm">
+                <FrameActions variant="full" />
+              </div>
+            </div>
+          </section>
+
+          {/* Value Props - Clean & Scannable */}
+          <section className="px-4 py-4">
+            <div className="max-w-md mx-auto">
+              <h3 className="text-lg font-bold text-gray-800 mb-4 text-center">
+                ¿Por qué Like2Win?
+              </h3>
+              
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-4 bg-white/80 backdrop-blur-sm border border-amber-100 rounded-xl hover:border-amber-200 transition-colors">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-400 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                    🎫
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 text-sm">Zero Friction</h4>
+                    <p className="text-xs text-gray-600">Solo follow + like. Sin complicaciones</p>
+                  </div>
                 </div>
                 
-                <h1 className="text-2xl lg:text-3xl font-bold text-white mb-4">
-                  La forma más simple de ganar <span className="text-yellow-200">$DEGEN</span>
-                </h1>
+                <div className="flex items-center gap-3 p-4 bg-white/80 backdrop-blur-sm border border-amber-100 rounded-xl hover:border-amber-200 transition-colors">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-400 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                    💰
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 text-sm">Premios Reales</h4>
+                    <p className="text-xs text-gray-600">$DEGEN real en tu wallet cada sorteo</p>
+                  </div>
+                </div>
                 
-                <p className="text-lg text-amber-100 mb-6 leading-relaxed">
-                  Solo sigue @Like2Win y dale like a posts oficiales. Zero friction, maximum fun!
-                </p>
+                <div className="flex items-center gap-3 p-4 bg-white/80 backdrop-blur-sm border border-amber-100 rounded-xl hover:border-amber-200 transition-colors">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                    📈
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 text-sm">Algorithm Transparente</h4>
+                    <p className="text-xs text-gray-600">Más engagement = más tickets</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Recent Winners - Social Proof */}
+          <section className="px-4 py-4">
+            <div className="max-w-md mx-auto">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="text-lg">🏆</div>
+                  <h3 className="font-bold text-gray-800 text-sm">Ganadores Recientes</h3>
+                </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                  <a 
-                    href="/miniapp" 
-                    className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-white text-[var(--app-accent)] hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    🎲 Participar Ahora
-                  </a>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between py-2 px-3 bg-white/70 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full flex items-center justify-center text-xs">
+                        🎉
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-800 text-sm">@alice.eth</div>
+                        <div className="text-xs text-gray-500">Hace 3 días</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-green-600 text-sm">2,500 $DEGEN</div>
+                      <div className="text-xs text-gray-500">127 tickets</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between py-2 px-3 bg-white/70 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-xs">
+                        🎯
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-800 text-sm">@cryptobob</div>
+                        <div className="text-xs text-gray-500">Hace 1 semana</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-green-600 text-sm">1,800 $DEGEN</div>
+                      <div className="text-xs text-gray-500">89 tickets</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-4 pt-3 border-t border-green-200">
                   <a 
                     href="/bootcamp" 
-                    className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl bg-transparent border-2 border-white text-white hover:bg-white hover:text-[var(--app-accent)] transition-all duration-300"
+                    className="block text-center text-sm font-semibold text-green-700 hover:text-green-800 transition-colors"
                   >
-                    📊 Ver Estadísticas
+                    Ver Leaderboard Completo →
                   </a>
                 </div>
-              </Like2WinCard>
-            </div>
-          </section>
-
-          {/* Statistics Overview */}
-          <section className="px-4 py-8">
-            <div className="max-w-2xl mx-auto">
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                <Like2WinCard variant="glassmorphism" className="text-center">
-                  <div className="text-2xl font-bold text-[var(--app-foreground)] mb-1">500+</div>
-                  <div className="text-sm text-[var(--app-foreground-muted)]">Participants</div>
-                </Like2WinCard>
-                
-                <Like2WinCard variant="glassmorphism" className="text-center">
-                  <div className="text-2xl font-bold text-[var(--app-foreground)] mb-1">2x</div>
-                  <div className="text-sm text-[var(--app-foreground-muted)]">Per Week</div>
-                </Like2WinCard>
-                
-                <Like2WinCard variant="glassmorphism" className="text-center">
-                  <div className="text-2xl font-bold text-[var(--app-accent)] mb-1">$DEGEN</div>
-                  <div className="text-sm text-[var(--app-foreground-muted)]">Rewards</div>
-                </Like2WinCard>
               </div>
             </div>
           </section>
 
-          {/* Frame Actions Section */}
-          <section className="px-4 py-8">
+          {/* Final CTA - Urgency & FOMO */}
+          <section className="px-4 py-4">
             <div className="max-w-md mx-auto">
-              <Like2WinCard variant="default">
-                <FrameActions variant="full" />
-              </Like2WinCard>
-            </div>
-          </section>
-
-          {/* Like2Win Features */}
-          <section className="px-4 py-8">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold text-center text-[var(--app-foreground)] mb-8">
-                ¿Por qué Like2Win?
-              </h2>
-              
-              <div className="grid gap-6">
-                <Like2WinCard variant="glassmorphism">
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl flex-shrink-0">🎫</div>
-                    <div>
-                      <h3 className="font-bold text-[var(--app-foreground)] mb-2">Zero Friction Participation</h3>
-                      <p className="text-[var(--app-foreground-muted)]">Solo follow + like. No wallet, no signup, no complications</p>
+              <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 p-[1px] rounded-2xl shadow-xl">
+                <div className="bg-gray-900 rounded-2xl p-6 text-center relative overflow-hidden">
+                  {/* Animated gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-red-900/20 animate-pulse"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="text-3xl mb-3">⚡</div>
+                    <h3 className="text-lg font-black text-white mb-2">
+                      Próximo Sorteo en 3 días
+                    </h3>
+                    <p className="text-sm text-gray-300 mb-4">
+                      No te pierdas la oportunidad de ganar $DEGEN
+                    </p>
+                    
+                    <div className="flex gap-3">
+                      <a 
+                        href="/miniapp" 
+                        className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 text-sm"
+                      >
+                        🚀 Empezar
+                      </a>
+                      <a 
+                        href="/bootcamp" 
+                        className="flex-1 bg-white/10 backdrop-blur-sm text-white font-semibold py-3 px-4 rounded-lg hover:bg-white/20 transition-all duration-300 text-sm border border-white/20"
+                      >
+                        📊 Stats
+                      </a>
                     </div>
                   </div>
-                </Like2WinCard>
-                
-                <Like2WinCard variant="glassmorphism">
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl flex-shrink-0">💰</div>
-                    <div>
-                      <h3 className="font-bold text-[var(--app-foreground)] mb-2">Real $DEGEN Rewards</h3>
-                      <p className="text-[var(--app-foreground-muted)]">Sorteos bi-semanales con premios reales</p>
-                    </div>
-                  </div>
-                </Like2WinCard>
-                
-                <Like2WinCard variant="glassmorphism">
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl flex-shrink-0">📈</div>
-                    <div>
-                      <h3 className="font-bold text-[var(--app-foreground)] mb-2">Transparent Algorithm</h3>
-                      <p className="text-[var(--app-foreground-muted)]">Más engagement = más tickets. Simple y justo</p>
-                    </div>
-                  </div>
-                </Like2WinCard>
-                
-                <Like2WinCard variant="glassmorphism">
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl flex-shrink-0">🎯</div>
-                    <div>
-                      <h3 className="font-bold text-[var(--app-foreground)] mb-2">Farcaster Native</h3>
-                      <p className="text-[var(--app-foreground-muted)]">Integrado perfectamente en tu experiencia social</p>
-                    </div>
-                  </div>
-                </Like2WinCard>
+                  
+                  {/* Sparkle effects */}
+                  <div className="absolute top-2 right-2 text-yellow-400 animate-pulse">✨</div>
+                  <div className="absolute bottom-2 left-2 text-yellow-400 animate-pulse" style={{animationDelay: '0.5s'}}>✨</div>
+                </div>
               </div>
-            </div>
-          </section>
-
-          {/* Recent Winners */}
-          <section className="px-4 py-8">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold text-center text-[var(--app-foreground)] mb-8">
-                🏆 Ganadores Recientes
-              </h2>
-              
-              <div className="grid gap-4">
-                <Like2WinCard variant="default">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="text-2xl">🎉</div>
-                      <div>
-                        <h3 className="font-bold text-[var(--app-foreground)]">@alice.eth</h3>
-                        <p className="text-sm text-[var(--app-foreground-muted)]">Sorteo #42 - Hace 3 días</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-[var(--app-accent)]">2,500 $DEGEN</div>
-                      <div className="text-sm text-[var(--app-foreground-muted)]">127 tickets</div>
-                    </div>
-                  </div>
-                </Like2WinCard>
-
-                <Like2WinCard variant="default">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="text-2xl">🏆</div>
-                      <div>
-                        <h3 className="font-bold text-[var(--app-foreground)]">@cryptobob</h3>
-                        <p className="text-sm text-[var(--app-foreground-muted)]">Sorteo #41 - Hace 1 semana</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-[var(--app-accent)]">1,800 $DEGEN</div>
-                      <div className="text-sm text-[var(--app-foreground-muted)]">89 tickets</div>
-                    </div>
-                  </div>
-                </Like2WinCard>
-              </div>
-
-              <div className="text-center mt-8">
-                <a 
-                  href="/bootcamp" 
-                  className="inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[var(--app-accent)] text-white hover:bg-[var(--app-accent-hover)] transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  Ver Leaderboard Completo
-                </a>
-              </div>
-            </div>
-          </section>
-
-          {/* Final CTA */}
-          <section className="px-4 py-8">
-            <div className="max-w-md mx-auto">
-              <Like2WinCard variant="gradient" className="text-center">
-                <div className="text-4xl mb-4">🚀</div>
-                <h3 className="text-xl font-bold text-white mb-4">
-                  ¡Únete a Like2Win!
-                </h3>
-                <p className="text-amber-100 mb-6">
-                  Convierte tus likes en oportunidades reales de ganar $DEGEN
-                </p>
-                <a 
-                  href="/miniapp" 
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-white text-[var(--app-accent)] hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 w-full"
-                >
-                  🎲 Empezar Ahora
-                </a>
-              </Like2WinCard>
             </div>
           </section>
 
