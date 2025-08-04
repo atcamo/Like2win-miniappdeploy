@@ -168,7 +168,7 @@ export default function SimpleLike2WinApp() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-hidden">
       
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-20">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-16">
         
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
