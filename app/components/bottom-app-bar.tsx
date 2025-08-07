@@ -55,7 +55,7 @@ export function BottomAppBar() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-amber-400 border-t border-amber-500 md:hidden z-50 shadow-md">
+    <nav className="fixed bottom-0 left-0 right-0 bg-amber-900 border-t border-amber-800 md:hidden z-50 shadow-md">
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -75,10 +75,10 @@ export function BottomAppBar() {
                 }}
                 className="flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs"
               >
-                <div className={`${isConnected ? 'text-green-500' : 'text-[var(--app-foreground-muted)]'}`}>
+                <div className={`${isConnected ? 'text-green-400' : 'text-gray-200'}`}>
                   {item.icon}
                 </div>
-                <span className={`mt-1 ${isConnected ? 'text-green-500' : 'text-[var(--app-foreground-muted)]'}`}>
+                <span className={`mt-1 ${isConnected ? 'text-green-400' : 'text-gray-200'}`}>
                   {isConnected ? `${address?.slice(0, 4)}...` : item.label}
                 </span>
               </button>
@@ -91,8 +91,8 @@ export function BottomAppBar() {
               href={item.href}
               className={`flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs transition-colors ${
                 isActive
-                  ? 'text-[var(--app-accent)]'
-                  : 'text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)]'
+                  ? 'text-amber-200'
+                  : 'text-gray-200 hover:text-white'
               }`}
             >
               <div>{item.icon}</div>
