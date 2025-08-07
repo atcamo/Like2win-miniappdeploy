@@ -141,7 +141,7 @@ export default function Like2WinMiniApp() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-hidden">
       
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 backdrop-blur-lg border-b border-amber-200/30">
+      <header className="sticky top-0 z-50 bg-gradient-to-r from-amber-100 to-yellow-100 border-b border-amber-300 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Like2WinLogo size="md" animated={true} />
@@ -221,7 +221,7 @@ export default function Like2WinMiniApp() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-12 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 backdrop-blur-lg border-t border-amber-200/30 py-6">
+      <footer className="mt-12 bg-gradient-to-r from-amber-200 to-yellow-200 border-t border-amber-300 py-6 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <Like2WinLogo size="sm" animated={false} />
