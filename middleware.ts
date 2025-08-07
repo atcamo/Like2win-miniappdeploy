@@ -29,6 +29,10 @@ export function middleware(request: NextRequest) {
     response.headers.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, X-Farcaster-Frame');
     
+    // Set comprehensive CSP for Farcaster compatibility
+    const cspValue = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://minikit.farcaster.com https://*.farcaster.xyz https://*.warpcast.com https://auth.privy.io https://*.privy.io https://*.coinbase.com; connect-src 'self' https://farcaster.xyz https://client.farcaster.xyz https://warpcast.com https://client.warpcast.com https://wrpcd.net https://*.wrpcd.net https://privy.farcaster.xyz https://privy.warpcast.com https://auth.privy.io https://*.rpc.privy.systems https://cloudflareinsights.com https://explorer-api.walletconnect.com https://*.walletconnect.com https://*.coinbase.com https://*.neynar.com wss://*.coinbase.com https://minikit.farcaster.com https://api.dune.com https://cca-lite.coinbase.com https://api.developer.coinbase.com; frame-ancestors 'self' https://*.farcaster.xyz https://*.warpcast.com https://*.neynar.com https://wallet.farcaster.xyz https://*.vercel.app; img-src 'self' data: blob: https: http:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;";
+    response.headers.set('Content-Security-Policy', cspValue);
+    
     // Set cookie security attributes for cross-site embedding
     const cookieOptions = [
       'SameSite=None',
