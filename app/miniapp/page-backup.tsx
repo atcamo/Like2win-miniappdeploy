@@ -198,52 +198,6 @@ export default function Like2WinMiniApp() {
           </div>
         </Like2WinCard>
 
-        {/* How It Works */}
-        <Like2WinCard title="🎯 Cómo Funciona" variant="glassmorphism">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h4 className="font-semibold text-amber-600 flex items-center gap-2">
-                <span className="text-2xl">💰</span>
-                CON Tip Allowance
-              </h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  <span>Follow @Like2Win</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-500">❤️</span>
-                  <span>Like post oficial = +1 ticket automático</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h4 className="font-semibold text-amber-600 flex items-center gap-2">
-                <span className="text-2xl">📢</span>
-                SIN Tip Allowance
-              </h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-500">✅</span>
-                  <span>Follow @Like2Win</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-amber-500">❤️💬🔄</span>
-                  <span>Like + Comment + Recast = +1 ticket</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="mt-6 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-lg p-4">
-            <div className="text-center space-y-2">
-              <p><strong>Sorteos:</strong> Miércoles y Domingo 8PM UTC</p>
-              <p><strong>Premios:</strong> 60% / 30% / 10% del pool</p>
-              <p><strong>Sistema:</strong> Sin wallet connection requerida</p>
-            </div>
-          </div>
-        </Like2WinCard>
 
         {/* Call to Action */}
         <Like2WinCard variant="gradient" className="text-center">
