@@ -224,7 +224,7 @@ export default function SimpleLike2WinApp() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-12 bg-gradient-to-r from-amber-200 to-yellow-200 border-t border-amber-300 py-6 shadow-sm">
+      <footer className="mt-12 bg-amber-400 border-t border-amber-500 py-6 shadow-md">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <Like2WinLogo size="sm" animated={false} />
