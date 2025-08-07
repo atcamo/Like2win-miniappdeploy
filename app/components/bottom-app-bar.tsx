@@ -55,7 +55,7 @@ export function BottomAppBar() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[var(--app-card-bg)] border-t border-[var(--app-card-border)] md:hidden z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-amber-400 border-t border-amber-500 md:hidden z-50 shadow-md">
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
