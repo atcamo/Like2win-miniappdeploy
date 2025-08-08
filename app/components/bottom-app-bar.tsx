@@ -55,7 +55,7 @@ export function BottomAppBar() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-amber-900 border-t border-amber-800 md:hidden z-50 shadow-md">
+    <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-600 to-orange-500 border-t border-amber-400 md:hidden z-50 shadow-xl backdrop-blur-sm">
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
@@ -75,10 +75,10 @@ export function BottomAppBar() {
                 }}
                 className="flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs"
               >
-                <div className={`${isConnected ? 'text-green-400' : 'text-gray-200'}`}>
+                <div className={`${isConnected ? 'text-green-300' : 'text-orange-100'}`}>
                   {item.icon}
                 </div>
-                <span className={`mt-1 ${isConnected ? 'text-green-400' : 'text-gray-200'}`}>
+                <span className={`mt-1 ${isConnected ? 'text-green-300' : 'text-orange-100'} text-xs font-medium`}>
                   {isConnected ? `${address?.slice(0, 4)}...` : item.label}
                 </span>
               </button>
@@ -89,14 +89,14 @@ export function BottomAppBar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs transition-colors ${
+              className={`flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs transition-all duration-200 ${
                 isActive
-                  ? 'text-amber-200'
-                  : 'text-gray-200 hover:text-white'
+                  ? 'text-yellow-100 scale-105'
+                  : 'text-orange-100 hover:text-white hover:scale-105'
               }`}
             >
               <div>{item.icon}</div>
-              <span className="mt-1">{item.label}</span>
+              <span className="mt-1 text-xs font-medium">{item.label}</span>
             </Link>
           );
         })}

@@ -32,7 +32,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-amber-800 border-b border-amber-700 shadow-md">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-orange-500 to-amber-500 border-b border-amber-600 shadow-lg backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -42,7 +42,7 @@ export function Header() {
               alt="Like2Win Logo" 
               className="w-8 h-8 object-contain"
             />
-            <span className="text-xl font-semibold text-white">Like2Win</span>
+            <span className="text-xl font-semibold text-white drop-shadow-sm">Like2Win</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -53,10 +53,10 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition-colors ${
+                  className={`text-sm font-medium transition-colors drop-shadow-sm ${
                     isActive
-                      ? 'text-amber-200'
-                      : 'text-gray-200 hover:text-white'
+                      ? 'text-yellow-100 font-semibold'
+                      : 'text-orange-100 hover:text-white'
                   }`}
                 >
                   {item.label}
@@ -89,7 +89,7 @@ export function Header() {
             name="mobile-menu-toggle"
             aria-label="Toggle mobile menu"
             type="button"
-            className="md:hidden p-2 rounded-md text-gray-200 hover:text-white hover:bg-amber-700"
+            className="md:hidden p-2 rounded-md text-orange-100 hover:text-white hover:bg-orange-600/50"
             onClick={() => {
               // Toggle mobile menu
               const mobileMenu = document.getElementById('mobile-menu');
@@ -115,8 +115,8 @@ export function Header() {
                   href={item.href}
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
                     isActive
-                      ? 'bg-amber-600 text-white'
-                      : 'text-gray-200 hover:text-white hover:bg-amber-700'
+                      ? 'bg-orange-600 text-white'
+                      : 'text-orange-100 hover:text-white hover:bg-orange-600/50'
                   }`}
                   onClick={() => {
                     // Close mobile menu after clicking
@@ -134,10 +134,10 @@ export function Header() {
           
           {/* Mobile Wallet Info */}
           {isConnected && address && (
-            <div className="px-3 py-2 border-t border-amber-700">
+            <div className="px-3 py-2 border-t border-orange-600/50">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-200">
+                <span className="text-sm text-orange-100">
                   Conectado: {address.slice(0, 6)}...{address.slice(-4)}
                 </span>
               </div>
