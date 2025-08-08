@@ -190,8 +190,8 @@ export default function Like2WinDashboard() {
             </Like2WinCard>
             
             <Like2WinCard variant="gradient" className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
-              <div className="text-amber-100">$DEGEN Otorgados</div>
+              <div className="text-3xl font-bold text-white drop-shadow-sm mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
+              <div className="text-orange-100 font-medium">$DEGEN Otorgados</div>
             </Like2WinCard>
           </div>
         )}
@@ -201,16 +201,16 @@ export default function Like2WinDashboard() {
           {stats && (
             <>
               <Like2WinCard variant="gradient" className="text-center">
-                <h3 className="text-xl font-bold text-amber-900 mb-4">🎲 Próximo Sorteo</h3>
-                <div className="text-2xl font-bold text-amber-800 mb-2">
+                <h3 className="text-xl font-bold text-white drop-shadow-sm mb-4">🎲 Próximo Sorteo</h3>
+                <div className="text-2xl font-bold text-orange-100 drop-shadow-sm mb-2">
                   {formatDate(stats.nextRaffleDate)}
                 </div>
-                <p className="text-amber-700 mb-4">
+                <p className="text-orange-100/90 mb-4 font-medium">
                   Sorteo #{stats.currentRaffleId} • Bi-semanal
                 </p>
                 <a 
                   href="/miniapp" 
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-[var(--app-primary-amber)] hover:bg-[var(--app-accent-hover)] text-white rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
                 >
                   Participar Ahora
                 </a>
@@ -234,15 +234,15 @@ export default function Like2WinDashboard() {
 
         {/* Time Filter */}
         <div className="flex justify-center mb-6">
-          <div className="bg-white rounded-lg p-1 shadow-sm border border-amber-200">
+          <div className="bg-white rounded-lg p-1 shadow-md border border-amber-300">
             {(['week', 'month', 'all'] as const).map((filter) => (
               <button
                 key={filter}
                 onClick={() => setTimeFilter(filter)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                   timeFilter === filter
-                    ? 'bg-amber-500 text-white'
-                    : 'text-amber-700 hover:bg-amber-50'
+                    ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-sm'
+                    : 'text-amber-800 hover:bg-amber-50 hover:text-amber-900'
                 }`}
               >
                 {filter === 'week' ? 'Esta Semana' : 
@@ -257,21 +257,21 @@ export default function Like2WinDashboard() {
           <Like2WinCard variant="gradient" className="mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">
+                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                  <span className="text-white font-bold text-lg">
                     {currentUser.displayName.charAt(0)}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-amber-900">Tu Posición</h3>
-                  <p className="text-amber-700">{currentUser.username}</p>
+                  <h3 className="text-lg font-bold text-white drop-shadow-sm">Tu Posición</h3>
+                  <p className="text-orange-100/90 font-medium">{currentUser.username}</p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-amber-900 mb-1">
+                <div className="text-2xl font-bold text-white drop-shadow-sm mb-1">
                   {getPositionEmoji(currentUser.position)} {currentUser.tickets} tickets
                 </div>
-                <p className="text-amber-700">{currentUser.totalLikes} likes dados</p>
+                <p className="text-orange-100/90">{currentUser.totalLikes} likes dados</p>
               </div>
             </div>
           </Like2WinCard>
@@ -298,14 +298,14 @@ export default function Like2WinDashboard() {
             {leaderboard.map((entry) => (
               <div 
                 key={entry.id}
-                className="flex items-center justify-between p-4 bg-white rounded-lg border border-amber-200 hover:border-amber-300 transition-colors"
+                className="flex items-center justify-between p-4 bg-white rounded-lg border border-amber-300 hover:border-amber-400 hover:shadow-md transition-all duration-200"
               >
                 <div className="flex items-center gap-4">
-                  <div className="text-2xl font-bold text-amber-600 min-w-[50px]">
+                  <div className="text-2xl font-bold text-orange-600 min-w-[50px]">
                     {getPositionEmoji(entry.position)}
                   </div>
-                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                    <span className="text-amber-800 font-semibold">
+                  <div className="w-10 h-10 bg-gradient-to-br from-orange-100 to-amber-100 rounded-full flex items-center justify-center border border-amber-200">
+                    <span className="text-amber-900 font-semibold">
                       {entry.displayName.charAt(0)}
                     </span>
                   </div>
@@ -336,10 +336,10 @@ export default function Like2WinDashboard() {
         {/* Call to Action */}
         <div className="text-center mb-8">
           <Like2WinCard variant="gradient" className="max-w-md mx-auto">
-            <h3 className="text-xl font-bold text-amber-900 mb-4">
+            <h3 className="text-xl font-bold text-white drop-shadow-sm mb-4">
               ¿Quieres aparecer en el leaderboard?
             </h3>
-            <p className="text-amber-700 mb-6">
+            <p className="text-orange-100/90 mb-6 font-medium">
               Sigue @Like2Win y dale like a posts oficiales para ganar tickets
             </p>
             <a 
