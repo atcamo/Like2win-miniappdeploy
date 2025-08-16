@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
     description:
-      "🎫 Like2Win: La forma más simple de ganar $DEGEN en Farcaster. Follow @Like2Win y participa según tu tipo: Con sombrero DEGEN = solo like, Sin sombrero = like + recast + comment. Sorteos bi-semanales. Zero friction, maximum fun!",
+      "🎫 Like2Win: La forma más simple de ganar $DEGEN en Farcaster. Follow @Like2Win y participa según tu tipo:\n• Con 🎩 DEGEN: solo like\n• Sin 🎩: like + recast + comment\nSorteos bi-semanales. Zero friction, maximum fun!",
     keywords: [
       "Farcaster",
       "DEGEN", 
@@ -50,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: "Like2Win",
     openGraph: {
       title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
-      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster. Con sombrero DEGEN: solo like. Sin sombrero: like + recast + comment",
+      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster.\n• Con 🎩 DEGEN: solo like\n• Sin 🎩: like + recast + comment",
       url: URL,
       siteName: PROJECT_NAME,
       images: [
@@ -67,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
-      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster. Con sombrero DEGEN: solo like. Sin sombrero: like + recast + comment",
+      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster.\n• Con 🎩 DEGEN: solo like\n• Sin 🎩: like + recast + comment",
       images: [`${URL}/hero.png`],
       creator: "@Like2Win"
     },

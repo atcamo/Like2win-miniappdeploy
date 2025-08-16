@@ -103,7 +103,10 @@ export function HeroSection() {
                 </span>
               </h1>
               <p className="text-xl text-[var(--app-foreground-muted)] leading-relaxed max-w-lg">
-                Follow @Like2Win y participa en sorteos bi-semanales de $DEGEN. <strong>Con sombrero DEGEN:</strong> solo like. <strong>Sin sombrero:</strong> like + recast + comment. Zero friction, maximum fun!
+                Follow @Like2Win y participa en sorteos bi-semanales de $DEGEN.<br/>
+                • <strong>Con 🎩 DEGEN:</strong> solo like<br/>
+                • <strong>Sin 🎩:</strong> like + recast + comment<br/>
+                Zero friction, maximum fun!
               </p>
             </div>
             
@@ -402,7 +405,7 @@ export function HowItWorksSection() {
     {
       number: "02", 
       title: "Participa",
-      description: "Con sombrero DEGEN: solo like. Sin sombrero: like + recast + comment",
+      description: "• Con 🎩 DEGEN: solo like • Sin 🎩: like + recast + comment",
       icon: "sparkles" as const
     },
     {
@@ -482,7 +485,7 @@ export function FAQSection() {
     },
     {
       question: "¿Cómo empiezo a participar?",
-      answer: "Es súper simple: 1) Sigue @Like2Win en Farcaster, 2) Si tienes sombrero DEGEN puesto: solo dale like. Si no tienes sombrero: like + recast + comment, 3) Recibe tickets automáticamente, 4) Participa en sorteos."
+      answer: "Es súper simple: 1) Sigue @Like2Win en Farcaster, 2) Participa según tu tipo: • Con 🎩 DEGEN: solo dale like • Sin 🎩: like + recast + comment, 3) Recibe tickets automáticamente, 4) Participa en sorteos."
     },
     {
       question: "¿Hay costos o comisiones?",

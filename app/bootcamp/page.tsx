@@ -340,7 +340,9 @@ export default function Like2WinDashboard() {
               ¿Quieres aparecer en el leaderboard?
             </h3>
             <p className="text-amber-700 mb-6 font-medium">
-              Sigue @Like2Win y participa. Con sombrero DEGEN 🎩: solo like. Sin sombrero: like + recast + comment para ganar tickets
+              Sigue @Like2Win y participa para ganar tickets:<br/>
+              • <strong>Con 🎩 DEGEN:</strong> solo like<br/>
+              • <strong>Sin 🎩:</strong> like + recast + comment
             </p>
             <a 
               href="/miniapp" 

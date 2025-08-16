@@ -93,7 +93,9 @@ export function FrameAwareLanding() {
                     </h2>
                     
                     <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                      Sigue @Like2Win y participa en sorteos bi-semanales. Con sombrero DEGEN: solo like. Sin sombrero: like + recast + comment
+                      Sigue @Like2Win y participa en sorteos bi-semanales:<br/>
+                      • Con 🎩 DEGEN: solo like<br/>
+                      • Sin 🎩: like + recast + comment
                     </p>
                     
                     {/* Inline stats - more compact */}
