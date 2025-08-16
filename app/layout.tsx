@@ -18,16 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
   
   // Like2Win Mini App embed metadata
   const miniAppEmbed = {
-    version: "next",
+    version: "1",
     imageUrl: `${URL}/hero.png`,
     button: {
       title: "Launch Like2Win",
       action: {
-        type: "launch_frame",
-        name: "Like2Win",
+        type: "launch_miniapp",
         url: `${URL}/miniapp/simple`,
-        splashImageUrl: `${URL}/splash.png`,
-        splashBackgroundColor: "#F59E0B",
       },
     },
   };
@@ -74,12 +71,6 @@ export async function generateMetadata(): Promise<Metadata> {
     other: {
       // Mini App embed metadata (required for Farcaster)
       "fc:miniapp": JSON.stringify(miniAppEmbed),
-      // Frame metadata for backward compatibility  
-      "fc:frame": "next",
-      "fc:frame:image": miniAppEmbed.imageUrl,
-      "fc:frame:button:1": "Launch Like2Win",
-      "fc:frame:button:1:action": "launch_frame",
-      "fc:frame:button:1:target": `${URL}/miniapp/simple`,
     },
   };
 }
