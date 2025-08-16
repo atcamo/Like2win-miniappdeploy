@@ -21,17 +21,17 @@ export async function GET() {
       splashImageUrl: "https://like2win-miniappdeploy.vercel.app/splash.png",
       splashBackgroundColor: "#F59E0B",
       webhookUrl: "https://like2win-miniappdeploy.vercel.app/api/webhook",
-      subtitle: "Follow + Participate = Win $DEGEN",
-      description: "Experience the future of social engagement on Farcaster. Follow @Like2Win and participate in bi-weekly $DEGEN raffles. Con 🎩 DEGEN: solo like. Sin 🎩: like + recast + comment. Zero friction, maximum rewards!",
+      subtitle: "Follow and Participate to Win",
+      description: "Social engagement on Farcaster with bi-weekly DEGEN raffles. DEGEN users only like. Non-DEGEN users like, recast and comment. Zero friction rewards.",
       screenshotUrls: [
         "https://like2win-miniappdeploy.vercel.app/screenshot.png"
       ],
       primaryCategory: "social",
       tags: ["degen", "social", "rewards", "farcaster", "gamification", "raffles"],
       heroImageUrl: "https://like2win-miniappdeploy.vercel.app/hero.png",
-      tagline: "Con 🎩 DEGEN: solo like. Sin 🎩: like + recast + comment",
-      ogTitle: "Like2Win - Social Gamification Platform",
-      ogDescription: "🎫 La forma más simple de ganar $DEGEN en Farcaster. Con 🎩 DEGEN: solo like. Sin 🎩: like + recast + comment. Sorteos bi-semanales.",
+      tagline: "DEGEN like, others do more",
+      ogTitle: "Like2Win Social Rewards",
+      ogDescription: "Win DEGEN tokens on Farcaster. DEGEN users like, others like recast and comment for tickets.",
       ogImageUrl: "https://like2win-miniappdeploy.vercel.app/hero.png",
       imageUrl: "https://like2win-miniappdeploy.vercel.app/hero.png",
       buttonTitle: "Launch Like2Win"
