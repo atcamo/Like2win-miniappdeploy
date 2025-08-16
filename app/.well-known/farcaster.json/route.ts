@@ -9,9 +9,9 @@ export async function GET() {
 
   const manifest = {
     accountAssociation: {
-      header: "eyJmaWQiOjEyMDY2MTIsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0NGY0YTIzRTg0MTA0OTEyYUM0OGQxQmFFODY0ZDBhZWZFNGREREQ0QSJ9",
-      payload: "eyJkb21haW4iOiJsaWtlMndpbi1taW5pYXBwZGVwbG95LnZlcmNlbC5hcHAifQ==",
-      signature: "PLACEHOLDER_SIGNATURE_NEEDS_TO_BE_GENERATED"
+      header: "eyJmaWQiOjEyMDY2MTIsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhFOWZFNDhDYzcyMzMxYjNEZkRjZDAzNDU5MzE4MDRFNTA3NDYyNzdGIn0",
+      payload: "eyJkb21haW4iOiJsaWtlMndpbi1taW5pYXBwZGVwbG95LnZlcmNlbC5hcHAifQ",
+      signature: "MHg1M2E3MWFjNjI2ODFjNDlmZTMyMjU1YjE2ZDcwZjIyMGI4NmY0NDM3ZGE4NGY3ODk3ZDFlZTQ3Yjc1MzlmY2IwMDI5MmNhNTljMWFkYjVkOTNmMDI3NzI1NjllOTU3ZmQ1YzU0MjRjMjFlNGRjYjZlNWVkY2UyYjZhMDc0NzczYTFj"
     },
     frame: {
       version: "1",
