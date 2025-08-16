@@ -236,16 +236,16 @@ export function FrameAwareLanding() {
           <section className="px-4 py-4">
             <div className="max-w-md mx-auto">
               <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 p-[1px] rounded-2xl shadow-xl">
-                <div className="bg-gray-900 rounded-2xl p-6 text-center relative overflow-hidden">
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 text-center relative overflow-hidden">
                   {/* Animated gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-red-900/20 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-100/20 via-pink-100/20 to-red-100/20 animate-pulse"></div>
                   
                   <div className="relative z-10">
                     <div className="text-3xl mb-3">⚡</div>
-                    <h3 className="text-lg font-black text-white mb-2">
+                    <h3 className="text-lg font-black text-gray-800 mb-2">
                       Próximo Sorteo en 3 días
                     </h3>
-                    <p className="text-sm text-gray-300 mb-4">
+                    <p className="text-sm text-gray-600 mb-4">
                       No te pierdas la oportunidad de ganar $DEGEN
                     </p>
                     
@@ -258,7 +258,7 @@ export function FrameAwareLanding() {
                       </a>
                       <a 
                         href="/bootcamp" 
-                        className="flex-1 bg-white/10 backdrop-blur-sm text-white font-semibold py-3 px-4 rounded-lg hover:bg-white/20 transition-all duration-300 text-sm border border-white/20"
+                        className="flex-1 bg-amber-100/50 backdrop-blur-sm text-gray-800 font-semibold py-3 px-4 rounded-lg hover:bg-amber-200/50 transition-all duration-300 text-sm border border-amber-300/30"
                       >
                         📊 Stats
                       </a>
