@@ -27,7 +27,7 @@ export async function GET() {
         "https://like2win-miniappdeploy.vercel.app/screenshot.png"
       ],
       primaryCategory: "social",
-      tags: ["degen", "social", "rewards", "farcaster", "gamification", "raffles"],
+      tags: ["degen", "social", "rewards", "gamification", "raffles"],
       heroImageUrl: "https://like2win-miniappdeploy.vercel.app/hero.png",
       tagline: "DEGEN like, others do more",
       ogTitle: "Like2Win Social Rewards",
