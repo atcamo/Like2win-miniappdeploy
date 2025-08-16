@@ -167,7 +167,8 @@ export default function Like2WinMiniApp() {
               💡 <strong>Cómo participar:</strong><br/>
               1. Abre en Farcaster client<br/>
               2. Sigue @Like2Win<br/>
-              3. Dale like a posts oficiales
+              3. Con sombrero DEGEN 🎩: solo like<br/>
+              4. Sin sombrero: like + recast + comment
             </p>
           </div>
         </div>
@@ -190,8 +191,8 @@ export default function Like2WinMiniApp() {
               ¡Gana $DEGEN con tus Likes!
             </MainTitle>
             <p className="text-lg text-amber-700 max-w-2xl mx-auto">
-              La forma más simple de ganar crypto: Follow @Like2Win + Like posts oficiales = 
-              participar en sorteos bi-semanales de $DEGEN.
+              La forma más simple de ganar crypto: Follow @Like2Win y participa según tu tipo de cuenta. 
+              Con sombrero DEGEN: solo like. Sin sombrero: like + recast + comment. Sorteos bi-semanales de $DEGEN.
             </p>
             
             <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">

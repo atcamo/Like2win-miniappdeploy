@@ -103,7 +103,7 @@ export function HeroSection() {
                 </span>
               </h1>
               <p className="text-xl text-[var(--app-foreground-muted)] leading-relaxed max-w-lg">
-                Follow @Like2Win y dale like a posts oficiales para participar en sorteos bi-semanales de $DEGEN. Zero friction, maximum fun!
+                Follow @Like2Win y participa en sorteos bi-semanales de $DEGEN. <strong>Con sombrero DEGEN:</strong> solo like. <strong>Sin sombrero:</strong> like + recast + comment. Zero friction, maximum fun!
               </p>
             </div>
             
@@ -401,8 +401,8 @@ export function HowItWorksSection() {
     },
     {
       number: "02", 
-      title: "Like",
-      description: "Dale like a posts oficiales de @Like2Win",
+      title: "Participa",
+      description: "Con sombrero DEGEN: solo like. Sin sombrero: like + recast + comment",
       icon: "sparkles" as const
     },
     {
@@ -482,11 +482,11 @@ export function FAQSection() {
     },
     {
       question: "¿Cómo empiezo a participar?",
-      answer: "Es súper simple: 1) Sigue @Like2Win en Farcaster, 2) Dale like a posts oficiales de @Like2Win, 3) Recibe tickets automáticamente, 4) Participa en sorteos."
+      answer: "Es súper simple: 1) Sigue @Like2Win en Farcaster, 2) Si tienes sombrero DEGEN puesto: solo dale like. Si no tienes sombrero: like + recast + comment, 3) Recibe tickets automáticamente, 4) Participa en sorteos."
     },
     {
       question: "¿Hay costos o comisiones?",
-      answer: "¡No! Like2Win es completamente gratis. No hay costos de participación, no necesitas wallet, no hay signup. Solo follow + like = participar."
+      answer: "¡No! Like2Win es completamente gratis. No hay costos de participación, no necesitas wallet, no hay signup. Solo follow + participar según tu tipo de cuenta."
     },
     {
       question: "¿Cómo se financian los premios?",

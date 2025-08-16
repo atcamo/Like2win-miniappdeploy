@@ -178,8 +178,8 @@ export default function SimpleLike2WinApp() {
               ¡Gana $DEGEN con tus Likes!
             </MainTitle>
             <p className="text-lg text-amber-700 max-w-2xl mx-auto">
-              La forma más simple de ganar crypto: Follow @Like2Win + Like posts oficiales = 
-              participar en sorteos bi-semanales de $DEGEN.
+              La forma más simple de ganar crypto: Follow @Like2Win y participa según tu tipo. 
+              Con sombrero DEGEN 🎩: solo like. Sin sombrero: like + recast + comment. Sorteos bi-semanales de $DEGEN.
             </p>
             
             <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
