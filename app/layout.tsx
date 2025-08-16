@@ -13,7 +13,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win.vercel.app";
+  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win-miniappdeploy.vercel.app";
   const PROJECT_NAME = "Like2Win";
   
   // Like2Win Mini App embed metadata
@@ -21,13 +21,13 @@ export async function generateMetadata(): Promise<Metadata> {
     version: "1",
     imageUrl: `${URL}/hero.png`,
     button: {
-      title: `Launch ${PROJECT_NAME}`,
+      title: "Launch Like2Win",
       action: {
         type: "launch_frame",
-        name: PROJECT_NAME,
+        name: "Like2Win",
         url: `${URL}/miniapp/simple`,
         splashImageUrl: `${URL}/splash.png`,
-        splashBackgroundColor: "#F59E0B", // Like2Win amber color
+        splashBackgroundColor: "#F59E0B",
       },
     },
   };
