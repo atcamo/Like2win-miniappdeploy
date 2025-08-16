@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   
   // Like2Win Mini App embed metadata
   const miniAppEmbed = {
-    version: "1",
+    version: "next",
     imageUrl: `${URL}/hero.png`,
     button: {
       title: "Launch Like2Win",
@@ -75,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
       // Mini App embed metadata (required for Farcaster)
       "fc:miniapp": JSON.stringify(miniAppEmbed),
       // Frame metadata for backward compatibility  
-      "fc:frame": "vNext",
+      "fc:frame": "next",
       "fc:frame:image": miniAppEmbed.imageUrl,
       "fc:frame:button:1": "Launch Like2Win",
       "fc:frame:button:1:action": "launch_frame",
