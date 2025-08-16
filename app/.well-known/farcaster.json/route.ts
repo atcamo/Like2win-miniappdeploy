@@ -1,16 +1,3 @@
-function withValidProperties(
-  properties: Record<string, undefined | string | string[]>,
-) {
-  return Object.fromEntries(
-    Object.entries(properties).filter(([key, value]) => {
-      if (Array.isArray(value)) {
-        return value.length > 0;
-      }
-      return !!value;
-    }),
-  );
-}
-
 export async function GET() {
   const URL = process.env.NEXT_PUBLIC_URL || "https://like2win-miniappdeploy.vercel.app";
 
@@ -20,7 +7,7 @@ export async function GET() {
       payload: process.env.FARCASTER_PAYLOAD || "eyJkb21haW4iOiJsaWtlMndpbi1taW5pYXBwZGVwbG95LnZlcmNlbC5hcHAifQ==",
       signature: process.env.FARCASTER_SIGNATURE || "MHg3NzA1MzUxOGUxNzVhZjYxMzEyZjRhNDdiZGU3YWRmNmFhZmE4NGE2YjI5ZDEyOGI5YjAyZmY5ZjBiODIwYTgwNjAyZWNhNWQ0MTA1ZjBjM2NlZWI4ZjBiZWZjZTM3ZGVjZjlkYTlmODUwOTQxNzVhZDY4OGVhM2Y2MzJiNzE0MDFi",
     },
-    frame: withValidProperties({
+    frame: {
       version: "1",
       name: "Like2Win",
       subtitle: "Follow + Participate = Win $DEGEN",
@@ -40,6 +27,6 @@ export async function GET() {
       ogDescription: "🎫 La forma más simple de ganar $DEGEN en Farcaster. Con 🎩 DEGEN: solo like. Sin 🎩: like + recast + comment. Sorteos bi-semanales.",
       ogImageUrl: `${URL}/hero.png`,
       buttonTitle: "Launch Like2Win",
-    }),
+    },
   });
 }
