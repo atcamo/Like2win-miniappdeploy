@@ -189,9 +189,9 @@ export default function Like2WinDashboard() {
               <div className="text-amber-700">Tickets Distribuidos</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="gradient" className="text-center">
-              <div className="text-3xl font-bold text-white drop-shadow-sm mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
-              <div className="text-orange-100 font-medium">$DEGEN Otorgados</div>
+            <Like2WinCard variant="default" className="text-center">
+              <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
+              <div className="text-amber-700 font-medium">$DEGEN Otorgados</div>
             </Like2WinCard>
           </div>
         )}
@@ -200,12 +200,12 @@ export default function Like2WinDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {stats && (
             <>
-              <Like2WinCard variant="gradient" className="text-center">
-                <h3 className="text-xl font-bold text-white drop-shadow-sm mb-4">🎲 Próximo Sorteo</h3>
-                <div className="text-2xl font-bold text-orange-100 drop-shadow-sm mb-2">
+              <Like2WinCard variant="default" className="text-center">
+                <h3 className="text-xl font-bold text-amber-900 mb-4">🎲 Próximo Sorteo</h3>
+                <div className="text-2xl font-bold text-amber-800 mb-2">
                   {formatDate(stats.nextRaffleDate)}
                 </div>
-                <p className="text-orange-100/90 mb-4 font-medium">
+                <p className="text-amber-700 mb-4 font-medium">
                   Sorteo #{stats.currentRaffleId} • Bi-semanal
                 </p>
                 <a 
@@ -335,11 +335,11 @@ export default function Like2WinDashboard() {
 
         {/* Call to Action */}
         <div className="text-center mb-8">
-          <Like2WinCard variant="gradient" className="max-w-md mx-auto">
-            <h3 className="text-xl font-bold text-white drop-shadow-sm mb-4">
+          <Like2WinCard variant="default" className="max-w-md mx-auto">
+            <h3 className="text-xl font-bold text-amber-900 mb-4">
               ¿Quieres aparecer en el leaderboard?
             </h3>
-            <p className="text-orange-100/90 mb-6 font-medium">
+            <p className="text-amber-700 mb-6 font-medium">
               Sigue @Like2Win y dale like a posts oficiales para ganar tickets
             </p>
             <a 

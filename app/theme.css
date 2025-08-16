@@ -34,9 +34,9 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Like2Win Dark Mode */
-    --app-background: linear-gradient(to bottom right, #1f2937, #1f2937, #451a03);
-    --app-foreground: #ffffff;
-    --app-foreground-muted: #fbbf24;
+    --app-background: linear-gradient(to bottom right, #fef3c7, #fef08a, #fed7aa);
+    --app-foreground: #111111;
+    --app-foreground-muted: #92400e;
     --app-accent: #F59E0B;
     --app-accent-hover: #D97706;
     --app-accent-active: #B45309;
@@ -44,19 +44,19 @@
     --app-primary-amber: #F59E0B;
     --app-primary-yellow: #EAB308;
     --app-primary-orange: #F97316;
-    --app-gray: #374151;
-    --app-gray-dark: #4b5563;
-    --app-card-bg: rgba(245, 158, 11, 0.1);
+    --app-gray: #fef3c7;
+    --app-gray-dark: #fde68a;
+    --app-card-bg: rgba(251, 191, 36, 0.1);
     --app-card-border: rgba(245, 158, 11, 0.3);
     --app-success: #22c55e;
     --app-success-hover: #16a34a;
-    --app-success-bg: rgba(34, 197, 94, 0.1);
-    --app-success-border: rgba(34, 197, 94, 0.3);
-    --app-success-muted: #4ade80;
+    --app-success-bg: #dcfce7;
+    --app-success-border: #bbf7d0;
+    --app-success-muted: #15803d;
     --app-error: #ef4444;
     --app-error-hover: #dc2626;
-    --app-error-bg: rgba(239, 68, 68, 0.1);
-    --app-error-border: rgba(239, 68, 68, 0.3);
+    --app-error-bg: #fee2e2;
+    --app-error-border: #fecaca;
   }
 }
 
