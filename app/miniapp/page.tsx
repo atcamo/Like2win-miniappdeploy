@@ -186,7 +186,6 @@ export default function Like2WinMiniApp() {
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
           <div className="space-y-4">
-            <div className="text-6xl animate-pulse">🎫</div>
             <MainTitle className="text-3xl">
               ¡Gana $DEGEN con tus Likes!
             </MainTitle>
