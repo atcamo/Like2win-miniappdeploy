@@ -24,6 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Launch Like2Win",
       action: {
         type: "launch_miniapp",
+        name: "Like2Win",
         url: `${URL}/miniapp/simple`,
       },
     },
