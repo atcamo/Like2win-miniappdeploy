@@ -81,7 +81,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
         <h3 className="text-lg font-semibold text-amber-800 mb-2">
           ⚠️ Error de Engagement
         </h3>
-        <p className="text-amber-700 text-sm mb-4">{error}</p>
+        <p className="text-amber-700 text-sm mb-4">{_error}</p>
         <Like2WinButton 
           variant="gradient" 
           onClick={() => window.location.reload()}
