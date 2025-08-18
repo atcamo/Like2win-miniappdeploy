@@ -90,7 +90,6 @@ export class EngagementService {
       const response = await this.client.searchUser({ q: 'like2win' });
       
       // Find exact match
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const like2winUser = response.result.users.find((user: any) => 
         user.username.toLowerCase() === 'like2win'
       );
@@ -122,7 +121,6 @@ export class EngagementService {
         limit: 100 // Check first 100 follows
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const isFollowing = response.users.some((user: any) => user.fid === this.LIKE2WIN_FID);
       
       // Update database
