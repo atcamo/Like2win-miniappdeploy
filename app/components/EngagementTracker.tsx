@@ -15,7 +15,7 @@ interface EngagementTrackerProps {
 export function EngagementTracker({ userFid }: EngagementTrackerProps) {
   const {
     isLoading,
-    error,
+    error: _error, // Renamed to avoid unused var error
     isFollowing,
     casts,
     engagementStatus,
@@ -75,7 +75,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
     await checkCastEngagement(userFid, cast.hash);
   };
 
-  if (error && false) { // Temporarily disable error display
+  if (false) { // Error display disabled for production
     return (
       <Like2WinCard variant="warning" className="text-center">
         <h3 className="text-lg font-semibold text-amber-800 mb-2">

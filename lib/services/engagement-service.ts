@@ -90,7 +90,8 @@ export class EngagementService {
       const response = await this.client.searchUser({ q: 'like2win' });
       
       // Find exact match
-      const like2winUser = response.result.users.find((user: { username: string }) => 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const like2winUser = response.result.users.find((user: any) => 
         user.username.toLowerCase() === 'like2win'
       );
 
@@ -121,7 +122,8 @@ export class EngagementService {
         limit: 100 // Check first 100 follows
       });
 
-      const isFollowing = response.users.some((user: { fid: number }) => user.fid === this.LIKE2WIN_FID);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const isFollowing = response.users.some((user: any) => user.fid === this.LIKE2WIN_FID);
       
       // Update database
       await this.updateUserFollowStatus(userFid, isFollowing);
@@ -198,7 +200,7 @@ export class EngagementService {
 
       // Temporary heuristic: users with power badge likely have tip allowance
       // TODO: Replace with actual Degen tip allowance API
-      return user.power_badge || false;
+      return Boolean(user?.power_badge);
     } catch (error) {
       console.error(`Error checking tip allowance for FID ${userFid}:`, error);
       return false;

@@ -22,7 +22,8 @@
       "WebFetch(domain:miniapps.farcaster.xyz)",
       "Bash(node:*)",
       "Bash(echo:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(gh workflow:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
