@@ -5,7 +5,7 @@ import { HeartIcon, TrophyIcon, SparklesIcon } from "lucide-react";
 
 type Like2WinButtonProps = {
   children: ReactNode;
-  variant?: "gradient" | "primary" | "secondary" | "outline";
+  variant?: "gradient" | "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   className?: string;
   onClick?: () => void;
@@ -40,6 +40,8 @@ export function Like2WinButton({
       "bg-gradient-to-r from-amber-500/10 to-yellow-500/10 backdrop-blur-lg border border-amber-200/30 hover:border-amber-300/50 text-[var(--app-foreground)]",
     outline:
       "border-2 border-amber-500 hover:bg-amber-500 hover:text-white text-amber-600",
+    ghost:
+      "hover:bg-amber-100 text-amber-700 hover:text-amber-800",
   };
 
   const sizeClasses = {
@@ -73,7 +75,7 @@ type Like2WinCardProps = {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
-  variant?: "default" | "glassmorphism" | "gradient";
+  variant?: "default" | "glassmorphism" | "gradient" | "success" | "warning" | "info";
 }
 
 export function Like2WinCard({
@@ -90,6 +92,12 @@ export function Like2WinCard({
       "bg-gradient-to-r from-amber-500/10 to-yellow-500/10 backdrop-blur-lg border border-amber-200/30 dark:border-amber-700/30",
     gradient:
       "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 border border-amber-200 dark:border-amber-700",
+    success:
+      "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-700",
+    warning:
+      "bg-yellow-50 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700",
+    info:
+      "bg-blue-50 border border-blue-200 dark:bg-blue-900/20 dark:border-blue-700",
   };
 
   return (

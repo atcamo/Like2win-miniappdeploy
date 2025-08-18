@@ -8,6 +8,8 @@ import {
   Like2WinButton, 
   Like2WinLogo
 } from '@/app/components/Like2WinComponents';
+// import { EngagementTracker } from '@/app/components/EngagementTracker';
+import { EngagementDemo } from '@/app/components/EngagementDemo';
 
 // Type for MiniKit hook return value
 interface MiniKitHookResult {
@@ -216,6 +218,9 @@ export default function Like2WinMiniApp() {
           </div>
         </Like2WinCard>
 
+
+        {/* Engagement System - Use Demo for now, switch to Tracker when API is ready */}
+        <EngagementDemo />
 
         {/* Call to Action */}
         <Like2WinCard variant="gradient" className="text-center">

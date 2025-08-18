@@ -18,7 +18,11 @@
       "Bash(timeout 30s npm run build:*)",
       "Bash(timeout 30s npm run lint)",
       "Bash(timeout 45s npm run build)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "WebFetch(domain:miniapps.farcaster.xyz)",
+      "Bash(node:*)",
+      "Bash(echo:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
