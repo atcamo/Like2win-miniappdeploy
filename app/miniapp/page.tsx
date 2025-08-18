@@ -220,8 +220,8 @@ export default function Like2WinMiniApp() {
 
 
         {/* Engagement System - Use Demo for now, switch to Tracker when API is ready */}
-        {/* Real Engagement Tracker with APIs - Using demo FID for now */}
-        <EngagementTracker userFid={12345} />
+        {/* Real Engagement Tracker with APIs - Using real user FID */}
+        <EngagementTracker userFid={432789} />
 
         {/* Call to Action */}
         <Like2WinCard variant="gradient" className="text-center">

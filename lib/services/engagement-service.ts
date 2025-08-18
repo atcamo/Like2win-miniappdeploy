@@ -118,7 +118,7 @@ export class EngagementService {
     try {
       const response = await this.client.fetchUserFollowing({
         fid: userFid,
-        limit: 100 // Check first 100 follows
+        limit: 1000 // Check first 1000 follows to ensure we find Like2Win
       });
 
       const isFollowing = response.users.some((user: any) => user.fid === this.LIKE2WIN_FID);
@@ -168,15 +168,69 @@ export class EngagementService {
     }
 
     try {
-      // For MVP, we'll use a simplified approach
-      // TODO: Replace with actual Neynar API calls once we have proper methods
       console.log(`Checking engagement for cast ${castHash} by user ${userFid}`);
       
-      // Placeholder implementation - always return false for now
-      // This will be replaced with actual API calls once Neynar client is properly configured
-      const hasLiked = false;
-      const hasCommented = false;
-      const hasRecasted = false;
+      // Get cast details including reactions
+      const castResponse = await this.client.fetchCastByHash({
+        hash: castHash,
+        type: 'hash'
+      });
+
+      if (!castResponse.cast) {
+        console.warn(`Cast ${castHash} not found`);
+        return { hasLiked: false, hasCommented: false, hasRecasted: false };
+      }
+
+      // Check likes - get cast reactions
+      let hasLiked = false;
+      try {
+        const reactionsResponse = await this.client.fetchCastReactions({
+          hash: castHash,
+          types: 'likes',
+          limit: 100
+        });
+        
+        hasLiked = reactionsResponse.reactions?.some((reaction: any) => 
+          reaction.user?.fid === userFid
+        ) || false;
+      } catch (error) {
+        console.warn('Error checking likes:', error);
+      }
+
+      // Check recasts - simplified for now
+      let hasRecasted = false;
+      try {
+        const recastsResponse = await this.client.fetchCastReactions({
+          hash: castHash, 
+          types: 'recasts',
+          limit: 100
+        });
+        
+        hasRecasted = recastsResponse.reactions?.some((reaction: any) => 
+          reaction.user?.fid === userFid
+        ) || false;
+      } catch (error) {
+        console.warn('Error checking recasts:', error);
+      }
+
+      // Check comments - get replies to the cast
+      let hasCommented = false;
+      try {
+        const repliesResponse = await this.client.fetchCastReplies({
+          hash: castHash,
+          limit: 50
+        });
+        
+        hasCommented = repliesResponse.casts?.some((reply: any) => 
+          reply.author?.fid === userFid
+        ) || false;
+      } catch (error) {
+        console.warn('Error checking comments:', error);
+      }
+
+      console.log(`Engagement check for ${userFid} on ${castHash}:`, {
+        hasLiked, hasCommented, hasRecasted
+      });
 
       return { hasLiked, hasCommented, hasRecasted };
     } catch (error) {
