@@ -220,28 +220,8 @@ export default function Like2WinMiniApp() {
 
 
         {/* Engagement System - Use Demo for now, switch to Tracker when API is ready */}
-        {/* Real Engagement Tracker with APIs */}
-        {userData && userData.fid && (
-          <EngagementTracker userFid={userData.fid} />
-        )}
-        
-        {/* Fallback if no user data */}
-        {(!userData || !userData.fid) && (
-          <Like2WinCard variant="warning" className="text-center">
-            <h3 className="text-lg font-semibold text-amber-800 mb-2">
-              🔐 Acceso Requerido
-            </h3>
-            <p className="text-amber-700 text-sm mb-4">
-              Necesitas estar conectado en Farcaster para usar Like2Win
-            </p>
-            <Like2WinButton 
-              variant="gradient"
-              onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
-            >
-              Ir a Farcaster
-            </Like2WinButton>
-          </Like2WinCard>
-        )}
+        {/* Real Engagement Tracker with APIs - Using demo FID for now */}
+        <EngagementTracker userFid={12345} />
 
         {/* Call to Action */}
         <Like2WinCard variant="gradient" className="text-center">
