@@ -263,7 +263,7 @@ export class EngagementService {
         // Try to get cast reactions using the correct reactions endpoint
         const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/reactions/cast/?hash=${castHash}&types=likes,recasts&limit=100`, {
           headers: {
-            'x-api-key': process.env.NEYNAR_API_KEY,
+            'x-api-key': process.env.NEYNAR_API_KEY || '',
             'Content-Type': 'application/json'
           }
         });
