@@ -39,15 +39,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-orange-500 to-amber-500 border-b border-amber-600 shadow-lg backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-3">
             <img 
               src="/logo.png" 
               alt="Like2Win Logo" 
-              className="w-8 h-8 object-contain"
+              className="w-12 h-12 object-contain drop-shadow-lg"
             />
-            <span className="text-xl font-semibold text-white drop-shadow-sm">Like2Win</span>
+            <span className="text-2xl font-bold text-white drop-shadow-sm">Like2Win</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -74,17 +74,17 @@ export function Header() {
           <div className="flex items-center">
             {farcasterUser ? (
               /* Show Farcaster user info in MiniApp context */
-              <div className="flex items-center space-x-2 px-3 py-2 bg-white/10 rounded-lg">
+              <div className="flex items-center space-x-3 px-4 py-2 bg-white/15 rounded-xl border border-white/20 backdrop-blur-sm">
                 <img 
                   src={farcasterUser.pfpUrl || '/logo.png'} 
                   alt={farcasterUser.displayName || 'User'} 
-                  className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                  className="w-12 h-12 rounded-full object-cover border-3 border-white/30 shadow-lg ring-2 ring-white/20"
                 />
                 <div className="hidden sm:block">
-                  <p className="text-sm font-medium text-white truncate max-w-[120px]">
+                  <p className="text-base font-semibold text-white truncate max-w-[140px] drop-shadow-sm">
                     {farcasterUser.displayName || farcasterUser.username || 'Farcaster User'}
                   </p>
-                  <p className="text-xs text-orange-100">
+                  <p className="text-sm text-orange-100 font-medium">
                     @{farcasterUser.username || 'user'}
                   </p>
                 </div>
@@ -92,9 +92,9 @@ export function Header() {
             ) : (
               /* Fallback to wallet connection for web context */
               <Wallet>
-                <ConnectWallet className="!px-3 !py-2 !text-sm !font-medium !bg-[var(--app-accent)] !text-white !border-none !rounded-lg hover:!bg-[var(--app-accent-hover)] !transition-colors">
-                  <Avatar className="h-6 w-6" />
-                  <Name className="!text-sm !font-medium !max-w-[100px] !truncate" />
+                <ConnectWallet className="!px-4 !py-3 !text-base !font-semibold !bg-white/15 !text-white !border !border-white/20 !rounded-xl hover:!bg-white/25 !transition-all !backdrop-blur-sm">
+                  <Avatar className="h-8 w-8" />
+                  <Name className="!text-base !font-semibold !max-w-[120px] !truncate" />
                 </ConnectWallet>
                 <WalletDropdown>
                   <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
@@ -161,17 +161,17 @@ export function Header() {
           {(farcasterUser || (isConnected && address)) && (
             <div className="px-3 py-2 border-t border-orange-600/50">
               {farcasterUser ? (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-4 py-1">
                   <img 
                     src={farcasterUser.pfpUrl || '/logo.png'} 
                     alt={farcasterUser.displayName || 'User'} 
-                    className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white/30 shadow-md"
                   />
                   <div>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-base font-semibold text-white">
                       {farcasterUser.displayName || farcasterUser.username || 'Farcaster User'}
                     </p>
-                    <p className="text-xs text-orange-100">
+                    <p className="text-sm text-orange-100 font-medium">
                       @{farcasterUser.username || 'user'}
                     </p>
                   </div>
