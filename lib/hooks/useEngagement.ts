@@ -201,23 +201,32 @@ export function useEngagement(): EngagementHookReturn {
 
   // Load Like2Win casts
   const loadLike2WinCasts = useCallback(async (limit: number = 10) => {
+    console.log(`🚀 LOADING LIKE2WIN CASTS - Limit: ${limit}`);
     setIsLoading(true);
     setError(null);
     
     try {
+      console.log('📞 Making API call to /api/engagement/casts');
       const response = await fetch(`/api/engagement/casts?limit=${limit}`);
       const result = await response.json();
+      
+      console.log('📊 Casts API Response:', { 
+        success: result.success, 
+        castsCount: result.data?.casts?.length || 0,
+        error: result.error 
+      });
       
       if (!result.success) {
         throw new Error(result.error || 'Failed to load casts');
       }
       
+      console.log('✅ Setting casts in state:', result.data.casts.length, 'casts');
       setCasts(result.data.casts);
       
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      console.error('❌ Error loading casts:', err);
       setError(errorMessage);
-      console.error('Error loading casts:', err);
     } finally {
       setIsLoading(false);
     }

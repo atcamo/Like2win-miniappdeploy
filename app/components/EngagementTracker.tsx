@@ -46,13 +46,31 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
 
   // Auto-check engagement for all loaded casts
   useEffect(() => {
+    console.log('🎯 AUTO-CHECK EFFECT TRIGGERED:', {
+      castsLength: casts.length, 
+      userFid, 
+      engagementStatusSize: engagementStatus.size
+    });
+    
     if (casts.length > 0 && userFid) {
+      console.log('✅ AUTO-CHECK CONDITIONS MET - Starting engagement checks...');
+      
       // Check engagement for each cast automatically
-      casts.forEach(cast => {
+      casts.forEach((cast, index) => {
+        console.log(`📋 Cast ${index + 1}/${casts.length}: ${cast.hash}`);
+        
         // Only check if we haven't checked this cast yet
         if (!engagementStatus.has(cast.hash)) {
+          console.log(`🔄 Checking engagement for cast ${cast.hash}`);
           checkCastEngagement(userFid, cast.hash);
+        } else {
+          console.log(`✅ Already checked cast ${cast.hash}`);
         }
+      });
+    } else {
+      console.log('❌ AUTO-CHECK CONDITIONS NOT MET:', {
+        noCasts: casts.length === 0,
+        noUserFid: !userFid
       });
     }
   }, [casts, userFid, checkCastEngagement, engagementStatus]);
