@@ -261,7 +261,74 @@ export default function Like2WinMiniApp() {
 
 
         {/* Engagement System - Real Engagement Tracker with APIs */}
-        {userFid && <EngagementTracker userFid={userFid} />}
+        {userFid && isFollowing === true && <EngagementTracker userFid={userFid} />}
+        
+        {/* Blocked feed for non-followers */}
+        {userFid && isFollowing === false && (
+          <Like2WinCard variant="gradient">
+            <div className="text-center py-12">
+              <div className="mb-6">
+                <div className="w-20 h-20 mx-auto bg-amber-200 rounded-full flex items-center justify-center mb-4">
+                  <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-amber-800 mb-3">
+                  📋 Posts Oficiales Bloqueados
+                </h3>
+                <p className="text-amber-700 mb-6 max-w-md mx-auto">
+                  Para ver los posts oficiales de @Like2Win y participar en los sorteos, primero necesitas seguir la cuenta.
+                </p>
+                <Like2WinButton 
+                  variant="gradient" 
+                  size="lg"
+                  onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
+                >
+                  🎯 Seguir @Like2Win
+                </Like2WinButton>
+              </div>
+              
+              {/* Preview placeholder */}
+              <div className="border-t border-amber-200 pt-6">
+                <div className="space-y-3 opacity-30">
+                  <div className="bg-amber-100 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-amber-300 rounded-full"></div>
+                      <div className="flex-1">
+                        <div className="h-3 bg-amber-300 rounded w-24 mb-2"></div>
+                        <div className="h-2 bg-amber-200 rounded w-full mb-1"></div>
+                        <div className="h-2 bg-amber-200 rounded w-3/4"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-amber-100 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-amber-300 rounded-full"></div>
+                      <div className="flex-1">
+                        <div className="h-3 bg-amber-300 rounded w-24 mb-2"></div>
+                        <div className="h-2 bg-amber-200 rounded w-full mb-1"></div>
+                        <div className="h-2 bg-amber-200 rounded w-2/3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-amber-600 mt-3">
+                  Vista previa de posts oficiales (disponible después de seguir)
+                </p>
+              </div>
+            </div>
+          </Like2WinCard>
+        )}
+        
+        {/* Loading state while checking follow status */}
+        {userFid && isFollowing === null && (
+          <Like2WinCard variant="gradient">
+            <div className="text-center py-8">
+              <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p className="text-amber-700">Verificando acceso a posts oficiales...</p>
+            </div>
+          </Like2WinCard>
+        )}
 
         {/* Call to Action - Only show if following */}
         {isFollowing === true && (
