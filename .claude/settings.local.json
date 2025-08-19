@@ -23,7 +23,12 @@
       "Bash(node:*)",
       "Bash(echo:*)",
       "Bash(npm run dev:*)",
-      "Bash(gh workflow:*)"
+      "Bash(gh workflow:*)",
+      "Bash(git rm:*)",
+      "Bash(git pull:*)",
+      "Bash(bun install:*)",
+      "Bash(timeout:*)",
+      "Bash(bunx next dev:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
