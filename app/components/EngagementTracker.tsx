@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useEngagement, Like2WinCast } from '@/lib/hooks/useEngagement';
+import { useRaffleStatus } from '@/lib/hooks/useRaffleStatus';
 import { 
   Like2WinCard, 
   Like2WinButton, 
@@ -24,6 +25,9 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
     processEngagement,
     loadLike2WinCasts
   } = useEngagement();
+  
+  // Get user's current tickets count
+  const { data: raffleData } = useRaffleStatus(userFid);
 
   // const [selectedCast, setSelectedCast] = useState<Like2WinCast | null>(null);
   const [processingCast, setProcessingCast] = useState<string | null>(null);
@@ -44,7 +48,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
     }
   }, [isFollowing, loadLike2WinCasts]);
 
-  // Auto-check engagement for all loaded casts
+  // Auto-check engagement and automatically process tickets for eligible casts
   useEffect(() => {
     console.log('🎯 AUTO-CHECK EFFECT TRIGGERED:', {
       castsLength: casts.length, 
@@ -56,13 +60,34 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
       console.log('✅ AUTO-CHECK CONDITIONS MET - Starting engagement checks...');
       
       // Check engagement for each cast automatically
-      casts.forEach((cast, index) => {
+      casts.forEach(async (cast, index) => {
         console.log(`📋 Cast ${index + 1}/${casts.length}: ${cast.hash}`);
         
         // Only check if we haven't checked this cast yet
         if (!engagementStatus.has(cast.hash)) {
           console.log(`🔄 Checking engagement for cast ${cast.hash}`);
-          checkCastEngagement(userFid, cast.hash);
+          
+          try {
+            const status = await checkCastEngagement(userFid, cast.hash);
+            
+            // Automatically process engagement if eligible
+            if (status.isEligibleForTicket) {
+              console.log(`🎫 Auto-processing ticket for cast ${cast.hash}`);
+              await processEngagement(userFid, cast.hash);
+              
+              // Show success message briefly
+              setMessages(prev => ({ ...prev, [cast.hash]: '🎫 ¡Ticket automático ganado!' }));
+              setTimeout(() => {
+                setMessages(prev => {
+                  const newMessages = { ...prev };
+                  delete newMessages[cast.hash];
+                  return newMessages;
+                });
+              }, 3000);
+            }
+          } catch (error) {
+            console.error(`Error processing cast ${cast.hash}:`, error);
+          }
         } else {
           console.log(`✅ Already checked cast ${cast.hash}`);
         }
@@ -73,7 +98,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
         noUserFid: !userFid
       });
     }
-  }, [casts, userFid, checkCastEngagement, engagementStatus]);
+  }, [casts, userFid, checkCastEngagement, engagementStatus, processEngagement]);
 
   // Process engagement for a cast
   const handleProcessEngagement = async (cast: Like2WinCast) => {
@@ -207,13 +232,25 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
               const isProcessing = processingCast === cast.hash;
               
               return (
-                <div key={cast.hash} className="border border-amber-200 rounded-lg p-4 bg-white">
+                <div 
+                  key={cast.hash} 
+                  className="border border-amber-200 rounded-lg p-4 bg-white hover:bg-amber-50 transition-colors cursor-pointer"
+                  onClick={() => window.open(`https://warpcast.com/like2win/${cast.hash}`, '_blank')}
+                >
                   <div className="flex items-start gap-3 mb-3">
-                    <img 
-                      src={cast.author.pfp} 
-                      alt={cast.author.displayName}
-                      className="w-10 h-10 rounded-full"
-                    />
+                    <div className="relative">
+                      <img 
+                        src={cast.author.pfp} 
+                        alt={cast.author.displayName}
+                        className="w-10 h-10 rounded-full"
+                      />
+                      {/* Show current tickets count */}
+                      {raffleData?.user.currentTickets && raffleData.user.currentTickets > 0 && (
+                        <div className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
+                          {raffleData.user.currentTickets > 99 ? '99+' : raffleData.user.currentTickets}
+                        </div>
+                      )}
+                    </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-semibold text-amber-800">
@@ -245,16 +282,16 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                     </div>
                   </div>
                   
-                  {/* Subtle Status Indicator */}
+                  {/* Automatic Processing Status Indicator */}
                   {status && (status.isEligibleForTicket || status.requiresMoreActions.length > 0) && (
                     <div className="text-center mb-3">
                       {status.isEligibleForTicket ? (
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                          🎫 Elegible para ticket
+                          ✨ Procesando automáticamente
                         </span>
                       ) : (
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                          ⚠️ Faltan: {status.requiresMoreActions.join(', ')}
+                          📝 Necesitas: {status.requiresMoreActions.join(', ')}
                         </span>
                       )}
                     </div>
@@ -267,35 +304,23 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                     </div>
                   )}
                   
-                  {/* Actions */}
-                  <div className="flex gap-2">
-                    {status?.isEligibleForTicket && (
+                  {/* Automatic ticket processing - no manual buttons needed */}
+                  <div className="flex justify-between items-center">
+                    <div className="text-xs text-gray-500">
+                      💡 Haz click para ver el post original
+                    </div>
+                    
+                    {/* Refresh button only - prevent click propagation */}
+                    <div onClick={(e) => e.stopPropagation()}>
                       <Like2WinButton
-                        variant="gradient"
+                        variant="ghost"
                         size="sm"
-                        onClick={() => handleProcessEngagement(cast)}
+                        onClick={() => handleCheckEngagement(cast)}
                         disabled={isProcessing}
                       >
-                        {isProcessing ? 'Procesando...' : '🎫 Reclamar Ticket'}
+                        🔄
                       </Like2WinButton>
-                    )}
-                    
-                    <Like2WinButton
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleCheckEngagement(cast)}
-                      disabled={isProcessing}
-                    >
-                      🔄 Refrescar
-                    </Like2WinButton>
-                    
-                    <Like2WinButton
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => window.open(`https://warpcast.com/like2win/${cast.hash}`, '_blank')}
-                    >
-                      👀 Ver Post
-                    </Like2WinButton>
+                    </div>
                   </div>
                 </div>
               );
