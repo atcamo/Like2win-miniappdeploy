@@ -95,33 +95,35 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
   return (
     <div className="space-y-6">
       
-      {/* Follow Status */}
-      <Like2WinCard variant={isFollowing ? "success" : "warning"}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Like2WinLogo size="sm" animated={false} />
-            <div>
-              <h3 className="font-semibold text-amber-800">
-                Estado de Follow
-              </h3>
-              <p className="text-sm text-amber-700">
-                {isFollowing === null ? 'Verificando...' :
-                 isFollowing ? '✅ Siguiendo @Like2Win' : 
-                 '❌ Debes seguir @Like2Win'}
-              </p>
+      {/* Follow Status - Hidden since it's now shown in main section */}
+      {false && (
+        <Like2WinCard variant={isFollowing ? "success" : "warning"}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Like2WinLogo size="sm" animated={false} />
+              <div>
+                <h3 className="font-semibold text-amber-800">
+                  Estado de Follow
+                </h3>
+                <p className="text-sm text-amber-700">
+                  {isFollowing === null ? 'Verificando...' :
+                   isFollowing ? '✅ Siguiendo @Like2Win' : 
+                   '❌ Debes seguir @Like2Win'}
+                </p>
+              </div>
             </div>
+            {!isFollowing && (
+              <Like2WinButton 
+                variant="gradient"
+                size="sm"
+                onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
+              >
+                Follow
+              </Like2WinButton>
+            )}
           </div>
-          {!isFollowing && (
-            <Like2WinButton 
-              variant="gradient"
-              size="sm"
-              onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
-            >
-              Follow
-            </Like2WinButton>
-          )}
-        </div>
-      </Like2WinCard>
+        </Like2WinCard>
+      )}
 
       {/* Casts List */}
       <Like2WinCard variant="gradient">
