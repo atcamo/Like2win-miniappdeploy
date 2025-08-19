@@ -465,7 +465,8 @@ export class EngagementService {
         }
       });
     } catch (error) {
-      console.warn('Error updating follow status (DB might not be configured):', error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn('Error updating follow status (DB might not be configured):', message);
     }
   }
 
@@ -491,7 +492,8 @@ export class EngagementService {
 
       return existing?.ticketAwarded || false;
     } catch (error) {
-      console.warn('Error checking existing ticket (DB might not be configured):', error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn('Error checking existing ticket (DB might not be configured):', message);
       return false; // Allow ticket awarding if we can't check
     }
   }
@@ -575,7 +577,8 @@ export class EngagementService {
       return true;
 
     } catch (error) {
-      console.warn('Error awarding ticket (DB might not be configured):', error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn('Error awarding ticket (DB might not be configured):', message);
       return false;
     }
   }
