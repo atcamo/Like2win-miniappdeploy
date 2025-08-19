@@ -28,6 +28,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
   // const [selectedCast, setSelectedCast] = useState<Like2WinCast | null>(null);
   const [processingCast, setProcessingCast] = useState<string | null>(null);
   const [messages, setMessages] = useState<{ [key: string]: string }>({});
+  const [showAllCasts, setShowAllCasts] = useState(false);
 
   // Check follow status on mount
   useEffect(() => {
@@ -35,6 +36,13 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
       checkFollowStatus(userFid);
     }
   }, [userFid, checkFollowStatus]);
+
+  // Load casts only when user is confirmed to be following
+  useEffect(() => {
+    if (isFollowing === true) {
+      loadLike2WinCasts(2); // Limit to 2 posts initially
+    }
+  }, [isFollowing, loadLike2WinCasts]);
 
   // Process engagement for a cast
   const handleProcessEngagement = async (cast: Like2WinCast) => {
@@ -73,6 +81,18 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
   // Check engagement status for a cast
   const handleCheckEngagement = async (cast: Like2WinCast) => {
     await checkCastEngagement(userFid, cast.hash);
+  };
+
+  // Load more casts when user clicks "Ver más"
+  const handleLoadMore = () => {
+    if (showAllCasts) {
+      // Redirect to Farcaster profile
+      window.open('https://warpcast.com/like2win', '_blank');
+    } else {
+      // Load more casts
+      setShowAllCasts(true);
+      loadLike2WinCasts(10); // Load up to 10 casts
+    }
   };
 
   if (false) { // Error display disabled for production
@@ -143,14 +163,14 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
             </p>
             <Like2WinButton 
               variant="outline" 
-              onClick={() => loadLike2WinCasts()}
+              onClick={() => loadLike2WinCasts(2)}
             >
               Reintentar
             </Like2WinButton>
           </div>
         ) : (
           <div className="space-y-4">
-            {casts.slice(0, 5).map((cast) => {
+            {casts.slice(0, showAllCasts ? casts.length : 2).map((cast) => {
               const status = engagementStatus.get(cast.hash);
               const message = messages[cast.hash];
               const isProcessing = processingCast === cast.hash;
@@ -265,6 +285,28 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                 </div>
               );
             })}
+            
+            {/* Ver más button */}
+            {casts.length > 0 && (
+              <div className="text-center pt-4 border-t border-amber-200">
+                <Like2WinButton
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLoadMore}
+                >
+                  {showAllCasts && casts.length > 2 ? 
+                    '🔗 Ver perfil completo' : 
+                    `Ver más posts (${casts.length > 2 ? casts.length - 2 : 'más'} disponibles)`
+                  }
+                </Like2WinButton>
+                <p className="text-xs text-amber-600 mt-1">
+                  {showAllCasts ? 
+                    'Ir a @Like2Win en Farcaster' : 
+                    'Cargar más publicaciones'
+                  }
+                </p>
+              </div>
+            )}
           </div>
         )}
       </Like2WinCard>

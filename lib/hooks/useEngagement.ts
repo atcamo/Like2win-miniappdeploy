@@ -230,10 +230,8 @@ export function useEngagement(): EngagementHookReturn {
     setEngagementStatus(new Map());
   }, []);
 
-  // Load casts on mount
-  useEffect(() => {
-    loadLike2WinCasts();
-  }, [loadLike2WinCasts]);
+  // Load casts only if user is following (removed automatic loading)
+  // Casts will only be loaded when explicitly called from components
 
   return {
     // State
