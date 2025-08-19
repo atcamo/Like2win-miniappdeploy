@@ -259,42 +259,6 @@ export default function Like2WinMiniApp() {
           </div>
         </Like2WinCard>
 
-        {/* Save MiniApp Prompt */}
-        <Like2WinCard variant="gradient" className="relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-amber-800 mb-1">
-                  💾 Guarda Like2Win
-                </h3>
-                <p className="text-amber-700 text-sm">
-                  Accede rápido desde tu home de Farcaster
-                </p>
-              </div>
-            </div>
-            <Like2WinButton 
-              variant="gradient" 
-              size="sm"
-              onClick={() => {
-                // MiniKit save function - this will be handled by Farcaster
-                if (typeof window !== 'undefined' && window.parent) {
-                  window.parent.postMessage({ type: 'saveMiniApp' }, '*');
-                }
-              }}
-            >
-              Guardar
-            </Like2WinButton>
-          </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-20 h-20 bg-yellow-400/10 rounded-full -translate-y-10 translate-x-10"></div>
-          <div className="absolute bottom-0 left-0 w-16 h-16 bg-orange-400/10 rounded-full translate-y-8 -translate-x-8"></div>
-        </Like2WinCard>
 
         {/* Engagement System - Real Engagement Tracker with APIs */}
         {userFid && isFollowing === true && <EngagementTracker userFid={userFid} />}
@@ -405,6 +369,24 @@ export default function Like2WinMiniApp() {
             </div>
           </Like2WinCard>
         )}
+
+        {/* Save MiniApp - Simple & Clean */}
+        <div className="mt-8 text-center py-4 border-t border-amber-200">
+          <p className="text-amber-600 text-sm mb-3">
+            💾 Guarda Like2Win para acceso rápido
+          </p>
+          <Like2WinButton 
+            variant="outline" 
+            size="sm"
+            onClick={() => {
+              if (typeof window !== 'undefined' && window.parent) {
+                window.parent.postMessage({ type: 'saveMiniApp' }, '*');
+              }
+            }}
+          >
+            Guardar MiniApp
+          </Like2WinButton>
+        </div>
 
       </main>
 
