@@ -256,46 +256,85 @@ export class EngagementService {
     try {
       console.log(`Checking real engagement for cast ${castHash} by user ${userFid}`);
       
-      // Method 1: Try to get cast details and check reactions
+      // Method 1: Try to get cast reactions directly from Neynar API
       try {
-        // Use the cast hash to get cast info - simplified approach for free tier
+        console.log(`Attempting to fetch cast reactions for ${castHash}`);
+        
+        // Try to get cast reactions using the reactions endpoint
+        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${castHash}&types=likes,recasts`, {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEYNAR_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (reactionsResponse.status === 200) {
+          const reactionsData = await reactionsResponse.json();
+          
+          // Check if user liked the cast
+          const hasLiked = reactionsData.result?.likes?.some((like: any) => 
+            like.user.fid === userFid || like.fid === userFid
+          ) || false;
+          
+          // Check if user recasted the cast  
+          const hasRecasted = reactionsData.result?.recasts?.some((recast: any) => 
+            recast.user.fid === userFid || recast.fid === userFid
+          ) || false;
+
+          console.log(`✅ Direct reactions check for ${userFid} on ${castHash}:`, {
+            hasLiked, hasRecasted
+          });
+          
+          return { 
+            hasLiked, 
+            hasCommented: false, // Comments require separate endpoint
+            hasRecasted 
+          };
+        } else {
+          console.warn(`Reactions API returned ${reactionsResponse.status} for cast ${castHash}`);
+        }
+        
+      } catch (reactionsError: any) {
+        console.warn(`Direct reactions check failed for ${castHash}:`, reactionsError.message);
+      }
+
+      // Method 2: Fallback - Try to get cast details and check embedded reactions
+      try {
         const cast = await this.getCastByHashFallback(castHash);
         
         if (!cast) {
-          console.warn(`Cast ${castHash} not found`);
+          console.warn(`Cast ${castHash} not found in fallback`);
           return { hasLiked: false, hasCommented: false, hasRecasted: false };
         }
 
-        // Check likes
+        // Check likes from cast data
         let hasLiked = false;
         if (cast.reactions?.likes && cast.reactions.likes.length > 0) {
-          hasLiked = cast.reactions.likes.some((like: any) => like.fid === userFid);
+          hasLiked = cast.reactions.likes.some((like: any) => 
+            like.fid === userFid || like.user?.fid === userFid
+          );
         }
 
-        // Check recasts
+        // Check recasts from cast data  
         let hasRecasted = false;
         if (cast.reactions?.recasts && cast.reactions.recasts.length > 0) {
-          hasRecasted = cast.reactions.recasts.some((recast: any) => recast.fid === userFid);
+          hasRecasted = cast.reactions.recasts.some((recast: any) => 
+            recast.fid === userFid || recast.user?.fid === userFid
+          );
         }
 
-        // Check comments/replies - simplified for free tier
-        let hasCommented = false;
-        // Note: Checking replies requires premium features
-        // For free tier, we'll check if user has interacted recently with Like2Win
-        console.warn('Reply checking disabled for free tier - using interaction heuristic');
-
-        console.log(`Real engagement for ${userFid} on ${castHash}:`, {
-          hasLiked, hasCommented, hasRecasted
+        console.log(`Fallback engagement check for ${userFid} on ${castHash}:`, {
+          hasLiked, hasRecasted
         });
         
-        return { hasLiked, hasCommented, hasRecasted };
+        return { hasLiked, hasCommented: false, hasRecasted };
 
-      } catch (apiError: any) {
-        console.warn(`Neynar API error for cast ${castHash}:`, apiError.message);
+      } catch (fallbackError: any) {
+        console.warn(`Fallback engagement check failed for ${castHash}:`, fallbackError.message);
         
-        // Fallback: For development, provide some realistic simulation only for known test users
+        // Method 3: Development/testing fallback for known users
         if (userFid === 432789) {
-          console.log(`Using fallback simulation for test user ${userFid}`);
+          console.log(`Using test user fallback for ${userFid}`);
           return { 
             hasLiked: true,  // Default to liked for test user
             hasCommented: false, 
@@ -303,7 +342,7 @@ export class EngagementService {
           };
         }
         
-        // For real users, return no engagement if we can't verify
+        // For unknown users or API failures, return no engagement
         return { hasLiked: false, hasCommented: false, hasRecasted: false };
       }
       

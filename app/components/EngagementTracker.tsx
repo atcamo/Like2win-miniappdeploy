@@ -44,6 +44,19 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
     }
   }, [isFollowing, loadLike2WinCasts]);
 
+  // Auto-check engagement for all loaded casts
+  useEffect(() => {
+    if (casts.length > 0 && userFid) {
+      // Check engagement for each cast automatically
+      casts.forEach(cast => {
+        // Only check if we haven't checked this cast yet
+        if (!engagementStatus.has(cast.hash)) {
+          checkCastEngagement(userFid, cast.hash);
+        }
+      });
+    }
+  }, [casts, userFid, checkCastEngagement, engagementStatus]);
+
   // Process engagement for a cast
   const handleProcessEngagement = async (cast: Like2WinCast) => {
     setProcessingCast(cast.hash);
@@ -205,45 +218,101 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                     </div>
                   </div>
                   
-                  {/* Engagement Status */}
-                  {status && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className={status.hasLiked ? "text-green-600" : "text-gray-400"}>
-                            {status.hasLiked ? "✅" : "⭕"} Like
-                          </span>
+                  {/* Auto-detected Engagement Status with Visual Tickets */}
+                  <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-lg p-3 mb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-semibold text-amber-800">
+                        🎯 Estado de Participación
+                      </h4>
+                      {status ? (
+                        <div className="text-xs text-amber-600">
+                          Auto-verificado
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className={status.hasCommented ? "text-green-600" : "text-gray-400"}>
-                            {status.hasCommented ? "✅" : "⭕"} Comment
-                          </span>
+                      ) : (
+                        <div className="text-xs text-amber-500">
+                          Verificando...
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className={status.hasRecasted ? "text-green-600" : "text-gray-400"}>
-                            {status.hasRecasted ? "✅" : "⭕"} Recast
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className={status.hasTipAllowance ? "text-green-600" : "text-gray-400"}>
-                            {status.hasTipAllowance ? "✅" : "⭕"} Tip Allowance
-                          </span>
-                        </div>
-                      </div>
-                      
-                      {status.requiresMoreActions.length > 0 && (
-                        <p className="text-amber-700 text-sm mt-2">
-                          <strong>Acciones requeridas:</strong> {status.requiresMoreActions.join(', ')}
-                        </p>
-                      )}
-                      
-                      {status.isEligibleForTicket && (
-                        <p className="text-green-700 text-sm mt-2 font-semibold">
-                          🎫 ¡Elegible para ticket!
-                        </p>
                       )}
                     </div>
-                  )}
+                    
+                    <div className="grid grid-cols-3 gap-3 mb-3">
+                      {/* Like Ticket */}
+                      <div className="flex flex-col items-center p-2 bg-white rounded-lg shadow-sm">
+                        <div className={`text-2xl mb-1 ${status?.hasLiked ? 'animate-bounce' : ''}`}>
+                          {status?.hasLiked ? '🎫' : '⚪'}
+                        </div>
+                        <span className={`text-xs font-medium ${
+                          status?.hasLiked ? 'text-green-700' : 'text-gray-500'
+                        }`}>
+                          Like
+                        </span>
+                        {status?.hasLiked && (
+                          <div className="w-full h-1 bg-green-200 rounded-full mt-1">
+                            <div className="w-full h-1 bg-green-500 rounded-full animate-pulse"></div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Comment Ticket */}
+                      <div className="flex flex-col items-center p-2 bg-white rounded-lg shadow-sm">
+                        <div className={`text-2xl mb-1 ${status?.hasCommented ? 'animate-bounce' : ''}`}>
+                          {status?.hasCommented ? '🎫' : '⚪'}
+                        </div>
+                        <span className={`text-xs font-medium ${
+                          status?.hasCommented ? 'text-green-700' : 'text-gray-500'
+                        }`}>
+                          Comment
+                        </span>
+                        {status?.hasCommented && (
+                          <div className="w-full h-1 bg-green-200 rounded-full mt-1">
+                            <div className="w-full h-1 bg-green-500 rounded-full animate-pulse"></div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Recast Ticket */}
+                      <div className="flex flex-col items-center p-2 bg-white rounded-lg shadow-sm">
+                        <div className={`text-2xl mb-1 ${status?.hasRecasted ? 'animate-bounce' : ''}`}>
+                          {status?.hasRecasted ? '🎫' : '⚪'}
+                        </div>
+                        <span className={`text-xs font-medium ${
+                          status?.hasRecasted ? 'text-green-700' : 'text-gray-500'
+                        }`}>
+                          Recast
+                        </span>
+                        {status?.hasRecasted && (
+                          <div className="w-full h-1 bg-green-200 rounded-full mt-1">
+                            <div className="w-full h-1 bg-green-500 rounded-full animate-pulse"></div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Progress Summary */}
+                    {status && (
+                      <div className="border-t border-amber-200 pt-2">
+                        {status.isEligibleForTicket ? (
+                          <div className="text-center">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 animate-pulse">
+                              🏆 ¡Participación completada! Elegible para sorteo
+                            </span>
+                          </div>
+                        ) : status.requiresMoreActions.length > 0 ? (
+                          <div className="text-center">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                              📝 Faltan: {status.requiresMoreActions.join(', ')}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="text-center">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              🔍 Verificando participación...
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   
                   {/* Message */}
                   {message && (
@@ -254,32 +323,32 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                   
                   {/* Actions */}
                   <div className="flex gap-2">
+                    {status?.isEligibleForTicket && (
+                      <Like2WinButton
+                        variant="gradient"
+                        size="sm"
+                        onClick={() => handleProcessEngagement(cast)}
+                        disabled={isProcessing}
+                      >
+                        {isProcessing ? 'Procesando...' : '🎫 Reclamar Ticket'}
+                      </Like2WinButton>
+                    )}
+                    
                     <Like2WinButton
                       variant="outline"
                       size="sm"
                       onClick={() => handleCheckEngagement(cast)}
                       disabled={isProcessing}
                     >
-                      Verificar Engagement
+                      🔄 Refrescar
                     </Like2WinButton>
-                    
-                    {isFollowing && (
-                      <Like2WinButton
-                        variant="gradient"
-                        size="sm"
-                        onClick={() => handleProcessEngagement(cast)}
-                        disabled={isProcessing || !isFollowing}
-                      >
-                        {isProcessing ? 'Procesando...' : 'Procesar Ticket'}
-                      </Like2WinButton>
-                    )}
                     
                     <Like2WinButton
                       variant="ghost"
                       size="sm"
                       onClick={() => window.open(`https://warpcast.com/like2win/${cast.hash}`, '_blank')}
                     >
-                      Ver en Farcaster
+                      👀 Ver Post
                     </Like2WinButton>
                   </div>
                 </div>
@@ -302,7 +371,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                 <p className="text-xs text-amber-600 mt-1">
                   {showAllCasts ? 
                     'Ir a @Like2Win en Farcaster' : 
-                    'Cargar más publicaciones'
+                    ''
                   }
                 </p>
               </div>
