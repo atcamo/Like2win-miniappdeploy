@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
+import { useMiniKit } from '@coinbase/onchainkit/minikit';
 import { 
   ConnectWallet,
   Wallet,
@@ -19,6 +20,10 @@ import {
 export function Header() {
   const pathname = usePathname();
   const { isConnected, address } = useAccount();
+  
+  // Get MiniKit context for Farcaster user info
+  const miniKit = useMiniKit();
+  const farcasterUser = miniKit?.context?.user;
 
   const navItems = [
     {
@@ -65,22 +70,42 @@ export function Header() {
             })}
           </nav>
 
-          {/* Wallet Connection */}
+          {/* User Profile - Farcaster or Wallet */}
           <div className="flex items-center">
-            <Wallet>
-              <ConnectWallet className="!px-3 !py-2 !text-sm !font-medium !bg-[var(--app-accent)] !text-white !border-none !rounded-lg hover:!bg-[var(--app-accent-hover)] !transition-colors">
-                <Avatar className="h-6 w-6" />
-                <Name className="!text-sm !font-medium !max-w-[100px] !truncate" />
-              </ConnectWallet>
-              <WalletDropdown>
-                <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-                  <Avatar />
-                  <Name />
-                  <Address className="!text-xs !text-gray-500" />
-                </Identity>
-                <WalletDropdownDisconnect />
-              </WalletDropdown>
-            </Wallet>
+            {farcasterUser ? (
+              /* Show Farcaster user info in MiniApp context */
+              <div className="flex items-center space-x-2 px-3 py-2 bg-white/10 rounded-lg">
+                <img 
+                  src={farcasterUser.pfpUrl || '/logo.png'} 
+                  alt={farcasterUser.displayName || 'User'} 
+                  className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                />
+                <div className="hidden sm:block">
+                  <p className="text-sm font-medium text-white truncate max-w-[120px]">
+                    {farcasterUser.displayName || farcasterUser.username || 'Farcaster User'}
+                  </p>
+                  <p className="text-xs text-orange-100">
+                    @{farcasterUser.username || 'user'}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              /* Fallback to wallet connection for web context */
+              <Wallet>
+                <ConnectWallet className="!px-3 !py-2 !text-sm !font-medium !bg-[var(--app-accent)] !text-white !border-none !rounded-lg hover:!bg-[var(--app-accent-hover)] !transition-colors">
+                  <Avatar className="h-6 w-6" />
+                  <Name className="!text-sm !font-medium !max-w-[100px] !truncate" />
+                </ConnectWallet>
+                <WalletDropdown>
+                  <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+                    <Avatar />
+                    <Name />
+                    <Address className="!text-xs !text-gray-500" />
+                  </Identity>
+                  <WalletDropdownDisconnect />
+                </WalletDropdown>
+              </Wallet>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -132,15 +157,33 @@ export function Header() {
             })}
           </div>
           
-          {/* Mobile Wallet Info */}
-          {isConnected && address && (
+          {/* Mobile User Info */}
+          {(farcasterUser || (isConnected && address)) && (
             <div className="px-3 py-2 border-t border-orange-600/50">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-orange-100">
-                  Conectado: {address.slice(0, 6)}...{address.slice(-4)}
-                </span>
-              </div>
+              {farcasterUser ? (
+                <div className="flex items-center space-x-3">
+                  <img 
+                    src={farcasterUser.pfpUrl || '/logo.png'} 
+                    alt={farcasterUser.displayName || 'User'} 
+                    className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                  />
+                  <div>
+                    <p className="text-sm font-medium text-white">
+                      {farcasterUser.displayName || farcasterUser.username || 'Farcaster User'}
+                    </p>
+                    <p className="text-xs text-orange-100">
+                      @{farcasterUser.username || 'user'}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-orange-100">
+                    Conectado: {address!.slice(0, 6)}...{address!.slice(-4)}
+                  </span>
+                </div>
+              )}
             </div>
           )}
         </div>
