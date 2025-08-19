@@ -330,8 +330,8 @@ export default function Like2WinMiniApp() {
           </Like2WinCard>
         )}
 
-        {/* Call to Action - Only show if following */}
-        {isFollowing === true && (
+        {/* Call to Action - Hidden since posts are shown directly below */}
+        {false && isFollowing === true && (
           <Like2WinCard variant="gradient" className="text-center">
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-amber-800">¿Listo para participar?</h3>
