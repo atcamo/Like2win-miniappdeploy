@@ -260,10 +260,10 @@ export class EngagementService {
       try {
         console.log(`🔍 Attempting to fetch cast reactions for ${castHash}`);
         
-        // Try to get cast reactions using the reactions endpoint
-        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${castHash}&types=likes,recasts&limit=100`, {
+        // Try to get cast reactions using the correct reactions endpoint
+        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/reactions/cast/?hash=${castHash}&types=likes,recasts&limit=100`, {
           headers: {
-            'Authorization': `Bearer ${process.env.NEYNAR_API_KEY}`,
+            'x-api-key': process.env.NEYNAR_API_KEY,
             'Content-Type': 'application/json'
           }
         });
@@ -274,25 +274,31 @@ export class EngagementService {
           const reactionsData = await reactionsResponse.json();
           console.log(`📊 Reactions data structure:`, JSON.stringify(reactionsData, null, 2));
           
+          // Parse reactions according to Neynar v2 API format
+          const reactions = reactionsData.reactions || [];
+          
           // Check if user liked the cast
-          const likes = reactionsData.result?.likes || reactionsData.likes || [];
-          const hasLiked = likes.some((like: any) => {
-            const likeFid = like.user?.fid || like.fid || like.reactor?.fid;
-            console.log(`🔍 Checking like from FID ${likeFid} against user ${userFid}`);
-            return likeFid === userFid;
-          });
+          const userLikes = reactions.filter((reaction: any) => 
+            reaction.reaction_type === 'like' && 
+            (reaction.user?.fid === userFid || reaction.fid === userFid)
+          );
           
           // Check if user recasted the cast  
-          const recasts = reactionsData.result?.recasts || reactionsData.recasts || [];
-          const hasRecasted = recasts.some((recast: any) => {
-            const recastFid = recast.user?.fid || recast.fid || recast.reactor?.fid;
-            return recastFid === userFid;
-          });
+          const userRecasts = reactions.filter((reaction: any) => 
+            reaction.reaction_type === 'recast' && 
+            (reaction.user?.fid === userFid || reaction.fid === userFid)
+          );
+
+          const hasLiked = userLikes.length > 0;
+          const hasRecasted = userRecasts.length > 0;
 
           console.log(`✅ Direct reactions result for user ${userFid}:`, {
             hasLiked, hasRecasted, 
-            totalLikes: likes.length, 
-            totalRecasts: recasts.length
+            totalReactions: reactions.length,
+            userLikes: userLikes.length,
+            userRecasts: userRecasts.length,
+            userLikeDetails: userLikes,
+            userRecastDetails: userRecasts
           });
           
           return { 
