@@ -10,6 +10,7 @@ import {
 } from '@/app/components/Like2WinComponents';
 // import { EngagementTracker } from '@/app/components/EngagementTracker';
 import { EngagementTracker } from '@/app/components/EngagementTracker';
+import { useEngagement } from '@/lib/hooks/useEngagement';
 
 // Type for MiniKit hook return value
 interface MiniKitHookResult {
@@ -44,6 +45,9 @@ export default function Like2WinMiniApp() {
 
   // Always call useMiniKit at the top level
   const miniKitData = useMiniKit() as MiniKitHookResult;
+  
+  // Get engagement status to check if user is following
+  const { isFollowing, checkFollowStatus } = useEngagement();
 
   useEffect(() => {
     setMounted(true);
@@ -83,6 +87,13 @@ export default function Like2WinMiniApp() {
 
   // Get user FID from MiniKit context or default to null
   const userFid = context?.user?.fid || null;
+
+  // Check follow status when userFid is available
+  useEffect(() => {
+    if (userFid) {
+      checkFollowStatus(userFid);
+    }
+  }, [userFid, checkFollowStatus]);
 
   // Initialize OnchainKit Frame
   useEffect(() => {
@@ -198,49 +209,99 @@ export default function Like2WinMiniApp() {
               Sorteos bi-semanales de $DEGEN.
             </p>
             
-            <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
-              <p className="text-amber-800 font-semibold mb-3">
-                🚀 ¡Bienvenido a Like2Win!
-              </p>
-              <Like2WinButton 
-                variant="gradient" 
-                size="lg"
-                onClick={() => {
-                  window.open('https://warpcast.com/like2win', '_blank');
-                }}
-              >
-                Follow @Like2Win
-              </Like2WinButton>
-              <p className="text-xs text-amber-700 mt-2">
-                Se abrirá en Farcaster para seguir
-              </p>
-            </div>
+            {/* Show follow prompt only if user is not following yet */}
+            {isFollowing === false && (
+              <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
+                <p className="text-amber-800 font-semibold mb-3">
+                  🚀 ¡Bienvenido a Like2Win!
+                </p>
+                <Like2WinButton 
+                  variant="gradient" 
+                  size="lg"
+                  onClick={() => {
+                    window.open('https://warpcast.com/like2win', '_blank');
+                  }}
+                >
+                  Follow @Like2Win
+                </Like2WinButton>
+                <p className="text-xs text-amber-700 mt-2">
+                  Se abrirá en Farcaster para seguir
+                </p>
+              </div>
+            )}
+            
+            {/* Show welcome message if already following */}
+            {isFollowing === true && (
+              <div className="bg-green-100 border border-green-300 rounded-lg p-4">
+                <p className="text-green-800 font-semibold mb-2">
+                  ✅ ¡Ya sigues @Like2Win!
+                </p>
+                <p className="text-green-700 text-sm">
+                  Perfecto, ahora puedes participar en los sorteos. Busca posts oficiales y dale like para ganar tickets.
+                </p>
+              </div>
+            )}
+            
+            {/* Show loading state while checking */}
+            {isFollowing === null && (
+              <div className="bg-blue-100 border border-blue-300 rounded-lg p-4">
+                <p className="text-blue-800 font-semibold mb-2">
+                  🔍 Verificando estado de follow...
+                </p>
+                <div className="animate-pulse flex items-center gap-2">
+                  <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
+                  <p className="text-blue-700 text-sm">
+                    Checking if you follow @Like2Win
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </Like2WinCard>
 
 
-        {/* Engagement System - Use Demo for now, switch to Tracker when API is ready */}
-        {/* Real Engagement Tracker with APIs - Using real user FID */}
-        <EngagementTracker userFid={432789} />
+        {/* Engagement System - Real Engagement Tracker with APIs */}
+        {userFid && <EngagementTracker userFid={userFid} />}
 
-        {/* Call to Action */}
-        <Like2WinCard variant="gradient" className="text-center">
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-amber-800">¿Listo para participar?</h3>
-            <div className="space-y-2">
+        {/* Call to Action - Only show if following */}
+        {isFollowing === true && (
+          <Like2WinCard variant="gradient" className="text-center">
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-amber-800">¿Listo para participar?</h3>
+              <div className="space-y-2">
+                <Like2WinButton 
+                  variant="gradient" 
+                  size="lg"
+                  onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
+                >
+                  Ver Posts de @Like2Win
+                </Like2WinButton>
+                <p className="text-sm text-amber-700">
+                  Busca posts oficiales y dale like para ganar tickets
+                </p>
+              </div>
+            </div>
+          </Like2WinCard>
+        )}
+        
+        {/* Call to Action for non-followers */}
+        {isFollowing === false && (
+          <Like2WinCard variant="gradient" className="text-center">
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-amber-800">Primero debes seguir @Like2Win</h3>
+              <p className="text-amber-700 text-sm">
+                Para participar en los sorteos, necesitas seguir la cuenta oficial primero.
+              </p>
               <Like2WinButton 
                 variant="gradient" 
                 size="lg"
                 onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
               >
-                Ver Posts de @Like2Win
+                Seguir @Like2Win
               </Like2WinButton>
-              <p className="text-sm text-amber-700">
-                Busca posts oficiales y dale like para ganar tickets
-              </p>
             </div>
-          </div>
-        </Like2WinCard>
+          </Like2WinCard>
+        )}
 
       </main>
 
