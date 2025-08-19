@@ -284,8 +284,8 @@ export default function Like2WinMiniApp() {
           </Like2WinCard>
         )}
         
-        {/* Call to Action for non-followers */}
-        {isFollowing === false && (
+        {/* Call to Action for non-followers - Hidden since main section handles this */}
+        {false && isFollowing === false && (
           <Like2WinCard variant="gradient" className="text-center">
             <div className="space-y-4">
               <h3 className="text-xl font-semibold text-amber-800">Primero debes seguir @Like2Win</h3>
