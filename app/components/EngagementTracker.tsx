@@ -244,10 +244,10 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                         alt={cast.author.displayName}
                         className="w-10 h-10 rounded-full"
                       />
-                      {/* Show current tickets count */}
-                      {raffleData?.user.currentTickets && raffleData.user.currentTickets > 0 && (
+                      {/* Show current tickets count - always show if data exists */}
+                      {raffleData?.user && typeof raffleData.user.currentTickets !== 'undefined' && (
                         <div className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
-                          {raffleData.user.currentTickets > 99 ? '99+' : raffleData.user.currentTickets}
+                          {raffleData.user.currentTickets > 99 ? '99+' : raffleData.user.currentTickets || '0'}
                         </div>
                       )}
                     </div>
@@ -351,8 +351,25 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
         )}
       </Like2WinCard>
 
+      {/* Tickets Counter Card - Visible Display */}
+      {raffleData?.user && (
+        <Like2WinCard variant="success">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-green-800 mb-2">
+              🎫 Tus Tickets Actuales
+            </h3>
+            <div className="text-3xl font-bold text-green-600 mb-2">
+              {raffleData.user.currentTickets || 0}
+            </div>
+            <p className="text-sm text-green-700">
+              Tickets para el sorteo actual
+            </p>
+          </div>
+        </Like2WinCard>
+      )}
+
       {/* Debug Info */}
-      {process.env.NODE_ENV === 'development' && (
+      {true && ( // Always show debug for now
         <Like2WinCard variant="info">
           <h4 className="font-semibold text-blue-800 mb-2">🔧 Debug Info</h4>
           <div className="text-sm text-blue-700 space-y-1">
@@ -360,6 +377,9 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
             <p>Following: {String(isFollowing)}</p>
             <p>Casts loaded: {casts.length}</p>
             <p>Engagement status entries: {engagementStatus.size}</p>
+            <p>Raffle data loaded: {String(!!raffleData)}</p>
+            <p>Current tickets: {raffleData?.user?.currentTickets || 'N/A'}</p>
+            <p>User data: {raffleData?.user ? 'Yes' : 'No'}</p>
           </div>
         </Like2WinCard>
       )}
