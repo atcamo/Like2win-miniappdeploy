@@ -258,31 +258,41 @@ export class EngagementService {
       
       // Method 1: Try to get cast reactions directly from Neynar API
       try {
-        console.log(`Attempting to fetch cast reactions for ${castHash}`);
+        console.log(`🔍 Attempting to fetch cast reactions for ${castHash}`);
         
         // Try to get cast reactions using the reactions endpoint
-        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${castHash}&types=likes,recasts`, {
+        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${castHash}&types=likes,recasts&limit=100`, {
           headers: {
             'Authorization': `Bearer ${process.env.NEYNAR_API_KEY}`,
             'Content-Type': 'application/json'
           }
         });
 
+        console.log(`🌐 Reactions API response: ${reactionsResponse.status}`);
+
         if (reactionsResponse.status === 200) {
           const reactionsData = await reactionsResponse.json();
+          console.log(`📊 Reactions data structure:`, JSON.stringify(reactionsData, null, 2));
           
           // Check if user liked the cast
-          const hasLiked = reactionsData.result?.likes?.some((like: any) => 
-            like.user.fid === userFid || like.fid === userFid
-          ) || false;
+          const likes = reactionsData.result?.likes || reactionsData.likes || [];
+          const hasLiked = likes.some((like: any) => {
+            const likeFid = like.user?.fid || like.fid || like.reactor?.fid;
+            console.log(`🔍 Checking like from FID ${likeFid} against user ${userFid}`);
+            return likeFid === userFid;
+          });
           
           // Check if user recasted the cast  
-          const hasRecasted = reactionsData.result?.recasts?.some((recast: any) => 
-            recast.user.fid === userFid || recast.fid === userFid
-          ) || false;
+          const recasts = reactionsData.result?.recasts || reactionsData.recasts || [];
+          const hasRecasted = recasts.some((recast: any) => {
+            const recastFid = recast.user?.fid || recast.fid || recast.reactor?.fid;
+            return recastFid === userFid;
+          });
 
-          console.log(`✅ Direct reactions check for ${userFid} on ${castHash}:`, {
-            hasLiked, hasRecasted
+          console.log(`✅ Direct reactions result for user ${userFid}:`, {
+            hasLiked, hasRecasted, 
+            totalLikes: likes.length, 
+            totalRecasts: recasts.length
           });
           
           return { 
@@ -291,11 +301,12 @@ export class EngagementService {
             hasRecasted 
           };
         } else {
-          console.warn(`Reactions API returned ${reactionsResponse.status} for cast ${castHash}`);
+          const errorText = await reactionsResponse.text();
+          console.warn(`❌ Reactions API returned ${reactionsResponse.status}: ${errorText}`);
         }
         
       } catch (reactionsError: any) {
-        console.warn(`Direct reactions check failed for ${castHash}:`, reactionsError.message);
+        console.warn(`❌ Direct reactions check failed for ${castHash}:`, reactionsError.message);
       }
 
       // Method 2: Fallback - Try to get cast details and check embedded reactions

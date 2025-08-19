@@ -211,108 +211,36 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                          cast.text}
                       </p>
                       <div className="flex items-center gap-4 text-xs text-amber-600">
-                        <span>👍 {cast.engagement.likes}</span>
-                        <span>🔄 {cast.engagement.recasts}</span>
-                        <span>💬 {cast.engagement.replies}</span>
+                        <div className="flex items-center gap-1">
+                          <span>👍 {cast.engagement.likes}</span>
+                          {status?.hasLiked && <span className="text-green-500 text-xs">✓</span>}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span>🔄 {cast.engagement.recasts}</span>
+                          {status?.hasRecasted && <span className="text-green-500 text-xs">✓</span>}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span>💬 {cast.engagement.replies}</span>
+                          {status?.hasCommented && <span className="text-green-500 text-xs">✓</span>}
+                        </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Auto-detected Engagement Status with Visual Tickets */}
-                  <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-lg p-3 mb-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-semibold text-amber-800">
-                        🎯 Estado de Participación
-                      </h4>
-                      {status ? (
-                        <div className="text-xs text-amber-600">
-                          Auto-verificado
-                        </div>
+                  {/* Subtle Status Indicator */}
+                  {status && (status.isEligibleForTicket || status.requiresMoreActions.length > 0) && (
+                    <div className="text-center mb-3">
+                      {status.isEligibleForTicket ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                          🎫 Elegible para ticket
+                        </span>
                       ) : (
-                        <div className="text-xs text-amber-500">
-                          Verificando...
-                        </div>
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                          ⚠️ Faltan: {status.requiresMoreActions.join(', ')}
+                        </span>
                       )}
                     </div>
-                    
-                    <div className="grid grid-cols-3 gap-3 mb-3">
-                      {/* Like Ticket */}
-                      <div className="flex flex-col items-center p-2 bg-white rounded-lg shadow-sm">
-                        <div className={`text-2xl mb-1 ${status?.hasLiked ? 'animate-bounce' : ''}`}>
-                          {status?.hasLiked ? '🎫' : '⚪'}
-                        </div>
-                        <span className={`text-xs font-medium ${
-                          status?.hasLiked ? 'text-green-700' : 'text-gray-500'
-                        }`}>
-                          Like
-                        </span>
-                        {status?.hasLiked && (
-                          <div className="w-full h-1 bg-green-200 rounded-full mt-1">
-                            <div className="w-full h-1 bg-green-500 rounded-full animate-pulse"></div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Comment Ticket */}
-                      <div className="flex flex-col items-center p-2 bg-white rounded-lg shadow-sm">
-                        <div className={`text-2xl mb-1 ${status?.hasCommented ? 'animate-bounce' : ''}`}>
-                          {status?.hasCommented ? '🎫' : '⚪'}
-                        </div>
-                        <span className={`text-xs font-medium ${
-                          status?.hasCommented ? 'text-green-700' : 'text-gray-500'
-                        }`}>
-                          Comment
-                        </span>
-                        {status?.hasCommented && (
-                          <div className="w-full h-1 bg-green-200 rounded-full mt-1">
-                            <div className="w-full h-1 bg-green-500 rounded-full animate-pulse"></div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Recast Ticket */}
-                      <div className="flex flex-col items-center p-2 bg-white rounded-lg shadow-sm">
-                        <div className={`text-2xl mb-1 ${status?.hasRecasted ? 'animate-bounce' : ''}`}>
-                          {status?.hasRecasted ? '🎫' : '⚪'}
-                        </div>
-                        <span className={`text-xs font-medium ${
-                          status?.hasRecasted ? 'text-green-700' : 'text-gray-500'
-                        }`}>
-                          Recast
-                        </span>
-                        {status?.hasRecasted && (
-                          <div className="w-full h-1 bg-green-200 rounded-full mt-1">
-                            <div className="w-full h-1 bg-green-500 rounded-full animate-pulse"></div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Progress Summary */}
-                    {status && (
-                      <div className="border-t border-amber-200 pt-2">
-                        {status.isEligibleForTicket ? (
-                          <div className="text-center">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 animate-pulse">
-                              🏆 ¡Participación completada! Elegible para sorteo
-                            </span>
-                          </div>
-                        ) : status.requiresMoreActions.length > 0 ? (
-                          <div className="text-center">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                              📝 Faltan: {status.requiresMoreActions.join(', ')}
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="text-center">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                              🔍 Verificando participación...
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  )}
                   
                   {/* Message */}
                   {message && (
