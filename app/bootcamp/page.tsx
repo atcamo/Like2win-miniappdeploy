@@ -149,8 +149,8 @@ export default function Like2WinDashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
-          <Like2WinLogo size="lg" animated={true} />
-          <p className="mt-4 text-amber-700">Cargando estadísticas...</p>
+          <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-amber-700">Cargando estadísticas...</p>
         </div>
       </div>
     );
@@ -162,69 +162,66 @@ export default function Like2WinDashboard() {
         
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Like2WinLogo size="lg" animated={true} />
-            <MainTitle className="text-4xl text-amber-900">Like2Win Dashboard</MainTitle>
-          </div>
-          <p className="text-lg text-amber-700">
+          <MainTitle className="text-3xl sm:text-4xl text-amber-900 mb-2">Dashboard</MainTitle>
+          <p className="text-base sm:text-lg text-amber-700">
             Leaderboard, estadísticas y próximos sorteos
           </p>
         </div>
 
         {/* Stats Overview */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Like2WinCard variant="gradient" className="text-center">
-              <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalParticipants}</div>
-              <div className="text-amber-700">Participantes Activos</div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+            <Like2WinCard variant="gradient" className="text-center p-3 sm:p-4">
+              <div className="text-2xl sm:text-3xl font-bold text-amber-900 mb-1 sm:mb-2">{stats.totalParticipants}</div>
+              <div className="text-xs sm:text-sm text-amber-700">Participantes Activos</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="glassmorphism" className="text-center">
-              <div className="text-3xl font-bold text-amber-900 mb-2">#{stats.currentRaffleId}</div>
-              <div className="text-amber-700">Sorteo Actual</div>
+            <Like2WinCard variant="glassmorphism" className="text-center p-3 sm:p-4">
+              <div className="text-2xl sm:text-3xl font-bold text-amber-900 mb-1 sm:mb-2">#{stats.currentRaffleId}</div>
+              <div className="text-xs sm:text-sm text-amber-700">Sorteo Actual</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="default" className="text-center">
-              <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalTicketsDistributed.toLocaleString()}</div>
-              <div className="text-amber-700">Tickets Distribuidos</div>
+            <Like2WinCard variant="default" className="text-center p-3 sm:p-4">
+              <div className="text-2xl sm:text-3xl font-bold text-amber-900 mb-1 sm:mb-2">{stats.totalTicketsDistributed.toLocaleString()}</div>
+              <div className="text-xs sm:text-sm text-amber-700">Tickets Distribuidos</div>
             </Like2WinCard>
             
-            <Like2WinCard variant="default" className="text-center">
-              <div className="text-3xl font-bold text-amber-900 mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
-              <div className="text-amber-700 font-medium">$DEGEN Otorgados</div>
+            <Like2WinCard variant="default" className="text-center p-3 sm:p-4">
+              <div className="text-2xl sm:text-3xl font-bold text-amber-900 mb-1 sm:mb-2">{stats.totalDegenAwarded.toLocaleString()}</div>
+              <div className="text-xs sm:text-sm text-amber-700 font-medium">$DEGEN Otorgados</div>
             </Like2WinCard>
           </div>
         )}
 
         {/* Next Raffle & Last Winner */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-8">
           {stats && (
             <>
-              <Like2WinCard variant="default" className="text-center">
-                <h3 className="text-xl font-bold text-amber-900 mb-4">🎲 Próximo Sorteo</h3>
-                <div className="text-2xl font-bold text-amber-800 mb-2">
+              <Like2WinCard variant="default" className="text-center p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-amber-900 mb-3 sm:mb-4">🎲 Próximo Sorteo</h3>
+                <div className="text-xl sm:text-2xl font-bold text-amber-800 mb-2">
                   {formatDate(stats.nextRaffleDate)}
                 </div>
-                <p className="text-amber-700 mb-4 font-medium">
+                <p className="text-amber-700 mb-3 sm:mb-4 font-medium text-sm sm:text-base">
                   Sorteo #{stats.currentRaffleId} • Bi-semanal
                 </p>
                 <a 
                   href="/miniapp" 
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                  className="inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
                 >
                   Participar Ahora
                 </a>
               </Like2WinCard>
 
-              <Like2WinCard variant="glassmorphism" className="text-center">
-                <h3 className="text-xl font-bold text-amber-900 mb-4">🏆 Último Ganador</h3>
-                <div className="text-lg font-semibold text-amber-800 mb-2">
+              <Like2WinCard variant="glassmorphism" className="text-center p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-amber-900 mb-3 sm:mb-4">🏆 Último Ganador</h3>
+                <div className="text-base sm:text-lg font-semibold text-amber-800 mb-2">
                   {stats.lastWinner.username}
                 </div>
-                <div className="text-2xl font-bold text-amber-900 mb-2">
+                <div className="text-xl sm:text-2xl font-bold text-amber-900 mb-2">
                   {stats.lastWinner.amount.toLocaleString()} $DEGEN
                 </div>
-                <p className="text-amber-700">
+                <p className="text-amber-700 text-sm sm:text-base">
                   {formatDate(stats.lastWinner.date)}
                 </p>
               </Like2WinCard>
@@ -233,13 +230,13 @@ export default function Like2WinDashboard() {
         </div>
 
         {/* Time Filter */}
-        <div className="flex justify-center mb-6">
-          <div className="bg-white rounded-lg p-1 shadow-md border border-amber-300 grid grid-cols-3 gap-1 max-w-md w-full">
+        <div className="flex justify-center mb-6 px-4">
+          <div className="bg-white rounded-lg p-1 shadow-md border border-amber-300 grid grid-cols-3 gap-1 w-full max-w-lg">
             {(['week', 'month', 'all'] as const).map((filter) => (
               <button
                 key={filter}
                 onClick={() => setTimeFilter(filter)}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 flex-1 text-center ${
+                className={`px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 flex-1 text-center ${
                   timeFilter === filter
                     ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-sm'
                     : 'text-amber-800 hover:bg-amber-50 hover:text-amber-900'
