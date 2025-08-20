@@ -28,7 +28,8 @@
       "Bash(git pull:*)",
       "Bash(bun install:*)",
       "Bash(timeout:*)",
-      "Bash(bunx next dev:*)"
+      "Bash(bunx next dev:*)",
+      "Bash(npx prisma:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
