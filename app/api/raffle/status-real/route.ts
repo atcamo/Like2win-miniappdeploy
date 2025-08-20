@@ -37,10 +37,20 @@ export async function GET(request: NextRequest) {
       });
 
       console.log('📊 Checking for active raffle...');
-      const raffleResult = await pool.query(
-        'SELECT * FROM raffles WHERE status = $1 ORDER BY created_at DESC LIMIT 1',
-        ['ACTIVE']
-      );
+      // Try different column name variations for created_at
+      let raffleResult;
+      try {
+        raffleResult = await pool.query(
+          'SELECT * FROM raffles WHERE status = $1 ORDER BY created_at DESC LIMIT 1',
+          ['ACTIVE']
+        );
+      } catch (error) {
+        console.log('⚠️ Trying alternative column name: "createdAt"');
+        raffleResult = await pool.query(
+          'SELECT * FROM raffles WHERE status = $1 ORDER BY "createdAt" DESC LIMIT 1',
+          ['ACTIVE']
+        );
+      }
       
       let currentRaffle = null;
       if (raffleResult.rows.length > 0) {
