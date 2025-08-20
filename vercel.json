@@ -1,0 +1,16 @@
+{
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "NEXT_PUBLIC_URL": "https://like2win-app.vercel.app",
+    "NEXT_PUBLIC_APP_OG_TITLE": "Like2Win",
+    "NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR": "#F59E0B"
+  },
+  "regions": ["iad1"],
+  "framework": "nextjs"
+}
