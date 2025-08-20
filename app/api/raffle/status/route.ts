@@ -59,7 +59,12 @@ export async function GET(request: NextRequest) {
     const userData = Array.isArray(user) && user.length > 0 ? user[0] : null;
 
     // Simplified - no completed raffles yet
-    const lastWinners = [];
+    const lastWinners: Array<{
+      username: string | null;
+      displayName: string | null;
+      prize: number;
+      position: number;
+    }> = [];
 
     // Calculate time until next raffle
     const now = new Date();
