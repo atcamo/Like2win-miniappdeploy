@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
         database_url_exists: true,
         database_url_preview: databaseUrl.substring(0, 30) + '...',
         connection_test: testResult.rows[0],
-        tables_found: tablesResult.rows.map(row => row.table_name),
+        tables_found: tablesResult.rows.map((row: any) => row.table_name),
         active_raffles: raffleResult.rows.length,
         raffle_data: raffleResult.rows[0] || null,
         timestamp: new Date().toISOString()
