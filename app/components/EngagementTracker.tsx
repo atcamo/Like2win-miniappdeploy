@@ -267,7 +267,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                         
                         return shouldShow && (
                           <div className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
-                            {ticketsValue > 99 ? '99+' : ticketsValue || '0'}
+                            {(ticketsValue ?? 0) > 99 ? '99+' : (ticketsValue ?? 0).toString()}
                           </div>
                         );
                       })()}
@@ -390,7 +390,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                 🎫 Tus Tickets Actuales
               </h3>
               <div className="text-3xl font-bold text-green-600 mb-2">
-                {ticketsCount || 0}
+                {ticketsCount ?? 0}
               </div>
               <p className="text-sm text-green-700">
                 Tickets para el sorteo actual
