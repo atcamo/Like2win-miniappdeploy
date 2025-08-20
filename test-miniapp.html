@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Like2Win MiniApp - Contador de Tickets</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #FEF3C7, #F59E0B);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .title {
+            color: #F59E0B;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .status {
+            background: #F3F4F6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        .iframe-container {
+            border: 2px solid #F59E0B;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 600px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .controls {
+            margin: 15px 0;
+            text-align: center;
+        }
+        button {
+            background: #F59E0B;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover {
+            background: #D97706;
+        }
+        .info {
+            background: #DBEAFE;
+            color: #1E3A8A;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">🎯 Test Like2Win MiniApp</div>
+        
+        <div class="info">
+            <strong>✅ Estado:</strong> Endpoint mock funcionando correctamente<br>
+            <strong>🎫 Esperado:</strong> Contador de tickets debe mostrar números aleatorios<br>
+            <strong>🔄 Función:</strong> Botón de simulación debe cambiar el número de tickets
+        </div>
+        
+        <div class="controls">
+            <button onclick="reloadMiniApp()">🔄 Recargar MiniApp</button>
+            <button onclick="testDirectEndpoint()">🧪 Test API</button>
+        </div>
+        
+        <div id="api-status" class="status" style="display: none;"></div>
+        
+        <div class="iframe-container">
+            <iframe 
+                id="miniapp-frame"
+                src="https://like2win-miniappdeploy.vercel.app/miniapp/simple"
+                title="Like2Win MiniApp">
+            </iframe>
+        </div>
+        
+        <div class="info" style="margin-top: 15px;">
+            <strong>🔍 Busca:</strong><br>
+            • Contador de tickets (debería mostrar 1-5 tickets aleatorios)<br>
+            • Botón "Simular Participación" funcionando<br>
+            • Logs en la consola del navegador<br>
+            • Animaciones de monedas cayendo al participar
+        </div>
+    </div>
+
+    <script>
+        function reloadMiniApp() {
+            const iframe = document.getElementById('miniapp-frame');
+            iframe.src = iframe.src;
+            console.log('🔄 MiniApp recargado');
+        }
+        
+        async function testDirectEndpoint() {
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = '🔄 Probando endpoint...';
+            
+            try {
+                const testFid = Math.floor(Math.random() * 99999) + 1;
+                const response = await fetch(`https://like2win-miniappdeploy.vercel.app/api/raffle/status-direct?fid=${testFid}`);
+                const data = await response.json();
+                
+                statusDiv.innerHTML = `✅ API Response:
+Status: ${response.status}
+FID: ${testFid}
+Tickets: ${data.data?.user?.currentTickets || 'N/A'}
+Success: ${data.success}
+
+Full Response:
+${JSON.stringify(data, null, 2)}`;
+                
+                console.log('📊 API Test Result:', data);
+            } catch (error) {
+                statusDiv.innerHTML = `❌ Error testing API:
+${error.message}
+
+Stack: ${error.stack}`;
+                console.error('❌ API Test Error:', error);
+            }
+        }
+        
+        // Auto-test on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Like2Win MiniApp Test Page Loaded');
+            console.log('📱 Check the iframe for the MiniApp interface');
+            console.log('🎫 Look for ticket counters and participation buttons');
+            
+            // Auto test API after 2 seconds
+            setTimeout(testDirectEndpoint, 2000);
+        });
+        
+        // Listen for messages from iframe
+        window.addEventListener('message', function(event) {
+            if (event.origin !== 'https://like2win-miniappdeploy.vercel.app') {
+                return;
+            }
+            console.log('📨 Message from MiniApp:', event.data);
+        });
+    </script>
+</body>
+</html>
