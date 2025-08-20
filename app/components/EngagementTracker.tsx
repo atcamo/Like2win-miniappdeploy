@@ -28,6 +28,16 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
   
   // Get user's current tickets count
   const { data: raffleData } = useRaffleStatus(userFid);
+  
+  // Log raffleData changes
+  useEffect(() => {
+    console.log('🎯 EngagementTracker: raffleData updated:', {
+      hasData: !!raffleData,
+      userTickets: raffleData?.user?.currentTickets,
+      userFid: raffleData?.user?.fid,
+      raffleTotalTickets: raffleData?.raffle?.totalTickets
+    });
+  }, [raffleData]);
 
   // const [selectedCast, setSelectedCast] = useState<Like2WinCast | null>(null);
   const [processingCast, setProcessingCast] = useState<string | null>(null);
@@ -245,11 +255,22 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
                         className="w-10 h-10 rounded-full"
                       />
                       {/* Show current tickets count - always show if data exists */}
-                      {raffleData?.user && typeof raffleData.user.currentTickets !== 'undefined' && (
-                        <div className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
-                          {raffleData.user.currentTickets > 99 ? '99+' : raffleData.user.currentTickets || '0'}
-                        </div>
-                      )}
+                      {(() => {
+                        const shouldShow = raffleData?.user && typeof raffleData.user.currentTickets !== 'undefined';
+                        const ticketsValue = raffleData?.user?.currentTickets;
+                        console.log('🎫 EngagementTracker: Ticket display check:', {
+                          shouldShow,
+                          ticketsValue,
+                          hasUser: !!raffleData?.user,
+                          ticketsType: typeof ticketsValue
+                        });
+                        
+                        return shouldShow && (
+                          <div className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
+                            {ticketsValue > 99 ? '99+' : ticketsValue || '0'}
+                          </div>
+                        );
+                      })()}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -352,21 +373,32 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
       </Like2WinCard>
 
       {/* Tickets Counter Card - Visible Display */}
-      {raffleData?.user && (
-        <Like2WinCard variant="success">
-          <div className="text-center">
-            <h3 className="text-lg font-semibold text-green-800 mb-2">
-              🎫 Tus Tickets Actuales
-            </h3>
-            <div className="text-3xl font-bold text-green-600 mb-2">
-              {raffleData.user.currentTickets || 0}
+      {(() => {
+        const shouldShow = !!raffleData?.user;
+        const ticketsCount = raffleData?.user?.currentTickets;
+        console.log('🎫 EngagementTracker: Main counter display:', {
+          shouldShow,
+          ticketsCount,
+          raffleDataExists: !!raffleData,
+          userExists: !!raffleData?.user
+        });
+        
+        return shouldShow && (
+          <Like2WinCard variant="success">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-green-800 mb-2">
+                🎫 Tus Tickets Actuales
+              </h3>
+              <div className="text-3xl font-bold text-green-600 mb-2">
+                {ticketsCount || 0}
+              </div>
+              <p className="text-sm text-green-700">
+                Tickets para el sorteo actual
+              </p>
             </div>
-            <p className="text-sm text-green-700">
-              Tickets para el sorteo actual
-            </p>
-          </div>
-        </Like2WinCard>
-      )}
+          </Like2WinCard>
+        );
+      })()}
 
       {/* Debug Info */}
       {true && ( // Always show debug for now

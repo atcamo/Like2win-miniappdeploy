@@ -80,25 +80,42 @@ export function useRaffleStatus(fid: number | null) {
   const [error, setError] = useState<string | null>(null);
 
   const fetchStatus = useCallback(async () => {
-    if (!fid) return;
+    console.log('🎯 useRaffleStatus.fetchStatus called with fid:', fid);
+    if (!fid) {
+      console.log('❌ useRaffleStatus: No fid provided');
+      return;
+    }
     
     setIsLoading(true);
     setError(null);
+    console.log('🔄 useRaffleStatus: Starting fetch for fid:', fid);
     
     try {
-      const response = await fetch(`/api/raffle/status-direct?fid=${fid}`);
+      const url = `/api/raffle/status-direct?fid=${fid}`;
+      console.log('🌐 useRaffleStatus: Fetching URL:', url);
+      
+      const response = await fetch(url);
       const result = await response.json();
+      
+      console.log('📊 useRaffleStatus: API Response:', {
+        ok: response.ok,
+        status: response.status,
+        result
+      });
       
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch raffle status');
       }
       
+      console.log('✅ useRaffleStatus: Setting data:', result.data);
       setData(result.data);
+      console.log('🎫 useRaffleStatus: Current tickets from API:', result.data?.user?.currentTickets);
     } catch (err) {
+      console.error('❌ useRaffleStatus: Error fetching raffle status:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
-      console.error('Error fetching raffle status:', err);
     } finally {
       setIsLoading(false);
+      console.log('🏁 useRaffleStatus: Fetch completed');
     }
   }, [fid]);
 
@@ -132,37 +149,55 @@ export function useRaffleParticipation() {
       tip_allowance?: boolean;
     }
   ): Promise<ParticipationData | null> => {
+    console.log('🎫 useRaffleParticipation.participate called:', {
+      userFid,
+      postCastHash,
+      engagementData
+    });
+    
     setIsParticipating(true);
     setError(null);
 
     try {
+      const requestBody = {
+        user_fid: userFid,
+        post_cast_hash: postCastHash,
+        engagement_type: 'like_comment_recast',
+        engagement_data: engagementData
+      };
+      
+      console.log('📤 useRaffleParticipation: Sending request:', requestBody);
+      
       const response = await fetch('/api/raffle/participate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          user_fid: userFid,
-          post_cast_hash: postCastHash,
-          engagement_type: 'like_comment_recast',
-          engagement_data: engagementData
-        })
+        body: JSON.stringify(requestBody)
       });
 
       const result = await response.json();
+      
+      console.log('📊 useRaffleParticipation: API Response:', {
+        ok: response.ok,
+        status: response.status,
+        result
+      });
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to participate');
       }
 
+      console.log('✅ useRaffleParticipation: Success:', result.data);
       return result.data;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      console.error('❌ useRaffleParticipation: Error:', err);
       setError(errorMessage);
-      console.error('Error participating in raffle:', err);
       return null;
     } finally {
       setIsParticipating(false);
+      console.log('🏁 useRaffleParticipation: Participation completed');
     }
   }, []);
 
