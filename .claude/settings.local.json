@@ -29,9 +29,13 @@
       "Bash(bun install:*)",
       "Bash(timeout:*)",
       "Bash(bunx next dev:*)",
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "Bash(npx next build:*)"
     ],
     "deny": [],
-    "defaultMode": "acceptEdits"
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "C:\\c\\Users\\calde"
+    ]
   }
 }
