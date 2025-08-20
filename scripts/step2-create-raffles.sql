@@ -1,0 +1,25 @@
+-- Step 2: Create raffles table
+CREATE TABLE IF NOT EXISTS raffles (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  week_period TEXT UNIQUE NOT NULL,
+  start_date TIMESTAMP NOT NULL,
+  end_date TIMESTAMP NOT NULL,
+  tips_received INTEGER DEFAULT 0,
+  user_contribution INTEGER DEFAULT 0,
+  founder_contribution INTEGER DEFAULT 0,
+  operational_fee INTEGER DEFAULT 0,
+  total_pool INTEGER DEFAULT 0,
+  is_self_sustaining BOOLEAN DEFAULT false,
+  total_participants INTEGER DEFAULT 0,
+  total_tickets INTEGER DEFAULT 0,
+  first_place_fid BIGINT,
+  second_place_fid BIGINT,
+  third_place_fid BIGINT,
+  first_prize INTEGER,
+  second_prize INTEGER,
+  third_prize INTEGER,
+  status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'DRAWING', 'COMPLETED')),
+  random_seed TEXT,
+  executed_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT now()
+);
