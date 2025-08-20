@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     }
 
     console.log('🎯 status-real API called with fid:', fidParam);
+    console.log('🔍 DATABASE_URL exists:', !!process.env.DATABASE_URL);
     
     const fid = BigInt(fidParam);
     
