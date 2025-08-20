@@ -44,11 +44,20 @@ export async function GET(request: NextRequest) {
       
       console.log('🔍 Debug: Tables query successful');
       
-      // Test raffle data
-      const raffleResult = await pool.query(
-        'SELECT * FROM raffles WHERE status = $1 ORDER BY created_at DESC LIMIT 1',
-        ['ACTIVE']
-      );
+      // Test raffle data - try different column name variations
+      let raffleResult;
+      try {
+        raffleResult = await pool.query(
+          'SELECT * FROM raffles WHERE status = $1 ORDER BY created_at DESC LIMIT 1',
+          ['ACTIVE']
+        );
+      } catch (error) {
+        console.log('🔍 Debug: Trying alternative column name');
+        raffleResult = await pool.query(
+          'SELECT * FROM raffles WHERE status = $1 ORDER BY "createdAt" DESC LIMIT 1',
+          ['ACTIVE']
+        );
+      }
       
       console.log('🔍 Debug: Raffle query successful, rows:', raffleResult.rows.length);
       
