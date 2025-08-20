@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Producción Like2Win</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #FEF3C7, #F59E0B);
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #F59E0B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #D97706;
+        }
+        .result {
+            background: #F3F4F6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        .error {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Test Producción Like2Win</h1>
+    
+    <div class="container">
+        <h2>Probar Endpoints</h2>
+        <button onclick="testMockEndpoint()">Test Mock (Direct)</button>
+        <button onclick="testRealEndpoint()">Test Real (Producción)</button>
+        <button onclick="testBothEndpoints()">Comparar Ambos</button>
+        
+        <div id="status"></div>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://like2win-app.vercel.app'; // Reemplaza con tu URL de Vercel
+        const TEST_FID = '12345'; // FID de prueba
+        
+        function setStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+        }
+        
+        function displayResult(data) {
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        }
+        
+        async function testMockEndpoint() {
+            setStatus('Probando endpoint mock...', 'info');
+            try {
+                const response = await fetch(`${BASE_URL}/api/raffle/status-direct?fid=${TEST_FID}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    setStatus('✅ Mock endpoint funcionando correctamente', 'success');
+                    displayResult({
+                        endpoint: 'MOCK (status-direct)',
+                        status: response.status,
+                        data: data
+                    });
+                } else {
+                    setStatus(`❌ Mock endpoint error: ${response.status}`, 'error');
+                    displayResult({
+                        endpoint: 'MOCK (status-direct)',
+                        status: response.status,
+                        error: data
+                    });
+                }
+            } catch (error) {
+                setStatus(`❌ Error conectando con mock endpoint: ${error.message}`, 'error');
+                displayResult({
+                    endpoint: 'MOCK (status-direct)',
+                    error: error.message
+                });
+            }
+        }
+        
+        async function testRealEndpoint() {
+            setStatus('Probando endpoint real con base de datos...', 'info');
+            try {
+                const response = await fetch(`${BASE_URL}/api/raffle/status-real?fid=${TEST_FID}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    setStatus('✅ Real endpoint funcionando correctamente', 'success');
+                    displayResult({
+                        endpoint: 'REAL (status-real)',
+                        status: response.status,
+                        data: data
+                    });
+                } else {
+                    setStatus(`❌ Real endpoint error: ${response.status}`, 'error');
+                    displayResult({
+                        endpoint: 'REAL (status-real)',
+                        status: response.status,
+                        error: data
+                    });
+                }
+            } catch (error) {
+                setStatus(`❌ Error conectando con real endpoint: ${error.message}`, 'error');
+                displayResult({
+                    endpoint: 'REAL (status-real)',
+                    error: error.message
+                });
+            }
+        }
+        
+        async function testBothEndpoints() {
+            setStatus('Comparando ambos endpoints...', 'info');
+            try {
+                const [mockResponse, realResponse] = await Promise.all([
+                    fetch(`${BASE_URL}/api/raffle/status-direct?fid=${TEST_FID}`),
+                    fetch(`${BASE_URL}/api/raffle/status-real?fid=${TEST_FID}`)
+                ]);
+                
+                const mockData = await mockResponse.json();
+                const realData = await realResponse.json();
+                
+                setStatus('✅ Comparación completada', 'success');
+                displayResult({
+                    comparison: {
+                        mock: {
+                            status: mockResponse.status,
+                            data: mockData
+                        },
+                        real: {
+                            status: realResponse.status,
+                            data: realData
+                        }
+                    }
+                });
+            } catch (error) {
+                setStatus(`❌ Error en comparación: ${error.message}`, 'error');
+                displayResult({
+                    comparison_error: error.message
+                });
+            }
+        }
+        
+        // Test inicial automático
+        document.addEventListener('DOMContentLoaded', function() {
+            setStatus('Listo para probar endpoints de producción', 'success');
+        });
+    </script>
+</body>
+</html>
