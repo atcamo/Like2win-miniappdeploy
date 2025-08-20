@@ -65,12 +65,12 @@ export async function GET(request: NextRequest) {
       if (currentRaffle) {
         console.log('📊 Checking user tickets for raffle:', currentRaffle.id);
         const ticketsResult = await pool.query(
-          'SELECT tickets_count FROM user_tickets WHERE raffle_id = $1 AND user_fid = $2',
+          'SELECT "ticketsCount" FROM user_tickets WHERE "raffleId" = $1 AND "userFid" = $2',
           [currentRaffle.id, fid.toString()]
         );
         
         if (ticketsResult.rows.length > 0) {
-          userTickets = parseInt(ticketsResult.rows[0].tickets_count);
+          userTickets = parseInt(ticketsResult.rows[0].ticketsCount);
           console.log('✅ User has tickets:', userTickets);
         } else {
           console.log('ℹ️ User has no tickets for this raffle');
@@ -104,13 +104,13 @@ export async function GET(request: NextRequest) {
         data: {
           raffle: {
             id: currentRaffle?.id || 'default-raffle',
-            weekPeriod: currentRaffle?.week_period || '2025-W03',
-            prizePool: parseInt(currentRaffle?.total_pool || '50000'),
-            totalParticipants: parseInt(currentRaffle?.total_participants || '0'),
-            totalTickets: parseInt(currentRaffle?.total_tickets || userTickets.toString()),
-            endDate: currentRaffle?.end_date?.toISOString() || new Date('2025-01-26T23:59:59Z').toISOString(),
+            weekPeriod: currentRaffle?.weekPeriod || '2025-W03',
+            prizePool: parseInt(currentRaffle?.totalPool || '50000'),
+            totalParticipants: parseInt(currentRaffle?.totalParticipants || '0'),
+            totalTickets: parseInt(currentRaffle?.totalTickets || userTickets.toString()),
+            endDate: currentRaffle?.endDate?.toISOString() || new Date('2025-01-26T23:59:59Z').toISOString(),
             timeUntilEnd: '5d 12h', // Calculate this properly
-            isSelfSustaining: currentRaffle?.is_self_sustaining || false
+            isSelfSustaining: currentRaffle?.isSelfSustaining || false
           },
           user: {
             fid: fidParam,
