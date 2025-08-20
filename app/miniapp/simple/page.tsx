@@ -7,6 +7,7 @@ import {
   Like2WinButton, 
   Like2WinLogo
 } from '@/app/components/Like2WinComponents';
+import { EngagementTracker } from '@/app/components/EngagementTracker';
 
 // Types for Farcaster context
 interface FarcasterUser {
@@ -39,6 +40,10 @@ export default function SimpleLike2WinApp() {
   const [mounted, setMounted] = useState(false);
   const [sdkReady, setSdkReady] = useState(false);
   const [userContext, setUserContext] = useState<FarcasterContext | null>(null);
+  
+  // Mock FID for testing when no Farcaster context is available
+  const mockFid = 12345;
+  const effectiveFid = userContext?.user?.fid || mockFid;
 
   useEffect(() => {
     setMounted(true);
@@ -210,17 +215,29 @@ export default function SimpleLike2WinApp() {
                 <li>• Mounted: {mounted ? 'Yes' : 'No'}</li>
                 <li>• SDK Ready: {sdkReady ? 'Yes' : 'No'}</li>
                 <li>• User Context: {userContext ? 'Available' : 'None'}</li>
+                <li>• User FID: {userContext?.user?.fid || 'None'}</li>
+                <li>• Effective FID (with mock): {effectiveFid}</li>
                 <li>• Environment: {process.env.NODE_ENV}</li>
                 <li>• Window SDK: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk ? 'Present' : 'Missing'}</li>
-                <li>• Window SDK Actions: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk?.actions ? 'Present' : 'Missing'}</li>
-                <li>• Window SDK Ready Fn: {typeof window !== 'undefined' && (window as FarcasterSDKWindow).sdk?.actions?.ready ? 'Present' : 'Missing'}</li>
                 <li>• Is in Frame: {typeof window !== 'undefined' && window.parent !== window ? 'Yes' : 'No'}</li>
-                <li>• Parent SDK: {typeof window !== 'undefined' && window.parent !== window ? 'Checking...' : 'N/A'}</li>
               </ul>
             </div>
           </div>
         </Like2WinCard>
 
+        {/* Engagement Tracker with Mock FID */}
+        <div className="space-y-6">
+          <Like2WinCard variant="info">
+            <h2 className="text-xl font-semibold text-blue-800 mb-4">
+              🎫 Sistema de Tickets
+            </h2>
+            <p className="text-blue-700 mb-4">
+              Usando FID: {effectiveFid} {!userContext?.user?.fid && '(Mock para testing)'}
+            </p>
+          </Like2WinCard>
+
+          <EngagementTracker userFid={effectiveFid} />
+        </div>
 
       </main>
 
