@@ -19,7 +19,13 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
-      activeRaffle: activeRaffle || 'Not found',
+      activeRaffle: activeRaffle ? {
+        id: activeRaffle.id,
+        weekPeriod: activeRaffle.weekPeriod,
+        status: activeRaffle.status,
+        totalPool: activeRaffle.totalPool.toString(),
+        createdAt: activeRaffle.createdAt.toISOString()
+      } : 'Not found',
       connection: 'OK'
     });
     
