@@ -18,21 +18,10 @@ export async function GET(request: NextRequest) {
 
     const fid = BigInt(fidParam);
 
-    // Get current active raffle
+    // Get current active raffle (simplified without relations)
     const currentRaffle = await prisma.raffle.findFirst({
       where: { status: 'ACTIVE' },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        firstPlaceWinner: {
-          select: { username: true, displayName: true }
-        },
-        secondPlaceWinner: {
-          select: { username: true, displayName: true }
-        },
-        thirdPlaceWinner: {
-          select: { username: true, displayName: true }
-        }
-      }
+      orderBy: { createdAt: 'desc' }
     });
 
     if (!currentRaffle) {
@@ -52,69 +41,25 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    // Get user info
-    const user = await prisma.user.findUnique({
-      where: { fid },
-      select: {
-        username: true,
-        displayName: true,
-        tipAllowanceEnabled: true,
-        isFollowingLike2Win: true,
-        totalLifetimeTickets: true,
-        totalWinnings: true
-      }
-    });
+    // Get user info from custom table
+    const user = await prisma.$queryRaw`
+      SELECT username, "displayName", "tipAllowanceEnabled", "isFollowingLike2Win", 
+             "totalLifetimeTickets", "totalWinnings"
+      FROM prisma_users 
+      WHERE fid = ${fid}
+    `;
 
     // Calculate user probability
     const userTicketCount = userTickets?.ticketsCount || 0;
     const userProbability = currentRaffle.totalTickets > 0 
       ? (userTicketCount / currentRaffle.totalTickets) * 100 
       : 0;
+    
+    // Handle query result (array)
+    const userData = Array.isArray(user) && user.length > 0 ? user[0] : null;
 
-    // Get recent winners from last completed raffle
-    const lastCompletedRaffle = await prisma.raffle.findFirst({
-      where: { status: 'COMPLETED' },
-      orderBy: { executedAt: 'desc' },
-      include: {
-        firstPlaceWinner: {
-          select: { username: true, displayName: true }
-        },
-        secondPlaceWinner: {
-          select: { username: true, displayName: true }
-        },
-        thirdPlaceWinner: {
-          select: { username: true, displayName: true }
-        }
-      }
-    });
-
+    // Simplified - no completed raffles yet
     const lastWinners = [];
-    if (lastCompletedRaffle) {
-      if (lastCompletedRaffle.firstPlaceWinner) {
-        lastWinners.push({
-          username: lastCompletedRaffle.firstPlaceWinner.username,
-          displayName: lastCompletedRaffle.firstPlaceWinner.displayName,
-          prize: lastCompletedRaffle.firstPrize || 0,
-          position: 1
-        });
-      }
-      if (lastCompletedRaffle.secondPlaceWinner) {
-        lastWinners.push({
-          username: lastCompletedRaffle.secondPlaceWinner.username,
-          displayName: lastCompletedRaffle.secondPlaceWinner.displayName,
-          prize: lastCompletedRaffle.secondPrize || 0,
-          position: 2
-        });
-      }
-      if (lastCompletedRaffle.thirdPlaceWinner) {
-        lastWinners.push({
-          username: lastCompletedRaffle.thirdPlaceWinner.username,
-          displayName: lastCompletedRaffle.thirdPlaceWinner.displayName,
-          prize: lastCompletedRaffle.thirdPrize || 0,
-          position: 3
-        });
-      }
-    }
 
     // Calculate time until next raffle
     const now = new Date();
@@ -136,14 +81,14 @@ export async function GET(request: NextRequest) {
         },
         user: {
           fid: fid.toString(),
-          username: user?.username,
-          displayName: user?.displayName,
+          username: userData?.username,
+          displayName: userData?.displayName,
           currentTickets: userTicketCount,
           probability: Number(userProbability.toFixed(1)),
-          tipAllowanceEnabled: user?.tipAllowanceEnabled || false,
-          isFollowing: user?.isFollowingLike2Win || false,
-          totalLifetimeTickets: user?.totalLifetimeTickets || 0,
-          totalWinnings: user?.totalWinnings ? parseFloat(user.totalWinnings.toString()) : 0
+          tipAllowanceEnabled: userData?.tipAllowanceEnabled || false,
+          isFollowing: userData?.isFollowingLike2Win || false,
+          totalLifetimeTickets: userData?.totalLifetimeTickets || 0,
+          totalWinnings: userData?.totalWinnings ? parseFloat(userData.totalWinnings.toString()) : 0
         },
         lastWinners
       }
