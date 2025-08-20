@@ -31,15 +31,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get user tickets for current raffle
-    const userTickets = await prisma.userTickets.findUnique({
-      where: {
-        raffleId_userFid: {
-          raffleId: currentRaffle.id,
-          userFid: fid
-        }
-      }
-    });
+    // Get user tickets for current raffle using raw SQL
+    const userTicketsResult = await prisma.$queryRaw`
+      SELECT "ticketsCount" 
+      FROM user_tickets 
+      WHERE "raffleId" = ${currentRaffle.id} AND "userFid" = ${fid}
+    `;
+    const userTickets = Array.isArray(userTicketsResult) && userTicketsResult.length > 0 
+      ? userTicketsResult[0] 
+      : { ticketsCount: 0 };
 
     // Get user info from custom table
     const user = await prisma.$queryRaw`
