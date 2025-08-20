@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@/lib/generated/prisma';
 
-const prisma = new PrismaClient();
-
 export async function GET(request: NextRequest) {
+  const prisma = new PrismaClient();
+  
   try {
-    // Test simple raffle query only
-    const activeRaffle = await prisma.raffle.findFirst({
-      where: { status: 'ACTIVE' },
-      select: {
-        id: true,
-        weekPeriod: true,
-        status: true,
-        totalPool: true,
-        createdAt: true
-      }
-    });
+    // Test database connection with raw query to avoid prepared statement conflicts
+    const result = await prisma.$queryRaw`
+      SELECT id, week_period as "weekPeriod", status, total_pool as "totalPool", created_at as "createdAt"
+      FROM raffles 
+      WHERE status = 'ACTIVE' 
+      ORDER BY created_at DESC 
+      LIMIT 1
+    `;
+    
+    const activeRaffle = Array.isArray(result) && result.length > 0 ? result[0] : null;
     
     return NextResponse.json({
       success: true,
@@ -24,7 +23,7 @@ export async function GET(request: NextRequest) {
         weekPeriod: activeRaffle.weekPeriod,
         status: activeRaffle.status,
         totalPool: activeRaffle.totalPool.toString(),
-        createdAt: activeRaffle.createdAt.toISOString()
+        createdAt: new Date(activeRaffle.createdAt).toISOString()
       } : 'Not found',
       connection: 'OK'
     });
@@ -35,5 +34,7 @@ export async function GET(request: NextRequest) {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined
     }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
