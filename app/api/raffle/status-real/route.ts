@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
           console.log('ℹ️ User not found in database');
         }
       } catch (userError) {
-        console.log('⚠️ Could not fetch user data:', userError.message);
+        console.log('⚠️ Could not fetch user data:', userError instanceof Error ? userError.message : String(userError));
       }
       
       await pool.end();
