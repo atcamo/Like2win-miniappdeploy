@@ -100,14 +100,14 @@ export function useRaffleStatus(fid: number | null) {
       console.log('📊 useRaffleStatus: API Response:', {
         ok: response.ok,
         status: response.status,
-        result
+        result: JSON.stringify(result, null, 2)
       });
       
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch raffle status');
       }
       
-      console.log('✅ useRaffleStatus: Setting data:', result.data);
+      console.log('✅ useRaffleStatus: Setting data:', JSON.stringify(result.data, null, 2));
       setData(result.data);
       console.log('🎫 useRaffleStatus: Current tickets from API:', result.data?.user?.currentTickets);
     } catch (err) {

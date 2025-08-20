@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     console.log('🎯 status-direct API called with fid:', fidParam);
     
     // Mock response for testing - simulate user has some tickets after interaction
-    const mockTickets = Math.floor(Math.random() * 3); // 0-2 tickets for testing
+    const mockTickets = Math.floor(Math.random() * 5) + 1; // 1-5 tickets for testing
     
     const response = {
       success: true,

@@ -35,7 +35,8 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
       hasData: !!raffleData,
       userTickets: raffleData?.user?.currentTickets,
       userFid: raffleData?.user?.fid,
-      raffleTotalTickets: raffleData?.raffle?.totalTickets
+      raffleTotalTickets: raffleData?.raffle?.totalTickets,
+      fullRaffleData: raffleData ? JSON.stringify(raffleData, null, 2) : 'null'
     });
   }, [raffleData]);
 
@@ -400,6 +401,42 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
         );
       })()}
 
+      {/* Test Participation Button */}
+      <Like2WinCard variant="warning">
+        <h4 className="font-semibold text-amber-800 mb-2">🧪 Testing</h4>
+        <p className="text-amber-700 mb-4">Simula obtener un ticket haciendo click:</p>
+        <Like2WinButton
+          variant="gradient"
+          onClick={async () => {
+            console.log('🧪 Testing participation...');
+            try {
+              const response = await fetch('/api/raffle/participate-mock', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  user_fid: userFid,
+                  post_cast_hash: 'test-hash-' + Date.now(),
+                  engagement_type: 'like',
+                  engagement_data: {
+                    has_liked: true,
+                    tip_allowance: true // Enable tip allowance for easy ticket
+                  }
+                })
+              });
+              const result = await response.json();
+              console.log('🧪 Test participation result:', result);
+              
+              // Force refresh of raffle status
+              window.location.reload();
+            } catch (error) {
+              console.error('🧪 Test participation error:', error);
+            }
+          }}
+        >
+          🎫 Simular Like + Ticket
+        </Like2WinButton>
+      </Like2WinCard>
+
       {/* Debug Info */}
       {true && ( // Always show debug for now
         <Like2WinCard variant="info">
@@ -412,6 +449,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
             <p>Raffle data loaded: {String(!!raffleData)}</p>
             <p>Current tickets: {raffleData?.user?.currentTickets || 'N/A'}</p>
             <p>User data: {raffleData?.user ? 'Yes' : 'No'}</p>
+            <p>API URL being called: /api/raffle/status-direct?fid={userFid}</p>
           </div>
         </Like2WinCard>
       )}
