@@ -86,7 +86,7 @@ export function useRaffleStatus(fid: number | null) {
     setError(null);
     
     try {
-      const response = await fetch(`/api/raffle/status?fid=${fid}`);
+      const response = await fetch(`/api/raffle/status-direct?fid=${fid}`);
       const result = await response.json();
       
       if (!response.ok) {
