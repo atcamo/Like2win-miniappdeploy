@@ -91,11 +91,9 @@ export function useRaffleStatus(fid: number | null) {
     console.log('🔄 useRaffleStatus: Starting fetch for fid:', fid);
     
     try {
-      // Use real endpoint in production, mock for development
-      const useReal = process.env.NODE_ENV === 'production';
-      const endpoint = useReal ? 'status-real' : 'status-direct';
-      const url = `/api/raffle/${endpoint}?fid=${fid}`;
-      console.log('🌐 useRaffleStatus: Fetching URL:', url, `(${useReal ? 'REAL' : 'MOCK'} mode)`);
+      // Use new cache endpoint for ultra-fast responses
+      const url = `/api/cache/user-status?fid=${fid}`;
+      console.log('🚀 useRaffleStatus: Fetching from cache endpoint:', url);
       
       const response = await fetch(url);
       const result = await response.json();
@@ -125,8 +123,8 @@ export function useRaffleStatus(fid: number | null) {
   useEffect(() => {
     fetchStatus();
     
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(fetchStatus, 30000);
+    // Auto-refresh every 10 seconds (cache is fast!)
+    const interval = setInterval(fetchStatus, 10000);
     return () => clearInterval(interval);
   }, [fetchStatus]);
 
@@ -221,9 +219,8 @@ export function useLeaderboard(raffleId?: string) {
     setError(null);
 
     try {
-      const url = raffleId 
-        ? `/api/raffle/leaderboard?raffle_id=${raffleId}`
-        : '/api/raffle/leaderboard';
+      // Use cache endpoint for leaderboard too
+      const url = `/api/cache/leaderboard${raffleId ? `?raffleId=${raffleId}` : ''}`;
       
       const response = await fetch(url);
       const result = await response.json();
@@ -232,7 +229,33 @@ export function useLeaderboard(raffleId?: string) {
         throw new Error(result.error || 'Failed to fetch leaderboard');
       }
 
-      setData(result.data);
+      // Adapt cache response to expected format
+      const leaderboardData = result.data?.leaderboard || [];
+      const raffleData = result.data?.raffle;
+      
+      setData({
+        raffle: raffleData ? {
+          id: raffleData.id,
+          weekPeriod: raffleData.weekPeriod,
+          status: 'ACTIVE',
+          totalParticipants: raffleData.totalParticipants || 0,
+          totalTickets: raffleData.totalTickets || 0,
+          prizePool: 1000, // Default prize pool
+          isSelfSustaining: true
+        } : null,
+        leaderboard: leaderboardData.map((entry: any) => ({
+          rank: entry.rank,
+          fid: entry.fid,
+          tickets: entry.tickets,
+          probability: 0, // Will be calculated
+          totalLifetimeTickets: entry.tickets,
+          totalWinnings: 0
+        })),
+        meta: {
+          totalEntries: leaderboardData.length,
+          maxRank: leaderboardData.length
+        }
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
       console.error('Error fetching leaderboard:', err);
@@ -244,8 +267,8 @@ export function useLeaderboard(raffleId?: string) {
   useEffect(() => {
     fetchLeaderboard();
     
-    // Auto-refresh every 60 seconds
-    const interval = setInterval(fetchLeaderboard, 60000);
+    // Auto-refresh every 30 seconds (cache is fast!)
+    const interval = setInterval(fetchLeaderboard, 30000);
     return () => clearInterval(interval);
   }, [fetchLeaderboard]);
 

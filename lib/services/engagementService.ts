@@ -1,7 +1,10 @@
 /**
  * Like2Win Engagement Service
  * Handles automatic detection and processing of user engagement during active raffle periods
+ * Now with instant cache updates!
  */
+
+import { CacheInvalidationService } from './cacheInvalidation';
 
 interface EngagementEvent {
   type: 'like' | 'recast' | 'comment';
@@ -130,6 +133,13 @@ export class EngagementService {
         
         // 6. Get user's new total
         const userTotal = await this.getUserTotalTickets(event.userFid, activeRaffle.id);
+
+        // 7. Invalidate cache immediately for instant updates
+        await CacheInvalidationService.onEngagementProcessed(
+          event.userFid,
+          activeRaffle.id, 
+          ticketsAwarded
+        );
 
         return {
           success: true,

@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { CacheService } from '@/lib/services/cacheService';
+import { BackgroundSyncService } from '@/lib/services/backgroundSync';
 
 /**
  * Neynar Webhook Handler for Farcaster Events
  * Receives real-time notifications of likes, recasts, comments on Farcaster
  * Only processes events during active raffle periods
+ * Now with instant cache updates!
  */
 export async function POST(request: NextRequest) {
   try {
@@ -116,10 +119,29 @@ async function handleReactionEvent(eventData: any) {
 
     const processResult = await processResponse.json();
 
+    // If engagement was successful, immediately update cache
+    if (processResult.success && processResult.ticketsAwarded) {
+      try {
+        // Invalidate user cache to force fresh data
+        await CacheService.invalidateUserCache(user.fid.toString());
+        
+        // Force sync this specific user's data immediately  
+        await BackgroundSyncService.syncUserData(user.fid.toString());
+        
+        // Invalidate raffle cache if totals changed
+        await CacheService.invalidateRaffleCache();
+        
+        console.log(`🚀 Cache updated immediately for user ${user.fid} (+${processResult.ticketsAwarded} tickets)`);
+      } catch (cacheError) {
+        console.error('⚠️ Cache update failed (engagement still processed):', cacheError);
+      }
+    }
+
     return NextResponse.json({
       message: 'Reaction processed',
       processed: true,
-      result: processResult
+      result: processResult,
+      cacheUpdated: true
     });
 
   } catch (error) {
