@@ -29,10 +29,10 @@ export async function GET(request: NextRequest) {
     try {
       // Get the current raffle (any active raffle)
       const raffleResult = await pool.query(`
-        SELECT id, weekPeriod, startDate, endDate, status, totalTickets, totalParticipants
+        SELECT id, "weekPeriod", "startDate", "endDate", status, "totalTickets", "totalParticipants"
         FROM raffles 
         WHERE status = 'ACTIVE'
-        ORDER BY createdAt DESC 
+        ORDER BY "createdAt" DESC 
         LIMIT 1
       `);
 
@@ -50,13 +50,13 @@ export async function GET(request: NextRequest) {
 
       // Check if user already has tickets
       const existingTicketsResult = await pool.query(`
-        SELECT ticketsCount FROM user_tickets 
-        WHERE raffleId = $1 AND userFid = $2
+        SELECT "ticketsCount" FROM user_tickets 
+        WHERE "raffleId" = $1 AND "userFid" = $2
       `, [raffle.id, userFid]);
 
       let currentTickets = 0;
       if (existingTicketsResult.rows.length > 0) {
-        currentTickets = parseInt(existingTicketsResult.rows[0].ticketscount || existingTicketsResult.rows[0].ticketsCount);
+        currentTickets = parseInt(existingTicketsResult.rows[0].ticketsCount);
       }
 
       // Award 1 more ticket
@@ -64,15 +64,15 @@ export async function GET(request: NextRequest) {
       
       // Upsert user tickets
       await pool.query(`
-        INSERT INTO user_tickets (raffleId, userFid, ticketsCount, createdAt)
+        INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount", "createdAt")
         VALUES ($1, $2, $3, NOW())
-        ON CONFLICT (raffleId, userFid) 
-        DO UPDATE SET ticketsCount = $3
+        ON CONFLICT ("raffleId", "userFid") 
+        DO UPDATE SET "ticketsCount" = $3
       `, [raffle.id, userFid, newTicketCount]);
 
       // Ensure user exists
       await pool.query(`
-        INSERT INTO users (fid, createdAt)
+        INSERT INTO users (fid, "createdAt")
         VALUES ($1, NOW())
         ON CONFLICT (fid) DO NOTHING
       `, [userFid]);
@@ -80,15 +80,15 @@ export async function GET(request: NextRequest) {
       // Update raffle totals
       await pool.query(`
         UPDATE raffles SET 
-          totalTickets = (
-            SELECT COALESCE(SUM(ticketsCount), 0) 
+          "totalTickets" = (
+            SELECT COALESCE(SUM("ticketsCount"), 0) 
             FROM user_tickets 
-            WHERE raffleId = $1
+            WHERE "raffleId" = $1
           ),
-          totalParticipants = (
-            SELECT COUNT(DISTINCT userFid) 
+          "totalParticipants" = (
+            SELECT COUNT(DISTINCT "userFid") 
             FROM user_tickets 
-            WHERE raffleId = $1
+            WHERE "raffleId" = $1
           )
         WHERE id = $1
       `, [raffle.id]);
@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
         data: {
           userFid,
           raffleId: raffle.id,
-          weekPeriod: raffle.weekperiod || raffle.weekPeriod,
+          weekPeriod: raffle.weekPeriod,
           previousTickets: currentTickets,
           newTickets: newTicketCount,
           ticketsAwarded: 1,
