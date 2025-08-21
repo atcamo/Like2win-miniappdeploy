@@ -215,7 +215,7 @@ export class BackgroundSyncService {
         FROM user_tickets ut
         WHERE ut."raffleId" = $1
         AND ut."ticketsCount" > 0
-        ORDER BY ut."ticketsCount" DESC, ut."updatedAt" ASC
+        ORDER BY ut."ticketsCount" DESC, ut."userFid" ASC
         LIMIT 50
       `, [raffleId]);
 
