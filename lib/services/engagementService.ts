@@ -215,13 +215,23 @@ export class EngagementService {
       await pool.query('BEGIN');
 
       try {
-        // 1. Record the engagement
+        // 1. Ensure user exists first
+        console.log(`📝 Ensuring user ${userFid} exists...`);
+        await pool.query(`
+          INSERT INTO users (fid, "createdAt")
+          VALUES ($1, $2)
+          ON CONFLICT (fid) DO NOTHING
+        `, [userFid, timestamp]);
+
+        // 2. Record the engagement  
+        console.log(`📝 Recording engagement for castHash: ${castHash}...`);
         await pool.query(`
           INSERT INTO engagement_log ("raffleId", "userFid", "castHash", type, "createdAt")
           VALUES ($1, $2, $3, $4, $5)
         `, [raffleId, userFid, castHash, engagementType, timestamp]);
 
-        // 2. Add or update user tickets (without createdAt column)
+        // 3. Add or update user tickets (without createdAt column)
+        console.log(`🎫 Adding ${ticketsToAward} tickets to user ${userFid}...`);
         const upsertResult = await pool.query(`
           INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount")
           VALUES ($1, $2, $3)
@@ -230,20 +240,20 @@ export class EngagementService {
           RETURNING "ticketsCount"
         `, [raffleId, userFid, ticketsToAward]);
 
-        // 3. Ensure user exists
-        await pool.query(`
-          INSERT INTO users (fid, "createdAt")
-          VALUES ($1, $2)
-          ON CONFLICT (fid) DO NOTHING
-        `, [userFid, timestamp]);
-
         await pool.query('COMMIT');
         await pool.end();
 
         console.log(`✅ Awarded ${ticketsToAward} tickets to user ${userFid} for ${engagementType}`);
+        console.log(`🎯 User now has ${upsertResult.rows[0]?.ticketsCount} total tickets`);
         return ticketsToAward;
 
       } catch (error) {
+        console.error('❌ Database error details:', {
+          message: error.message,
+          code: error.code,
+          detail: error.detail,
+          hint: error.hint
+        });
         await pool.query('ROLLBACK');
         await pool.end();
         throw error;
