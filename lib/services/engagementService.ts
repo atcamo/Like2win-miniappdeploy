@@ -221,14 +221,14 @@ export class EngagementService {
           VALUES ($1, $2, $3, $4, $5)
         `, [raffleId, userFid, castHash, engagementType, timestamp]);
 
-        // 2. Add or update user tickets
+        // 2. Add or update user tickets (without createdAt column)
         const upsertResult = await pool.query(`
-          INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount", "createdAt")
-          VALUES ($1, $2, $3, $4)
+          INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount")
+          VALUES ($1, $2, $3)
           ON CONFLICT ("raffleId", "userFid") 
           DO UPDATE SET "ticketsCount" = user_tickets."ticketsCount" + $3
           RETURNING "ticketsCount"
-        `, [raffleId, userFid, ticketsToAward, timestamp]);
+        `, [raffleId, userFid, ticketsToAward]);
 
         // 3. Ensure user exists
         await pool.query(`
