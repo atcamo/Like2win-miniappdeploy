@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
         LIMIT $2
       `, [cachedRaffle.id, limit]);
 
-      const leaderboard = leaderboardResult.rows.map((row, index) => ({
+      const leaderboard = leaderboardResult.rows.map((row: any, index: number) => ({
         rank: index + 1,
         fid: row.userFid.toString(),
         tickets: row.ticketsCount || 0
