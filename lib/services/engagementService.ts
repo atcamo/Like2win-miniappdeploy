@@ -171,9 +171,13 @@ export class EngagementService {
 
       const result = await pool.query(`
         SELECT id FROM engagement_log 
-        WHERE "userFid" = $1 AND "castHash" = $2 AND type = $3
+        WHERE user_fid = $1 AND cast_hash = $2 AND (
+          (has_liked = true AND $3 = 'like') OR
+          (has_commented = true AND $3 = 'comment') OR
+          (has_recasted = true AND $3 = 'recast')
+        )
         LIMIT 1
-      `, [userFid, castHash, type]);
+      `, [parseInt(userFid), castHash, type]);
 
       await pool.end();
       
@@ -219,17 +223,21 @@ export class EngagementService {
         console.log(`📝 Ensuring user ${userFid} exists...`);
         const userFidBigInt = parseInt(userFid);
         await pool.query(`
-          INSERT INTO users (fid, "createdAt")
+          INSERT INTO users (fid, created_at)
           VALUES ($1, $2)
           ON CONFLICT (fid) DO NOTHING
         `, [userFidBigInt, timestamp]);
 
-        // 2. Record the engagement  
+        // 2. Record the engagement using real schema
         console.log(`📝 Recording engagement for castHash: ${castHash}...`);
+        const hasLiked = engagementType === 'like';
+        const hasCommented = engagementType === 'comment';
+        const hasRecasted = engagementType === 'recast';
+        
         await pool.query(`
-          INSERT INTO engagement_log ("raffleId", "userFid", "castHash", type, "createdAt")
-          VALUES ($1, $2, $3, $4, $5)
-        `, [raffleId, userFid, castHash, engagementType, timestamp]);
+          INSERT INTO engagement_log (raffle_id, user_fid, cast_hash, has_liked, has_commented, has_recasted, created_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `, [raffleId, userFidBigInt, castHash, hasLiked, hasCommented, hasRecasted, timestamp]);
 
         // 3. Add or update user tickets (using converted userFid)
         console.log(`🎫 Adding ${ticketsToAward} tickets to user ${userFid}...`);
