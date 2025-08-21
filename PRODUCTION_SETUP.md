@@ -23,12 +23,12 @@ El sistema Like2Win está completamente configurado y listo para usuarios reales
 
 ## 🔧 Configuración Pendiente para Activación Completa
 
-### **1. Actualizar FID Oficial de Like2Win**
+### **1. ✅ FID Oficial de Like2Win Configurado**
 Archivo: `app/api/webhooks/neynar/route.ts`
 ```typescript
 const officialAccounts = [
   'like2win',           // Username oficial
-  'TU_FID_AQUI',       // FID real de @Like2Win
+  '1206612',           // FID oficial de @Like2Win ✅
 ];
 ```
 
