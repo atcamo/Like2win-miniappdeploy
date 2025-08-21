@@ -62,18 +62,18 @@ export async function GET(request: NextRequest) {
       // Award 1 more ticket
       const newTicketCount = currentTickets + 1;
       
-      // Upsert user tickets
+      // Upsert user tickets (without createdAt if column doesn't exist)
       await pool.query(`
-        INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount", "createdAt")
-        VALUES ($1, $2, $3, NOW())
+        INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount")
+        VALUES ($1, $2, $3)
         ON CONFLICT ("raffleId", "userFid") 
         DO UPDATE SET "ticketsCount" = $3
       `, [raffle.id, userFid, newTicketCount]);
 
-      // Ensure user exists
+      // Ensure user exists (without createdAt if column doesn't exist)
       await pool.query(`
-        INSERT INTO users (fid, "createdAt")
-        VALUES ($1, NOW())
+        INSERT INTO users (fid)
+        VALUES ($1)
         ON CONFLICT (fid) DO NOTHING
       `, [userFid]);
 
