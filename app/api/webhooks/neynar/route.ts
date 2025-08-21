@@ -158,15 +158,17 @@ function isOfficialLike2WinPost(cast: any): boolean {
   if (!cast || !cast.author) return false;
 
   // Define official Like2Win account identifiers
+  // TODO: Update these with actual Like2Win account details
   const officialAccounts = [
-    'like2win',           // Username
-    '123456',            // Example FID - replace with actual Like2Win FID
-    // Add more official account identifiers as needed
+    'like2win',           // Official username
+    // Add actual Like2Win FID here when available
+    // Add any other official account usernames/FIDs
   ];
 
   const authorUsername = cast.author.username?.toLowerCase();
   const authorFid = cast.author.fid?.toString();
 
+  // For production: Only process likes on official Like2Win posts
   return officialAccounts.includes(authorUsername) || 
          officialAccounts.includes(authorFid);
 }

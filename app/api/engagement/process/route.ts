@@ -87,41 +87,37 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET endpoint for testing engagement processing
+ * GET endpoint for engagement status information
  */
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const userFid = searchParams.get('userFid') || '12345';
-  const action = searchParams.get('action') || 'simulate';
-
-  if (action === 'simulate') {
-    try {
-      // Simulate a like event for testing
-      const result = await EngagementService.simulateLikeEvent(userFid);
-      
-      return NextResponse.json({
-        action: 'simulate_like',
-        userFid,
-        result,
-        timestamp: new Date().toISOString()
-      });
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Error simulating like event', details: error instanceof Error ? error.message : String(error) },
-        { status: 500 }
-      );
-    }
+  try {
+    // Get current active raffle info
+    const activeRaffle = await EngagementService.getCurrentRaffleInfo();
+    
+    return NextResponse.json({
+      name: 'Like2Win Engagement Processor',
+      description: 'Processes likes during active raffle periods and awards tickets automatically',
+      status: 'active',
+      currentRaffle: activeRaffle ? {
+        id: activeRaffle.id,
+        weekPeriod: activeRaffle.weekPeriod,
+        startDate: activeRaffle.startDate.toISOString(),
+        endDate: activeRaffle.endDate.toISOString(),
+        isActive: true
+      } : null,
+      endpoints: {
+        'POST /api/engagement/process': 'Process real engagement events from Farcaster'
+      },
+      webhook: {
+        url: `${process.env.NEXT_PUBLIC_URL}/api/webhooks/neynar`,
+        events: ['reaction.created', 'cast.mentioned']
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    return NextResponse.json({
+      error: 'Failed to get engagement status',
+      details: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
   }
-
-  // Default: return API info
-  return NextResponse.json({
-    name: 'Like2Win Engagement Processor',
-    description: 'Processes likes during active raffle periods and awards tickets automatically',
-    endpoints: {
-      'POST /api/engagement/process': 'Process engagement events (likes, recasts, comments)',
-      'GET /api/engagement/process?action=simulate&userFid=12345': 'Simulate a like event for testing'
-    },
-    currentTime: new Date().toISOString(),
-    activeRaffleCheck: 'Automatically validates engagement is within active raffle period'
-  });
 }

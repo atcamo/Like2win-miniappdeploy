@@ -401,58 +401,16 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
         );
       })()}
 
-      {/* Test Participation Button */}
+      {/* How to Participate */}
       <Like2WinCard variant="warning">
-        <h4 className="font-semibold text-amber-800 mb-2">🧪 Testing</h4>
-        <p className="text-amber-700 mb-4">Simula obtener un ticket haciendo click:</p>
-        <Like2WinButton
-          variant="gradient"
-          onClick={async () => {
-            console.log('🧪 Testing participation...');
-            try {
-              const response = await fetch('/api/raffle/participate-mock', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  user_fid: userFid,
-                  post_cast_hash: 'test-hash-' + Date.now(),
-                  engagement_type: 'like',
-                  engagement_data: {
-                    has_liked: true,
-                    tip_allowance: true // Enable tip allowance for easy ticket
-                  }
-                })
-              });
-              const result = await response.json();
-              console.log('🧪 Test participation result:', result);
-              
-              // Force refresh of raffle status
-              window.location.reload();
-            } catch (error) {
-              console.error('🧪 Test participation error:', error);
-            }
-          }}
-        >
-          🎫 Simular Like + Ticket
-        </Like2WinButton>
+        <h4 className="font-semibold text-amber-800 mb-2">🎯 Cómo Participar</h4>
+        <div className="text-amber-700 space-y-2">
+          <p>• <strong>Sigue</strong> @Like2Win en Farcaster</p>
+          <p>• <strong>Dale like</strong> a los posts oficiales durante el periodo de rifa</p>
+          <p>• <strong>Gana tickets</strong> automáticamente por cada like</p>
+          <p>• <strong>Participa</strong> en el sorteo bi-semanal de $DEGEN</p>
+        </div>
       </Like2WinCard>
-
-      {/* Debug Info */}
-      {true && ( // Always show debug for now
-        <Like2WinCard variant="info">
-          <h4 className="font-semibold text-blue-800 mb-2">🔧 Debug Info</h4>
-          <div className="text-sm text-blue-700 space-y-1">
-            <p>User FID: {userFid}</p>
-            <p>Following: {String(isFollowing)}</p>
-            <p>Casts loaded: {casts.length}</p>
-            <p>Engagement status entries: {engagementStatus.size}</p>
-            <p>Raffle data loaded: {String(!!raffleData)}</p>
-            <p>Current tickets: {raffleData?.user?.currentTickets || 'N/A'}</p>
-            <p>User data: {raffleData?.user ? 'Yes' : 'No'}</p>
-            <p>API URL being called: /api/raffle/status-direct?fid={userFid}</p>
-          </div>
-        </Like2WinCard>
-      )}
     </div>
   );
 }

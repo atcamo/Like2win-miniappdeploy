@@ -91,9 +91,8 @@ export function useRaffleStatus(fid: number | null) {
     console.log('🔄 useRaffleStatus: Starting fetch for fid:', fid);
     
     try {
-      // Real endpoint is now working! Enable it for production testing
-      const useReal = process.env.NODE_ENV === 'production' || 
-                     typeof window !== 'undefined' && window.location.search.includes('real=true');
+      // Use real endpoint in production, mock for development
+      const useReal = process.env.NODE_ENV === 'production';
       const endpoint = useReal ? 'status-real' : 'status-direct';
       const url = `/api/raffle/${endpoint}?fid=${fid}`;
       console.log('🌐 useRaffleStatus: Fetching URL:', url, `(${useReal ? 'REAL' : 'MOCK'} mode)`);

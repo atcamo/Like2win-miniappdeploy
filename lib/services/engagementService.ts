@@ -317,16 +317,9 @@ export class EngagementService {
   }
 
   /**
-   * Test function to simulate a like event
+   * Get current active raffle info (for client display)
    */
-  static async simulateLikeEvent(userFid: string, castHash?: string): Promise<any> {
-    const event: EngagementEvent = {
-      type: 'like',
-      userFid: userFid,
-      castHash: castHash || `cast_${Date.now()}`,
-      timestamp: new Date(), // Current time - should be within raffle period
-    };
-
-    return await this.processLikeEvent(event);
+  static async getCurrentRaffleInfo(): Promise<ActiveRaffle | null> {
+    return await this.isEngagementValidForCurrentRaffle(new Date());
   }
 }
