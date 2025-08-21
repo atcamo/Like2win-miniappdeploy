@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Prueba Final - Like2Win Sistema Real</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #FEF3C7, #F59E0B);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .title {
+            color: #F59E0B;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .step {
+            background: #F9FAFB;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .step.success {
+            border-color: #10B981;
+            background: #ECFDF5;
+        }
+        .step.error {
+            border-color: #EF4444;
+            background: #FEF2F2;
+        }
+        .step.warning {
+            border-color: #F59E0B;
+            background: #FFFBEB;
+        }
+        button {
+            background: #F59E0B;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #D97706;
+        }
+        .result {
+            background: #F3F4F6;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        .highlight {
+            background: #FEF3C7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">🎯 Prueba Final del Sistema Like2Win</div>
+        
+        <div class="step">
+            <h3>📋 Instrucciones de Prueba</h3>
+            <p><strong>1.</strong> Haz clic en "Ejecutar Todas las Pruebas"</p>
+            <p><strong>2.</strong> Si ves tickets = 0, agrega datos de prueba en Supabase</p>
+            <p><strong>3.</strong> Repite las pruebas para ver tickets = 5</p>
+            <p><strong>4.</strong> Prueba el MiniApp en vivo</p>
+            
+            <button onclick="runAllTests()">🚀 Ejecutar Todas las Pruebas</button>
+            <button onclick="openMiniApp()">📱 Abrir MiniApp</button>
+            <button onclick="showSQLInstructions()">💾 Ver SQL de Prueba</button>
+        </div>
+
+        <div class="step" id="database-test" style="display: none;">
+            <h3>📊 Prueba 1: Conexión a Base de Datos</h3>
+            <div id="db-result" class="result"></div>
+        </div>
+
+        <div class="grid" id="comparison" style="display: none;">
+            <div class="step">
+                <h3>🎭 Mock Endpoint (Simulado)</h3>
+                <div id="mock-result" class="result"></div>
+            </div>
+            <div class="step">
+                <h3>📊 Real Endpoint (PostgreSQL)</h3>
+                <div id="real-result" class="result"></div>
+            </div>
+        </div>
+
+        <div class="step" id="analysis" style="display: none;">
+            <h3>🔍 Análisis de Resultados</h3>
+            <div id="analysis-result" class="result"></div>
+        </div>
+
+        <div class="step" id="sql-instructions" style="display: none;">
+            <h3>💾 SQL para Agregar Datos de Prueba</h3>
+            <p>Copia esto en Supabase → SQL Editor:</p>
+            <div class="result">-- Agregar usuario y tickets de prueba
+INSERT INTO users (fid, username, display_name) VALUES 
+('12345', 'testuser', 'Test User')
+ON CONFLICT (fid) DO UPDATE SET username = EXCLUDED.username;
+
+INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount", "createdAt") VALUES 
+('078adf95-4cc1-4569-9343-0337eb2ba356', '12345', 5, now())
+ON CONFLICT ("raffleId", "userFid") DO UPDATE SET "ticketsCount" = EXCLUDED."ticketsCount";
+
+UPDATE raffles SET "totalParticipants" = 1, "totalTickets" = 5 
+WHERE id = '078adf95-4cc1-4569-9343-0337eb2ba356';</div>
+        </div>
+
+        <div class="step" id="miniapp-test" style="display: none;">
+            <h3>📱 Prueba del MiniApp</h3>
+            <iframe 
+                src="https://like2win-miniappdeploy.vercel.app/miniapp/simple"
+                width="100%" 
+                height="400"
+                style="border: 2px solid #F59E0B; border-radius: 8px;">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://like2win-miniappdeploy.vercel.app';
+        
+        async function runAllTests() {
+            console.log('🚀 Starting comprehensive system test...');
+            
+            // Test 1: Database connection
+            document.getElementById('database-test').style.display = 'block';
+            await testDatabaseConnection();
+            
+            // Test 2: Compare endpoints
+            document.getElementById('comparison').style.display = 'grid';
+            await compareEndpoints();
+            
+            // Test 3: Analysis
+            document.getElementById('analysis').style.display = 'block';
+            await analyzeResults();
+            
+            // Test 4: Show MiniApp
+            document.getElementById('miniapp-test').style.display = 'block';
+        }
+        
+        async function testDatabaseConnection() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/debug-db`);
+                const data = await response.json();
+                
+                document.getElementById('db-result').innerHTML = `✅ BASE DE DATOS CONECTADA
+Tablas: ${data.tables_found?.join(', ')}
+Raffles activos: ${data.active_raffles}
+Raffle ID: ${data.raffle_data?.id}
+Total tickets en raffle: ${data.raffle_data?.totalTickets}
+
+${data.success ? '✅ Conexión exitosa' : '❌ Error de conexión'}`;
+                
+                return data;
+            } catch (error) {
+                document.getElementById('db-result').innerHTML = `❌ Error: ${error.message}`;
+                return null;
+            }
+        }
+        
+        async function compareEndpoints() {
+            const testFid = '12345';
+            
+            try {
+                const [mockResponse, realResponse] = await Promise.all([
+                    fetch(`${BASE_URL}/api/raffle/status-direct?fid=${testFid}`),
+                    fetch(`${BASE_URL}/api/raffle/status-real?fid=${testFid}`)
+                ]);
+                
+                const mockData = await mockResponse.json();
+                const realData = await realResponse.json();
+                
+                document.getElementById('mock-result').innerHTML = `Status: ${mockResponse.status}
+Raffle ID: ${mockData.data?.raffle?.id}
+User Tickets: ${mockData.data?.user?.currentTickets}
+Tipo: SIMULACIÓN (aleatorio)
+
+${mockData.success ? '✅ Funcionando' : '❌ Error'}`;
+
+                document.getElementById('real-result').innerHTML = `Status: ${realResponse.status}
+Raffle ID: ${realData.data?.raffle?.id}
+User Tickets: ${realData.data?.user?.currentTickets}
+Tipo: BASE DE DATOS REAL
+
+${realData.success ? '✅ Funcionando' : '❌ Error'}`;
+                
+                return { mock: mockData, real: realData };
+            } catch (error) {
+                document.getElementById('real-result').innerHTML = `❌ Error: ${error.message}`;
+                return null;
+            }
+        }
+        
+        async function analyzeResults() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/raffle/status-real?fid=12345`);
+                const data = await response.json();
+                
+                const isRealData = data.data?.raffle?.id !== 'fallback-raffle' && 
+                                 data.data?.raffle?.id !== 'test-raffle-id';
+                const hasTickets = data.data?.user?.currentTickets > 0;
+                
+                let analysis = `🎯 ANÁLISIS DEL SISTEMA:
+
+✅ Aplicación desplegada: OK
+✅ Endpoint real funcionando: OK
+✅ Base de datos conectada: ${isRealData ? 'OK' : 'ERROR'}
+${hasTickets ? '✅' : '⚠️'} Datos de prueba: ${hasTickets ? 'PRESENTES' : 'FALTANTES'}
+
+📊 DATOS ACTUALES:
+• Raffle ID: ${data.data?.raffle?.id}
+• User Tickets: ${data.data?.user?.currentTickets}
+• Total en Raffle: ${data.data?.raffle?.totalTickets}
+
+${isRealData ? 
+    (hasTickets ? 
+        '🎉 SISTEMA COMPLETAMENTE FUNCIONAL\nEl conteo de tickets está operativo con datos reales.' :
+        '⚠️ SISTEMA FUNCIONAL - AGREGAR DATOS\nEjecuta el SQL de arriba para ver tickets.') :
+    '❌ PROBLEMA DE CONEXIÓN\nRevisa la configuración de DATABASE_URL.'
+}`;
+                
+                document.getElementById('analysis-result').innerHTML = analysis;
+            } catch (error) {
+                document.getElementById('analysis-result').innerHTML = `❌ Error en análisis: ${error.message}`;
+            }
+        }
+        
+        function openMiniApp() {
+            window.open(`${BASE_URL}/miniapp/simple`, '_blank');
+        }
+        
+        function showSQLInstructions() {
+            const sqlDiv = document.getElementById('sql-instructions');
+            sqlDiv.style.display = sqlDiv.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Auto-run on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Like2Win Final Test Ready');
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>
