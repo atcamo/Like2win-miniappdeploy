@@ -41,8 +41,8 @@ export default function SimpleLike2WinApp() {
   const [sdkReady, setSdkReady] = useState(false);
   const [userContext, setUserContext] = useState<FarcasterContext | null>(null);
   
-  // Mock FID for testing when no Farcaster context is available
-  const mockFid = 546204; // Changed to FID with 11 tickets for testing
+  // Use real FID for production
+  const mockFid = 432789; // Your real FID with correct tickets
   const effectiveFid = userContext?.user?.fid || mockFid;
 
   useEffect(() => {
