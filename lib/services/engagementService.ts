@@ -217,11 +217,12 @@ export class EngagementService {
       try {
         // 1. Ensure user exists first
         console.log(`📝 Ensuring user ${userFid} exists...`);
+        const userFidBigInt = parseInt(userFid);
         await pool.query(`
           INSERT INTO users (fid, "createdAt")
           VALUES ($1, $2)
           ON CONFLICT (fid) DO NOTHING
-        `, [userFid, timestamp]);
+        `, [userFidBigInt, timestamp]);
 
         // 2. Record the engagement  
         console.log(`📝 Recording engagement for castHash: ${castHash}...`);
@@ -230,7 +231,7 @@ export class EngagementService {
           VALUES ($1, $2, $3, $4, $5)
         `, [raffleId, userFid, castHash, engagementType, timestamp]);
 
-        // 3. Add or update user tickets (without createdAt column)
+        // 3. Add or update user tickets (using converted userFid)
         console.log(`🎫 Adding ${ticketsToAward} tickets to user ${userFid}...`);
         const upsertResult = await pool.query(`
           INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount")
@@ -238,7 +239,7 @@ export class EngagementService {
           ON CONFLICT ("raffleId", "userFid") 
           DO UPDATE SET "ticketsCount" = user_tickets."ticketsCount" + $3
           RETURNING "ticketsCount"
-        `, [raffleId, userFid, ticketsToAward]);
+        `, [raffleId, userFidBigInt, ticketsToAward]);
 
         await pool.query('COMMIT');
         await pool.end();
@@ -315,7 +316,7 @@ export class EngagementService {
       const result = await pool.query(`
         SELECT "ticketsCount" FROM user_tickets 
         WHERE "raffleId" = $1 AND "userFid" = $2
-      `, [raffleId, userFid]);
+      `, [raffleId, parseInt(userFid)]);
 
       await pool.end();
       
