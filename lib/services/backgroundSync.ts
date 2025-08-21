@@ -160,13 +160,13 @@ export class BackgroundSyncService {
 
       const raffleId = raffleResult.rows[0].id;
 
-      // Get recent user tickets (updated in last 24 hours or with activity)
+      // Get recent user tickets (with any tickets)
       const userTicketsResult = await pool.query(`
-        SELECT "userFid", "ticketsCount", "updatedAt"
+        SELECT "userFid", "ticketsCount"
         FROM user_tickets 
         WHERE "raffleId" = $1
-        AND ("updatedAt" > NOW() - INTERVAL '24 hours' OR "ticketsCount" > 0)
-        ORDER BY "updatedAt" DESC
+        AND "ticketsCount" > 0
+        ORDER BY "ticketsCount" DESC
         LIMIT 100
       `, [raffleId]);
 

@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
 
       // Get user tickets
       const userResult = await pool.query(`
-        SELECT "ticketsCount", "updatedAt"
+        SELECT "ticketsCount"
         FROM user_tickets 
         WHERE "raffleId" = $1 AND "userFid" = $2
       `, [raffle.id, parseInt(userFid)]);
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
           user: {
             fid: parseInt(userFid),
             currentTickets: userTickets?.ticketsCount || 0,
-            lastUpdated: userTickets?.updatedAt?.toISOString() || new Date().toISOString()
+            lastUpdated: new Date().toISOString()
           },
           raffle: {
             id: raffle.id,
