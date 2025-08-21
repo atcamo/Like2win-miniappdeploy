@@ -233,29 +233,33 @@ export function useLeaderboard(raffleId?: string) {
       const leaderboardData = result.data?.leaderboard || [];
       const raffleData = result.data?.raffle;
       
-      setData({
-        raffle: raffleData ? {
-          id: raffleData.id,
-          weekPeriod: raffleData.weekPeriod,
-          status: 'ACTIVE',
-          totalParticipants: raffleData.totalParticipants || 0,
-          totalTickets: raffleData.totalTickets || 0,
-          prizePool: 1000, // Default prize pool
-          isSelfSustaining: true
-        } : null,
-        leaderboard: leaderboardData.map((entry: any) => ({
-          rank: entry.rank,
-          fid: entry.fid,
-          tickets: entry.tickets,
-          probability: 0, // Will be calculated
-          totalLifetimeTickets: entry.tickets,
-          totalWinnings: 0
-        })),
-        meta: {
-          totalEntries: leaderboardData.length,
-          maxRank: leaderboardData.length
-        }
-      });
+      if (raffleData) {
+        setData({
+          raffle: {
+            id: raffleData.id,
+            weekPeriod: raffleData.weekPeriod,
+            status: 'ACTIVE',
+            totalParticipants: raffleData.totalParticipants || 0,
+            totalTickets: raffleData.totalTickets || 0,
+            prizePool: 1000, // Default prize pool
+            isSelfSustaining: true
+          },
+          leaderboard: leaderboardData.map((entry: any) => ({
+            rank: entry.rank,
+            fid: entry.fid,
+            tickets: entry.tickets,
+            probability: 0, // Will be calculated
+            totalLifetimeTickets: entry.tickets,
+            totalWinnings: 0
+          })),
+          meta: {
+            totalEntries: leaderboardData.length,
+            maxRank: leaderboardData.length
+          }
+        });
+      } else {
+        setData(null);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
       console.error('Error fetching leaderboard:', err);
