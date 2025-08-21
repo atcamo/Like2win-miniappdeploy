@@ -250,10 +250,10 @@ export class EngagementService {
 
       } catch (error) {
         console.error('❌ Database error details:', {
-          message: error.message,
-          code: error.code,
-          detail: error.detail,
-          hint: error.hint
+          message: error instanceof Error ? error.message : String(error),
+          code: (error as any)?.code,
+          detail: (error as any)?.detail,
+          hint: (error as any)?.hint
         });
         await pool.query('ROLLBACK');
         await pool.end();
