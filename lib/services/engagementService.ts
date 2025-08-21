@@ -189,7 +189,7 @@ export class EngagementService {
   }
 
   /**
-   * Award tickets for valid engagement
+   * Award tickets for valid engagement - SIMPLIFIED VERSION
    */
   private static async awardTicketsForEngagement(
     userFid: string,
@@ -214,62 +214,32 @@ export class EngagementService {
       };
 
       const ticketsToAward = ticketsPerEngagement[engagementType as keyof typeof ticketsPerEngagement] || 1;
+      const userFidBigInt = parseInt(userFid);
 
-      // Start transaction
-      await pool.query('BEGIN');
+      console.log(`🎫 Awarding ${ticketsToAward} tickets to user ${userFidBigInt} for ${engagementType}`);
 
-      try {
-        // 1. Ensure user exists first
-        console.log(`📝 Ensuring user ${userFid} exists...`);
-        const userFidBigInt = parseInt(userFid);
-        await pool.query(`
-          INSERT INTO users (fid, created_at)
-          VALUES ($1, $2)
-          ON CONFLICT (fid) DO NOTHING
-        `, [userFidBigInt, timestamp]);
+      // SIMPLIFIED: Just award tickets (skip engagement_log and users for now)
+      const result = await pool.query(`
+        INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount")
+        VALUES ($1, $2, $3)
+        ON CONFLICT ("raffleId", "userFid") 
+        DO UPDATE SET "ticketsCount" = user_tickets."ticketsCount" + $3
+        RETURNING "ticketsCount"
+      `, [raffleId, userFidBigInt, ticketsToAward]);
 
-        // 2. Record the engagement using real schema
-        console.log(`📝 Recording engagement for castHash: ${castHash}...`);
-        const hasLiked = engagementType === 'like';
-        const hasCommented = engagementType === 'comment';
-        const hasRecasted = engagementType === 'recast';
-        
-        await pool.query(`
-          INSERT INTO engagement_log (raffle_id, user_fid, cast_hash, has_liked, has_commented, has_recasted, created_at)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
-        `, [raffleId, userFidBigInt, castHash, hasLiked, hasCommented, hasRecasted, timestamp]);
+      await pool.end();
 
-        // 3. Add or update user tickets (using converted userFid)
-        console.log(`🎫 Adding ${ticketsToAward} tickets to user ${userFid}...`);
-        const upsertResult = await pool.query(`
-          INSERT INTO user_tickets ("raffleId", "userFid", "ticketsCount")
-          VALUES ($1, $2, $3)
-          ON CONFLICT ("raffleId", "userFid") 
-          DO UPDATE SET "ticketsCount" = user_tickets."ticketsCount" + $3
-          RETURNING "ticketsCount"
-        `, [raffleId, userFidBigInt, ticketsToAward]);
-
-        await pool.query('COMMIT');
-        await pool.end();
-
-        console.log(`✅ Awarded ${ticketsToAward} tickets to user ${userFid} for ${engagementType}`);
-        console.log(`🎯 User now has ${upsertResult.rows[0]?.ticketsCount} total tickets`);
-        return ticketsToAward;
-
-      } catch (error) {
-        console.error('❌ Database error details:', {
-          message: error instanceof Error ? error.message : String(error),
-          code: (error as any)?.code,
-          detail: (error as any)?.detail,
-          hint: (error as any)?.hint
-        });
-        await pool.query('ROLLBACK');
-        await pool.end();
-        throw error;
-      }
+      const newTicketCount = result.rows[0]?.ticketsCount || 0;
+      console.log(`✅ Success! User ${userFidBigInt} now has ${newTicketCount} total tickets`);
+      
+      return ticketsToAward;
 
     } catch (error) {
-      console.error('❌ Error awarding tickets:', error);
+      console.error('❌ Error awarding tickets:', {
+        message: error instanceof Error ? error.message : String(error),
+        code: (error as any)?.code,
+        detail: (error as any)?.detail
+      });
       return 0;
     }
   }
