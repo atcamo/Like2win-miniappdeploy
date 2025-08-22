@@ -205,24 +205,24 @@ export default function AdminDashboard() {
             </h1>
           </div>
           <p className="text-amber-700">
-            {isAdmin ? 'Panel de administración completo' : 'Leaderboard público del sorteo'}
+            {isAdmin ? 'Panel de administración completo' : 'Leaderboard del sorteo actual'}
           </p>
         </Like2WinCard>
 
-        {/* Tabs Navigation */}
-        <Like2WinCard>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setActiveTab('leaderboard')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                activeTab === 'leaderboard'
-                  ? 'bg-amber-500 text-white shadow-md'
-                  : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
-              }`}
-            >
-              🏆 Leaderboard
-            </button>
-            {isAdmin && (
+        {/* Tabs Navigation - Only show if admin */}
+        {isAdmin && (
+          <Like2WinCard>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActiveTab('leaderboard')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  activeTab === 'leaderboard'
+                    ? 'bg-amber-500 text-white shadow-md'
+                    : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                }`}
+              >
+                🏆 Leaderboard
+              </button>
               <button
                 onClick={() => setActiveTab('admin')}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
@@ -233,14 +233,12 @@ export default function AdminDashboard() {
               >
                 ⚙️ Admin Panel
               </button>
-            )}
-          </div>
-          {isAdmin && (
+            </div>
             <div className="mt-2 text-sm text-gray-600">
               Conectado como admin (FID: {userFid})
             </div>
-          )}
-        </Like2WinCard>
+          </Like2WinCard>
+        )}
 
         {/* Message */}
         {message && (
@@ -256,7 +254,7 @@ export default function AdminDashboard() {
         )}
 
         {/* Tab Content */}
-        {activeTab === 'leaderboard' && (
+        {(activeTab === 'leaderboard' || !isAdmin) && (
           <>
             {/* Leaderboard Tab Content */}
             {/* Loading State for Leaderboard */}
