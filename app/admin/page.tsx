@@ -291,10 +291,10 @@ export default function AdminDashboard() {
                       )}
                       <div>
                         <div className="font-semibold text-gray-800">
-                          @{user.username}
+                          {user.username}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {user.displayName} • FID: {user.userFid}
+                          {user.displayName}
                         </div>
                         {user.isTopThree && (
                           <div className="text-xs text-yellow-600 font-medium">
