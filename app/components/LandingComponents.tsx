@@ -644,11 +644,11 @@ export function NavigationHeader() {
           <div className="md:hidden py-4 border-t border-[var(--app-card-border)]">
             <nav className="flex flex-col space-y-4">
               <a 
-                href="/verano" 
+                href="/miniapp" 
                 className="inline-flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 shadow-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🌞 Únete al Bootcamp Web3
+                🎯 Abrir Like2Win
               </a>
               <a href="#projects" className="text-[var(--app-foreground-muted)] hover:text-[var(--app-foreground)] transition-colors px-4 py-2">
                 Projects

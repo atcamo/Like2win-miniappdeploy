@@ -10,7 +10,7 @@ export function BottomAppBar() {
 
   const navItems = [
     {
-      href: '/bootcamp',
+      href: '/admin',
       label: 'Dashboard',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

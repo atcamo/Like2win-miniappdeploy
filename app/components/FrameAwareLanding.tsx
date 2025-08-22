@@ -224,7 +224,7 @@ export function FrameAwareLanding() {
                 
                 <div className="mt-4 pt-3 border-t border-green-200">
                   <a 
-                    href="/bootcamp" 
+                    href="/admin" 
                     className="block text-center text-sm font-semibold text-green-700 hover:text-green-800 transition-colors"
                   >
                     Ver Leaderboard Completo →
@@ -259,7 +259,7 @@ export function FrameAwareLanding() {
                         🚀 Empezar
                       </a>
                       <a 
-                        href="/bootcamp" 
+                        href="/admin" 
                         className="flex-1 bg-amber-100/50 backdrop-blur-sm text-gray-800 font-semibold py-3 px-4 rounded-lg hover:bg-amber-200/50 transition-all duration-300 text-sm border border-amber-300/30"
                       >
                         📊 Stats
