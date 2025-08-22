@@ -59,7 +59,7 @@ async function testDirectNeynarAPI(fids: string[], apiKey: string) {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Api-Key': apiKey
+        'api_key': apiKey
       }
     });
     

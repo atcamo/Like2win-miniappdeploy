@@ -128,7 +128,7 @@ class UserService {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Api-Key': this.NEYNAR_API_KEY!
+        'api_key': this.NEYNAR_API_KEY!
       }
     });
 
