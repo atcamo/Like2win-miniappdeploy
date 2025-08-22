@@ -186,7 +186,7 @@ export async function GET(request: NextRequest) {
         data: {
           testFids,
           willClean: checkResult.rows.length,
-          testData: checkResult.rows.map(row => ({
+          testData: checkResult.rows.map((row: any) => ({
             userFid: row.userFid.toString(),
             tickets: row.ticketsCount
           })),
