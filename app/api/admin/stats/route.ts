@@ -59,10 +59,10 @@ export async function GET(request: NextRequest) {
         }));
 
         // Resolve FIDs to usernames
-        const fids = topUsersRaw.map(user => user.userFid);
+        const fids = topUsersRaw.map((user: any) => user.userFid);
         const userDetails = await userService.resolveUsers(fids);
 
-        topUsers = topUsersRaw.map(user => ({
+        topUsers = topUsersRaw.map((user: any) => ({
           ...user,
           username: userDetails[user.userFid]?.username || `fid${user.userFid}`,
           displayName: userDetails[user.userFid]?.displayName || `User ${user.userFid}`,
