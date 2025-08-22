@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 import { fonts } from "@/lib/fonts";
 import { Header } from "./components/header";
 import { BottomAppBar } from "./components/bottom-app-bar";
+import { ErrorSuppressor } from "./components/ErrorSuppressor";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -105,6 +106,7 @@ export default function RootLayout({
         className={`bg-background ${fonts.funnelDisplay.variable} ${fonts.ledger.variable} ${fonts.raleway.variable} ${fonts.spaceGrotesk.variable}`}
       >
         <Providers>
+          <ErrorSuppressor />
           <Header />
           <main>{children}</main>
           <BottomAppBar />

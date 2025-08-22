@@ -31,6 +31,9 @@ export function LandingIcon({ name, size = "md", className = "" }: LandingIconPr
     lg: "w-6 h-6",
     xl: "w-8 h-8",
   };
+  
+  // Ensure size is valid and convert any invalid sizes to default
+  const validSize = sizeClasses[size] ? size : "md";
 
   const icons = {
     sparkles: (
@@ -81,7 +84,7 @@ export function LandingIcon({ name, size = "md", className = "" }: LandingIconPr
   };
 
   return (
-    <span className={`inline-block ${sizeClasses[size]} ${className}`}>
+    <span className={`inline-block ${sizeClasses[validSize]} ${className}`}>
       {icons[name]}
     </span>
   );
