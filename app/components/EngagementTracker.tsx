@@ -8,6 +8,7 @@ import {
   Like2WinButton, 
   Like2WinLogo 
 } from './Like2WinComponents';
+import { RaffleCountdown } from './RaffleCountdown';
 
 interface EngagementTrackerProps {
   userFid: number;
@@ -372,6 +373,21 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
           </div>
         )}
       </Like2WinCard>
+
+      {/* Raffle Countdown */}
+      {raffleData?.raffle && (
+        <Like2WinCard variant="warning">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-amber-800 mb-2">
+              ⏰ Tiempo Restante del Sorteo
+            </h3>
+            <RaffleCountdown endDate={raffleData.raffle.endDate} />
+            <p className="text-sm text-amber-700 mt-2">
+              Período: {raffleData.raffle.weekPeriod}
+            </p>
+          </div>
+        </Like2WinCard>
+      )}
 
       {/* Tickets Counter Card - Visible Display */}
       {(() => {
