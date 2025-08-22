@@ -20,6 +20,9 @@ interface RaffleData {
 interface UserTicket {
   rank: number;
   userFid: string;
+  username: string;
+  displayName: string;
+  pfpUrl: string;
   ticketsCount: number;
   isTopThree: boolean;
 }
@@ -279,12 +282,22 @@ export default function AdminDashboard() {
                       }`}>
                         {user.isTopThree ? medals[(user.rank || 1) - 1] : `#${user.rank || 0}`}
                       </span>
+                      {user.pfpUrl && (
+                        <img 
+                          src={user.pfpUrl} 
+                          alt={user.username}
+                          className="w-10 h-10 rounded-full object-cover border-2 border-amber-200"
+                        />
+                      )}
                       <div>
                         <div className="font-semibold text-gray-800">
-                          FID: {user.userFid}
+                          @{user.username}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {user.displayName} • FID: {user.userFid}
                         </div>
                         {user.isTopThree && (
-                          <div className="text-xs text-yellow-600">
+                          <div className="text-xs text-yellow-600 font-medium">
                             {(user.rank || 0) === 1 ? '👑 Líder del Sorteo' : 
                              (user.rank || 0) === 2 ? '🎯 Segundo Lugar' : 
                              '🔥 Tercer Lugar'}

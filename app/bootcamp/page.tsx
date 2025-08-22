@@ -69,12 +69,12 @@ export default function Like2WinDashboard() {
         if (adminData.success && adminData.data) {
           const { currentRaffle, topUsers, totalUsers } = adminData.data;
           
-          // Convert topUsers to leaderboard format
+          // Convert topUsers to leaderboard format (now with real usernames)
           const formattedLeaderboard = (topUsers || []).map((user: any, index: number) => ({
             id: user.userFid,
-            username: `@fid${user.userFid}`,
-            displayName: `User ${user.userFid}`,
-            avatarUrl: undefined,
+            username: user.username ? `@${user.username}` : `@fid${user.userFid}`,
+            displayName: user.displayName || `User ${user.userFid}`,
+            avatarUrl: user.pfpUrl || undefined,
             tickets: user.ticketsCount || 0,
             position: user.rank || (index + 1),
             isFollowing: true,
@@ -93,7 +93,9 @@ export default function Like2WinDashboard() {
               totalTicketsDistributed: currentRaffle.totalTickets || 0,
               totalDegenAwarded: Math.floor((currentRaffle.totalTickets || 0) * 100), // Estimate
               lastWinner: {
-                username: topUsers?.[0] ? `@fid${topUsers[0].userFid}` : '@noone',
+                username: topUsers?.[0] ? 
+                  (topUsers[0].username ? `@${topUsers[0].username}` : `@fid${topUsers[0].userFid}`) : 
+                  '@noone',
                 amount: (topUsers?.[0]?.ticketsCount || 0) * 100,
                 date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // Week ago
               }

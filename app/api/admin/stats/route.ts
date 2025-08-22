@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CacheService } from '@/lib/services/cacheService';
 import { BackgroundSyncService } from '@/lib/services/backgroundSync';
+import { userService } from '@/lib/services/userService';
 
 /**
  * Admin Stats API
@@ -50,11 +51,22 @@ export async function GET(request: NextRequest) {
           LIMIT 50
         `, [currentRaffle.id]);
 
-        topUsers = topUsersResult.rows.map((row: any, index: number) => ({
+        const topUsersRaw = topUsersResult.rows.map((row: any, index: number) => ({
           rank: index + 1,
           userFid: row.userFid.toString(),
           ticketsCount: row.ticketsCount || 0,
           isTopThree: index < 3
+        }));
+
+        // Resolve FIDs to usernames
+        const fids = topUsersRaw.map(user => user.userFid);
+        const userDetails = await userService.resolveUsers(fids);
+
+        topUsers = topUsersRaw.map(user => ({
+          ...user,
+          username: userDetails[user.userFid]?.username || `fid${user.userFid}`,
+          displayName: userDetails[user.userFid]?.displayName || `User ${user.userFid}`,
+          pfpUrl: userDetails[user.userFid]?.pfpUrl || ''
         }));
       }
 
