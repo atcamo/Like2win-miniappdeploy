@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
         totalParticipants: raffleResult.rows[0].totalParticipants || 0
       } : null;
 
-      // 2. Get top users
+      // 2. Get top users with more details for leaderboard
       let topUsers = [];
       if (currentRaffle) {
         const topUsersResult = await pool.query(`
@@ -46,13 +46,15 @@ export async function GET(request: NextRequest) {
           FROM user_tickets 
           WHERE "raffleId" = $1
           AND "ticketsCount" > 0
-          ORDER BY "ticketsCount" DESC
-          LIMIT 20
+          ORDER BY "ticketsCount" DESC, "userFid" ASC
+          LIMIT 50
         `, [currentRaffle.id]);
 
-        topUsers = topUsersResult.rows.map((row: any) => ({
+        topUsers = topUsersResult.rows.map((row: any, index: number) => ({
+          rank: index + 1,
           userFid: row.userFid.toString(),
-          ticketsCount: row.ticketsCount || 0
+          ticketsCount: row.ticketsCount || 0,
+          isTopThree: index < 3
         }));
       }
 

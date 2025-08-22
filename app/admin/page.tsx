@@ -18,8 +18,10 @@ interface RaffleData {
 }
 
 interface UserTicket {
+  rank: number;
   userFid: string;
   ticketsCount: number;
+  isTopThree: boolean;
 }
 
 interface AdminStats {
@@ -220,54 +222,120 @@ export default function AdminDashboard() {
           </Like2WinCard>
         )}
 
-        {/* Top Users */}
+        {/* Leaderboard del Sorteo Actual */}
         {stats?.topUsers && stats.topUsers.length > 0 && (
           <Like2WinCard variant="success">
             <h2 className="text-xl font-semibold text-green-800 mb-4">
-              🏆 Top Usuarios
+              🏆 Leaderboard - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
             </h2>
-            <div className="space-y-2">
-              {stats.topUsers.slice(0, 10).map((user, index) => (
-                <div 
-                  key={user.userFid} 
-                  className="flex justify-between items-center p-2 bg-green-50 rounded"
-                >
-                  <span>#{index + 1} FID: {user.userFid}</span>
-                  <span className="font-bold">{user.ticketsCount} tickets</span>
+            <div className="space-y-3">
+              {stats.topUsers.slice(0, 20).map((user) => {
+                const medals = ['🥇', '🥈', '🥉'];
+                
+                return (
+                  <div 
+                    key={user.userFid} 
+                    className={`flex justify-between items-center p-3 rounded-lg ${
+                      user.isTopThree 
+                        ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-2 border-yellow-300' 
+                        : 'bg-green-50 hover:bg-green-100'
+                    } transition-all`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`text-lg font-bold min-w-[3rem] ${
+                        user.isTopThree ? 'text-yellow-700' : 'text-green-700'
+                      }`}>
+                        {user.isTopThree ? medals[user.rank - 1] : `#${user.rank}`}
+                      </span>
+                      <div>
+                        <div className="font-semibold text-gray-800">
+                          FID: {user.userFid}
+                        </div>
+                        {user.isTopThree && (
+                          <div className="text-xs text-yellow-600">
+                            {user.rank === 1 ? '👑 Líder del Sorteo' : 
+                             user.rank === 2 ? '🎯 Segundo Lugar' : 
+                             '🔥 Tercer Lugar'}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`font-bold text-lg ${
+                        user.isTopThree ? 'text-yellow-700' : 'text-green-600'
+                      }`}>
+                        {user.ticketsCount}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {user.ticketsCount === 1 ? 'ticket' : 'tickets'}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              
+              {stats.topUsers.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <div className="text-4xl mb-2">🎯</div>
+                  <p>Aún no hay participantes en este sorteo</p>
+                  <p className="text-sm">¡Sé el primero en ganar tickets!</p>
                 </div>
-              ))}
+              )}
+              
+              {stats.totalUsers > 20 && (
+                <div className="text-center py-2 text-gray-500 border-t border-green-200">
+                  <p className="text-sm">
+                    ... y {stats.totalUsers - 20} participantes más
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            {/* Leaderboard Stats */}
+            <div className="mt-4 pt-4 border-t border-green-200">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {stats.totalUsers}
+                  </div>
+                  <div className="text-sm text-green-700">Participantes</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {stats.currentRaffle?.totalTickets || 0}
+                  </div>
+                  <div className="text-sm text-green-700">Total Tickets</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {stats.topUsers[0]?.ticketsCount || 0}
+                  </div>
+                  <div className="text-sm text-green-700">Máx Tickets</div>
+                </div>
+              </div>
             </div>
           </Like2WinCard>
         )}
 
-        {/* System Health */}
-        {stats?.systemHealth && (
-          <Like2WinCard variant="warning">
-            <h2 className="text-xl font-semibold text-amber-800 mb-4">
-              🏥 Estado del Sistema
-            </h2>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="text-center">
-                <div className={`text-2xl ${stats.systemHealth.cache ? 'text-green-500' : 'text-red-500'}`}>
-                  {stats.systemHealth.cache ? '✅' : '❌'}
-                </div>
-                <p className="text-sm">Cache</p>
+        {/* System Status - Simplified */}
+        <Like2WinCard variant="info">
+          <h2 className="text-xl font-semibold text-blue-800 mb-4">
+            ⚡ Estado del Sistema
+          </h2>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="text-2xl">
+                {stats?.systemHealth?.database ? '🟢' : '🔴'}
               </div>
-              <div className="text-center">
-                <div className={`text-2xl ${stats.systemHealth.database ? 'text-green-500' : 'text-red-500'}`}>
-                  {stats.systemHealth.database ? '✅' : '❌'}
-                </div>
-                <p className="text-sm">Database</p>
-              </div>
-              <div className="text-center">
-                <div className={`text-2xl ${stats.systemHealth.background ? 'text-green-500' : 'text-red-500'}`}>
-                  {stats.systemHealth.background ? '✅' : '❌'}
-                </div>
-                <p className="text-sm">Background</p>
-              </div>
+              <span className="text-blue-700">
+                Sistema {stats?.systemHealth?.database ? 'Operacional' : 'Con Problemas'}
+              </span>
             </div>
-          </Like2WinCard>
-        )}
+            <div className="text-sm text-blue-600">
+              Última actualización: {new Date().toLocaleTimeString()}
+            </div>
+          </div>
+        </Like2WinCard>
 
         {/* Actions */}
         <Like2WinCard variant="gradient">
