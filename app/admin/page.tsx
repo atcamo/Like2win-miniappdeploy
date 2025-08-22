@@ -284,7 +284,7 @@ export default function AdminDashboard() {
             </Like2WinButton>
             
             <Like2WinButton
-              variant="warning"
+              variant="outline"
               onClick={cleanTestData}
               disabled={loading}
             >
@@ -300,7 +300,7 @@ export default function AdminDashboard() {
             </Like2WinButton>
             
             <Like2WinButton
-              variant="success"
+              variant="primary"
               onClick={executeRaffle}
               disabled={loading || !stats?.currentRaffle}
             >
