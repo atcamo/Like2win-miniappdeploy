@@ -30,6 +30,12 @@ class UserService {
    * Resolve multiple FIDs to user data
    */
   async resolveUsers(fids: string[]): Promise<Record<string, { username: string; displayName: string; pfpUrl: string }>> {
+    // Debug logging for API key status
+    console.log('🔍 UserService Debug:', {
+      hasApiKey: !!this.NEYNAR_API_KEY,
+      apiKeyLength: this.NEYNAR_API_KEY?.length || 0,
+      fidsToResolve: fids.length
+    });
     const result: Record<string, { username: string; displayName: string; pfpUrl: string }> = {};
     const uncachedFids: string[] = [];
 
