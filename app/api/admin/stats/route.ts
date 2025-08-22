@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
           LIMIT 20
         `, [currentRaffle.id]);
 
-        topUsers = topUsersResult.rows.map(row => ({
+        topUsers = topUsersResult.rows.map((row: any) => ({
           userFid: row.userFid.toString(),
           ticketsCount: row.ticketsCount || 0
         }));
