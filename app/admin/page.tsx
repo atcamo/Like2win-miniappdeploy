@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import sdk from '@farcaster/frame-sdk';
 import { 
   Like2WinCard, 
   Like2WinButton, 
@@ -38,11 +39,17 @@ interface AdminStats {
   };
 }
 
+const ADMIN_FIDS = ['432789']; // Lista de FIDs con permisos de admin
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState<string>('');
+  const [userFid, setUserFid] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'leaderboard' | 'admin'>('leaderboard');
+  
+  const isAdmin = userFid && ADMIN_FIDS.includes(userFid);
 
   // Calculate time left for raffle
   useEffect(() => {
@@ -166,7 +173,22 @@ export default function AdminDashboard() {
     }
   };
 
+  // Get user FID from Farcaster Frame SDK
   useEffect(() => {
+    const initFrameSDK = async () => {
+      try {
+        if (typeof window !== 'undefined') {
+          const context = await sdk.context;
+          if (context?.user?.fid) {
+            setUserFid(context.user.fid.toString());
+          }
+        }
+      } catch (error) {
+        console.log('Frame SDK not available or user not connected');
+      }
+    };
+    
+    initFrameSDK();
     loadStats();
   }, []);
 
@@ -179,12 +201,45 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <Like2WinLogo size="lg" animated={true} />
             <h1 className="text-3xl font-bold text-amber-800">
-              Admin Dashboard
+              Like2Win Dashboard
             </h1>
           </div>
           <p className="text-amber-700">
-            Panel de administración para Like2Win
+            {isAdmin ? 'Panel de administración completo' : 'Leaderboard público del sorteo'}
           </p>
+        </Like2WinCard>
+
+        {/* Tabs Navigation */}
+        <Like2WinCard>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setActiveTab('leaderboard')}
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                activeTab === 'leaderboard'
+                  ? 'bg-amber-500 text-white shadow-md'
+                  : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+              }`}
+            >
+              🏆 Leaderboard
+            </button>
+            {isAdmin && (
+              <button
+                onClick={() => setActiveTab('admin')}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  activeTab === 'admin'
+                    ? 'bg-red-500 text-white shadow-md'
+                    : 'bg-red-100 text-red-700 hover:bg-red-200'
+                }`}
+              >
+                ⚙️ Admin Panel
+              </button>
+            )}
+          </div>
+          {isAdmin && (
+            <div className="mt-2 text-sm text-gray-600">
+              Conectado como admin (FID: {userFid})
+            </div>
+          )}
         </Like2WinCard>
 
         {/* Message */}
@@ -200,69 +255,59 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Loading State */}
-        {loading && (
-          <Like2WinCard variant="info">
-            <div className="text-center py-8">
-              <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p className="text-amber-700">Cargando estadísticas...</p>
-            </div>
-          </Like2WinCard>
-        )}
-
-        {/* No Active Raffle */}
-        {!loading && stats && !stats.currentRaffle && (
-          <Like2WinCard variant="info">
-            <div className="text-center py-8">
-              <div className="text-4xl mb-4">🎯</div>
-              <h2 className="text-xl font-semibold text-blue-800 mb-2">
-                No hay sorteo activo
-              </h2>
-              <p className="text-blue-700 mb-4">
-                Crea un nuevo sorteo para comenzar a recibir participantes
-              </p>
-              <Like2WinButton
-                variant="gradient"
-                onClick={createNewRaffle}
-                disabled={loading}
-              >
-                🎯 Crear Nuevo Sorteo
-              </Like2WinButton>
-            </div>
-          </Like2WinCard>
-        )}
-
-        {/* Current Raffle */}
-        {!loading && stats?.currentRaffle && (
-          <Like2WinCard variant="info">
-            <h2 className="text-xl font-semibold text-blue-800 mb-4">
-              🎯 Sorteo Actual
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p><strong>Período:</strong> {stats.currentRaffle.weekPeriod}</p>
-                <p><strong>Estado:</strong> {stats.currentRaffle.status}</p>
-                <p><strong>Total Tickets:</strong> {stats.currentRaffle.totalTickets}</p>
-                <p><strong>Participantes:</strong> {stats.currentRaffle.totalParticipants}</p>
-              </div>
-              <div>
-                <p><strong>Inicio:</strong> {new Date(stats.currentRaffle.startDate).toLocaleDateString()}</p>
-                <p><strong>Fin:</strong> {new Date(stats.currentRaffle.endDate).toLocaleDateString()}</p>
-                <p><strong>Tiempo restante:</strong></p>
-                <div className="text-2xl font-bold text-blue-600 mt-2">
-                  {timeLeft}
+        {/* Tab Content */}
+        {activeTab === 'leaderboard' && (
+          <>
+            {/* Leaderboard Tab Content */}
+            {/* Loading State for Leaderboard */}
+            {loading && (
+              <Like2WinCard variant="info">
+                <div className="text-center py-8">
+                  <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                  <p className="text-amber-700">Cargando leaderboard...</p>
                 </div>
-              </div>
-            </div>
-          </Like2WinCard>
-        )}
+              </Like2WinCard>
+            )}
 
-        {/* Leaderboard del Sorteo Actual */}
-        {!loading && stats?.currentRaffle && (
-          <Like2WinCard variant="success">
-            <h2 className="text-xl font-semibold text-green-800 mb-4">
-              🏆 Leaderboard - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
-            </h2>
+            {/* No Active Raffle - Public View */}
+            {!loading && stats && !stats.currentRaffle && (
+              <Like2WinCard variant="info">
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">🎯</div>
+                  <h2 className="text-xl font-semibold text-blue-800 mb-2">
+                    No hay sorteo activo
+                  </h2>
+                  <p className="text-blue-700">
+                    El leaderboard se mostrará cuando haya un sorteo activo
+                  </p>
+                </div>
+              </Like2WinCard>
+            )}
+
+            {/* Current Raffle Info - Public View */}
+            {!loading && stats?.currentRaffle && (
+              <Like2WinCard variant="info">
+                <h2 className="text-xl font-semibold text-blue-800 mb-4">
+                  🎯 {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
+                </h2>
+                <div className="text-center">
+                  <p className="text-blue-700 mb-2">Tiempo restante:</p>
+                  <div className="text-3xl font-bold text-blue-600">
+                    {timeLeft}
+                  </div>
+                  <p className="text-sm text-blue-600 mt-2">
+                    {stats.currentRaffle.totalParticipants || 0} participantes • {stats.currentRaffle?.totalTickets || 0} tickets totales
+                  </p>
+                </div>
+              </Like2WinCard>
+            )}
+
+            {/* Leaderboard del Sorteo Actual */}
+            {!loading && stats?.currentRaffle && (
+              <Like2WinCard variant="success">
+                <h2 className="text-xl font-semibold text-green-800 mb-4">
+                  🏆 Leaderboard - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
+                </h2>
             <div className="space-y-3">
               {(stats.topUsers || []).slice(0, 20).map((user) => {
                 const medals = ['🥇', '🥈', '🥉'];
@@ -358,9 +403,66 @@ export default function AdminDashboard() {
                   <div className="text-sm text-green-700">Máx Tickets</div>
                 </div>
               </div>
-            </div>
-          </Like2WinCard>
+                </div>
+              </Like2WinCard>
+            )}
+          </>
         )}
+
+        {/* Admin Tab Content */}
+        {activeTab === 'admin' && isAdmin && (
+          <>
+            {/* Admin Panel Content */}
+            {/* Loading State for Admin */}
+            {loading && (
+              <Like2WinCard variant="info">
+                <div className="text-center py-8">
+                  <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                  <p className="text-amber-700">Cargando estadísticas...</p>
+                </div>
+              </Like2WinCard>
+            )}
+
+            {/* No Active Raffle - Admin View */}
+            {!loading && stats && !stats.currentRaffle && (
+              <Like2WinCard variant="info">
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">🎯</div>
+                  <h2 className="text-xl font-semibold text-blue-800 mb-2">
+                    No hay sorteo activo
+                  </h2>
+                  <p className="text-blue-700 mb-4">
+                    Crea un nuevo sorteo para comenzar a recibir participantes
+                  </p>
+                  <Like2WinButton
+                    variant="gradient"
+                    onClick={createNewRaffle}
+                    disabled={loading}
+                  >
+                    🎯 Crear Nuevo Sorteo
+                  </Like2WinButton>
+                </div>
+              </Like2WinCard>
+            )}
+
+            {/* Current Raffle - Admin View */}
+            {!loading && stats?.currentRaffle && (
+              <Like2WinCard variant="info">
+                <h2 className="text-xl font-semibold text-blue-800 mb-4">
+                  🎯 Sorteo Activo - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
+                </h2>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <p><strong>Estado:</strong> {stats.currentRaffle.status}</p>
+                  <p><strong>Participantes:</strong> {stats.currentRaffle.totalParticipants || 0}</p>
+                  <p><strong>Inicio:</strong> {new Date(stats.currentRaffle.startDate).toLocaleDateString()}</p>
+                  <p><strong>Fin:</strong> {new Date(stats.currentRaffle.endDate).toLocaleDateString()}</p>
+                  <p><strong>Tiempo restante:</strong></p>
+                  <div className="text-2xl font-bold text-blue-600 mt-2">
+                    {timeLeft}
+                  </div>
+                </div>
+              </Like2WinCard>
+            )}
 
         {/* System Status - Simplified */}
         {!loading && stats && (
@@ -424,12 +526,14 @@ export default function AdminDashboard() {
           </div>
         </Like2WinCard>
 
-        {/* Loading */}
-        {loading && (
-          <div className="text-center py-8">
-            <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p className="text-amber-700">Procesando...</p>
-          </div>
+            {/* Loading */}
+            {loading && (
+              <div className="text-center py-8">
+                <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-amber-700">Procesando...</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
