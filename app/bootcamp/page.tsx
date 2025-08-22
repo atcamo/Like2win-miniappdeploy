@@ -56,72 +56,75 @@ export default function Like2WinDashboard() {
     setError(null);
     
     try {
-      // Fetch leaderboard
-      const leaderboardResponse = await fetch(`/api/raffle/leaderboard?period=${timeFilter}`, {
+      // Fetch real admin stats
+      const adminStatsResponse = await fetch('/api/admin/stats', {
         headers: {
           'Content-Type': 'application/json',
         }
       });
       
-      if (leaderboardResponse.ok) {
-        const leaderboardData = await leaderboardResponse.json();
-        setLeaderboard(leaderboardData.leaderboard || []);
-      }
-
-      // Fetch raffle stats (mock data for now)
-      setStats({
-        totalParticipants: 547,
-        currentRaffleId: 42,
-        nextRaffleDate: '2025-01-08T20:00:00Z',
-        totalTicketsDistributed: 12847,
-        totalDegenAwarded: 45600,
-        lastWinner: {
-          username: '@alice.eth',
-          amount: 2500,
-          date: '2025-01-01T20:00:00Z'
+      if (adminStatsResponse.ok) {
+        const adminData = await adminStatsResponse.json();
+        
+        if (adminData.success && adminData.data) {
+          const { currentRaffle, topUsers, totalUsers } = adminData.data;
+          
+          // Convert topUsers to leaderboard format
+          const formattedLeaderboard = (topUsers || []).map((user: any, index: number) => ({
+            id: user.userFid,
+            username: `@fid${user.userFid}`,
+            displayName: `User ${user.userFid}`,
+            avatarUrl: undefined,
+            tickets: user.ticketsCount || 0,
+            position: user.rank || (index + 1),
+            isFollowing: true,
+            totalLikes: user.ticketsCount || 0, // Use tickets as proxy for likes
+            joinDate: new Date().toISOString()
+          }));
+          
+          setLeaderboard(formattedLeaderboard);
+          
+          // Set real stats
+          if (currentRaffle) {
+            setStats({
+              totalParticipants: totalUsers || 0,
+              currentRaffleId: parseInt(currentRaffle.weekPeriod?.replace('2025-W', '') || '0'),
+              nextRaffleDate: currentRaffle.endDate,
+              totalTicketsDistributed: currentRaffle.totalTickets || 0,
+              totalDegenAwarded: Math.floor((currentRaffle.totalTickets || 0) * 100), // Estimate
+              lastWinner: {
+                username: topUsers?.[0] ? `@fid${topUsers[0].userFid}` : '@noone',
+                amount: (topUsers?.[0]?.ticketsCount || 0) * 100,
+                date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // Week ago
+              }
+            });
+          } else {
+            // No active raffle
+            setStats({
+              totalParticipants: 0,
+              currentRaffleId: 0,
+              nextRaffleDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+              totalTicketsDistributed: 0,
+              totalDegenAwarded: 0,
+              lastWinner: {
+                username: '@noone',
+                amount: 0,
+                date: new Date().toISOString()
+              }
+            });
+          }
         }
-      });
+      } else {
+        throw new Error('Failed to fetch admin stats');
+      }
       
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
       setError('Error al cargar los datos del dashboard');
       
-      // Mock data for development
-      setLeaderboard([
-        {
-          id: '1',
-          username: '@alice.eth',
-          displayName: 'Alice',
-          avatarUrl: '/avatars/alice.png',
-          tickets: 127,
-          position: 1,
-          isFollowing: true,
-          totalLikes: 89,
-          joinDate: '2024-12-15'
-        },
-        {
-          id: '2',
-          username: '@cryptobob',
-          displayName: 'CryptoBob',
-          avatarUrl: '/avatars/bob.png',
-          tickets: 94,
-          position: 2,
-          isFollowing: true,
-          totalLikes: 67,
-          joinDate: '2024-12-10'
-        },
-        {
-          id: '3',
-          username: '@like2winner',
-          displayName: 'Like2Winner',
-          avatarUrl: '/avatars/winner.png',
-          tickets: 78,
-          position: 3,
-          isFollowing: true,
-          totalLikes: 52,
-          joinDate: '2024-12-08'
-        }
-      ]);
+      // Empty data on error
+      setLeaderboard([]);
+      setStats(null);
     } finally {
       setLoading(false);
     }
@@ -164,7 +167,7 @@ export default function Like2WinDashboard() {
         <div className="mb-8 text-center">
           <MainTitle className="text-3xl sm:text-4xl text-amber-900 mb-2">Dashboard</MainTitle>
           <p className="text-base sm:text-lg text-amber-700">
-            Leaderboard, estadísticas y próximos sorteos
+            Leaderboard en tiempo real y estadísticas del sorteo actual
           </p>
         </div>
 

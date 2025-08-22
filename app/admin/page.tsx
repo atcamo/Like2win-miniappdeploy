@@ -197,8 +197,40 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* Loading State */}
+        {loading && (
+          <Like2WinCard variant="info">
+            <div className="text-center py-8">
+              <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p className="text-amber-700">Cargando estadísticas...</p>
+            </div>
+          </Like2WinCard>
+        )}
+
+        {/* No Active Raffle */}
+        {!loading && stats && !stats.currentRaffle && (
+          <Like2WinCard variant="info">
+            <div className="text-center py-8">
+              <div className="text-4xl mb-4">🎯</div>
+              <h2 className="text-xl font-semibold text-blue-800 mb-2">
+                No hay sorteo activo
+              </h2>
+              <p className="text-blue-700 mb-4">
+                Crea un nuevo sorteo para comenzar a recibir participantes
+              </p>
+              <Like2WinButton
+                variant="gradient"
+                onClick={createNewRaffle}
+                disabled={loading}
+              >
+                🎯 Crear Nuevo Sorteo
+              </Like2WinButton>
+            </div>
+          </Like2WinCard>
+        )}
+
         {/* Current Raffle */}
-        {stats?.currentRaffle && (
+        {!loading && stats?.currentRaffle && (
           <Like2WinCard variant="info">
             <h2 className="text-xl font-semibold text-blue-800 mb-4">
               🎯 Sorteo Actual
@@ -223,13 +255,13 @@ export default function AdminDashboard() {
         )}
 
         {/* Leaderboard del Sorteo Actual */}
-        {stats?.topUsers && stats.topUsers.length > 0 && (
+        {!loading && stats?.currentRaffle && (
           <Like2WinCard variant="success">
             <h2 className="text-xl font-semibold text-green-800 mb-4">
               🏆 Leaderboard - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
             </h2>
             <div className="space-y-3">
-              {stats.topUsers.slice(0, 20).map((user) => {
+              {(stats.topUsers || []).slice(0, 20).map((user) => {
                 const medals = ['🥇', '🥈', '🥉'];
                 
                 return (
@@ -245,7 +277,7 @@ export default function AdminDashboard() {
                       <span className={`text-lg font-bold min-w-[3rem] ${
                         user.isTopThree ? 'text-yellow-700' : 'text-green-700'
                       }`}>
-                        {user.isTopThree ? medals[user.rank - 1] : `#${user.rank}`}
+                        {user.isTopThree ? medals[(user.rank || 1) - 1] : `#${user.rank || 0}`}
                       </span>
                       <div>
                         <div className="font-semibold text-gray-800">
@@ -253,8 +285,8 @@ export default function AdminDashboard() {
                         </div>
                         {user.isTopThree && (
                           <div className="text-xs text-yellow-600">
-                            {user.rank === 1 ? '👑 Líder del Sorteo' : 
-                             user.rank === 2 ? '🎯 Segundo Lugar' : 
+                            {(user.rank || 0) === 1 ? '👑 Líder del Sorteo' : 
+                             (user.rank || 0) === 2 ? '🎯 Segundo Lugar' : 
                              '🔥 Tercer Lugar'}
                           </div>
                         )}
@@ -264,17 +296,17 @@ export default function AdminDashboard() {
                       <div className={`font-bold text-lg ${
                         user.isTopThree ? 'text-yellow-700' : 'text-green-600'
                       }`}>
-                        {user.ticketsCount}
+                        {user.ticketsCount || 0}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {user.ticketsCount === 1 ? 'ticket' : 'tickets'}
+                        {(user.ticketsCount || 0) === 1 ? 'ticket' : 'tickets'}
                       </div>
                     </div>
                   </div>
                 );
               })}
               
-              {stats.topUsers.length === 0 && (
+              {(!stats.topUsers || stats.topUsers.length === 0) && (
                 <div className="text-center py-8 text-gray-500">
                   <div className="text-4xl mb-2">🎯</div>
                   <p>Aún no hay participantes en este sorteo</p>
@@ -282,7 +314,7 @@ export default function AdminDashboard() {
                 </div>
               )}
               
-              {stats.totalUsers > 20 && (
+              {(stats.topUsers || []).length > 20 && (
                 <div className="text-center py-2 text-gray-500 border-t border-green-200">
                   <p className="text-sm">
                     ... y {stats.totalUsers - 20} participantes más
@@ -296,7 +328,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-2xl font-bold text-green-600">
-                    {stats.totalUsers}
+                    {stats.totalUsers || 0}
                   </div>
                   <div className="text-sm text-green-700">Participantes</div>
                 </div>
@@ -308,7 +340,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-green-600">
-                    {stats.topUsers[0]?.ticketsCount || 0}
+                    {(stats.topUsers || [])[0]?.ticketsCount || 0}
                   </div>
                   <div className="text-sm text-green-700">Máx Tickets</div>
                 </div>
@@ -318,6 +350,7 @@ export default function AdminDashboard() {
         )}
 
         {/* System Status - Simplified */}
+        {!loading && stats && (
         <Like2WinCard variant="info">
           <h2 className="text-xl font-semibold text-blue-800 mb-4">
             ⚡ Estado del Sistema
@@ -336,6 +369,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         </Like2WinCard>
+        )}
 
         {/* Actions */}
         <Like2WinCard variant="gradient">
