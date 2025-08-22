@@ -23,8 +23,11 @@ interface UserCache {
 class UserService {
   private cache: UserCache = {};
   private readonly CACHE_TTL = 60 * 60 * 1000; // 1 hour cache
-  private readonly NEYNAR_API_KEY = process.env.NEYNAR_API_KEY;
   private readonly NEYNAR_BASE_URL = 'https://api.neynar.com/v2';
+  
+  private get NEYNAR_API_KEY() {
+    return process.env.NEYNAR_API_KEY;
+  }
 
   /**
    * Resolve multiple FIDs to user data
@@ -34,7 +37,8 @@ class UserService {
     console.log('🔍 UserService Debug:', {
       hasApiKey: !!this.NEYNAR_API_KEY,
       apiKeyLength: this.NEYNAR_API_KEY?.length || 0,
-      fidsToResolve: fids.length
+      fidsToResolve: fids.length,
+      apiKeyPreview: this.NEYNAR_API_KEY ? `${this.NEYNAR_API_KEY.substring(0, 4)}...${this.NEYNAR_API_KEY.substring(this.NEYNAR_API_KEY.length - 4)}` : 'none'
     });
     const result: Record<string, { username: string; displayName: string; pfpUrl: string }> = {};
     const uncachedFids: string[] = [];
@@ -75,7 +79,9 @@ class UserService {
           result[fid] = userData;
         }
       } catch (error) {
-        console.error('Error fetching users from Neynar:', error);
+        console.error('❌ Error fetching users from Neynar:', error);
+        console.error('🔍 API Key available:', !!this.NEYNAR_API_KEY);
+        console.error('📋 Uncached FIDs:', uncachedFids);
         
         // Fallback to FID display for failed lookups
         for (const fid of uncachedFids) {
@@ -111,23 +117,47 @@ class UserService {
     // Neynar bulk user endpoint
     const fidsParam = fids.join(',');
     const url = `${this.NEYNAR_BASE_URL}/farcaster/user/bulk?fids=${fidsParam}`;
+    
+    console.log('🌐 Making Neynar API request:', {
+      url,
+      fidsCount: fids.length,
+      hasApiKey: !!this.NEYNAR_API_KEY
+    });
 
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Api-Key': this.NEYNAR_API_KEY
+        'Api-Key': this.NEYNAR_API_KEY!
       }
     });
 
+    console.log('📡 Neynar API response:', {
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok
+    });
+
     if (!response.ok) {
-      throw new Error(`Neynar API error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('❌ Neynar API error response:', errorText);
+      throw new Error(`Neynar API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
     
+    console.log('📋 Neynar API data:', {
+      usersCount: data.users?.length || 0,
+      hasUsers: !!(data.users && data.users.length > 0),
+      sampleUser: data.users?.[0] ? {
+        fid: data.users[0].fid,
+        username: data.users[0].username,
+        displayName: data.users[0].display_name
+      } : null
+    });
+    
     // Transform Neynar response to our format
-    return (data.users || []).map((user: any) => ({
+    const users = (data.users || []).map((user: any) => ({
       fid: user.fid,
       username: user.username,
       displayName: user.display_name,
@@ -135,6 +165,9 @@ class UserService {
       followerCount: user.follower_count || 0,
       followingCount: user.following_count || 0
     }));
+    
+    console.log('✅ Transformed users:', users.length);
+    return users;
   }
 
   /**
