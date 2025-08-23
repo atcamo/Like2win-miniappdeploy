@@ -29,7 +29,7 @@ export function BottomAppBar() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-amber-600 to-orange-500 border-t border-amber-400 md:hidden z-50 shadow-xl backdrop-blur-sm">
-      <div className="flex justify-around items-center h-16">
+      <div className="flex justify-center items-center h-16 gap-4 px-8">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           
@@ -37,14 +37,14 @@ export function BottomAppBar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs transition-all duration-200 ${
+              className={`flex flex-col items-center justify-center px-6 py-2 rounded-lg transition-all duration-200 min-w-[120px] ${
                 isActive
-                  ? 'text-yellow-100 scale-105'
-                  : 'text-orange-100 hover:text-white hover:scale-105'
+                  ? 'text-yellow-100 bg-white/20 scale-105 shadow-lg'
+                  : 'text-orange-100 hover:text-white hover:bg-white/10 hover:scale-105'
               }`}
             >
-              <div>{item.icon}</div>
-              <span className="mt-1 text-xs font-medium">{item.label}</span>
+              <div className="mb-1">{item.icon}</div>
+              <span className="text-xs font-semibold">{item.label}</span>
             </Link>
           );
         })}
