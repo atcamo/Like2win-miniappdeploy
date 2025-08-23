@@ -175,14 +175,36 @@ export default function Like2WinMiniApp() {
           <p className="mt-4 text-amber-700 mb-6">
             Para participar en los sorteos de $DEGEN, necesitas abrir esta app desde Farcaster.
           </p>
-          <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
-            <p className="text-amber-800 text-sm">
-              💡 <strong>Cómo participar:</strong><br/>
-              1. Abre en Farcaster client<br/>
-              2. Sigue @Like2Win<br/>
-              3. Con sombrero DEGEN 🎩: solo like<br/>
-              4. Sin sombrero: like + recast + comment
+          <div className="bg-amber-100 border border-amber-300 rounded-lg p-4 mb-4">
+            <p className="text-amber-800 text-sm font-semibold mb-3">
+              💡 <strong>Cómo participar:</strong>
             </p>
+            <div className="grid gap-3">
+              <p className="text-amber-700 text-sm">1. Abre en Farcaster client</p>
+              <p className="text-amber-700 text-sm">2. Sigue @Like2Win</p>
+            </div>
+          </div>
+          
+          {/* Mini participation cards for non-frame view */}
+          <div className="grid grid-cols-1 gap-3 mb-4">
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🎩</span>
+                <div>
+                  <span className="font-bold text-purple-700">Con DEGEN:</span>
+                  <span className="text-purple-600 ml-2">❤️ Solo like</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">👤</span>
+                <div>
+                  <span className="font-bold text-orange-700">Sin DEGEN:</span>
+                  <span className="text-orange-600 ml-2">❤️ + 🔄 + 💬</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -202,11 +224,57 @@ export default function Like2WinMiniApp() {
             <MainTitle className="text-3xl">
               ¡Gana $DEGEN con tus Likes!
             </MainTitle>
-            <p className="text-lg text-amber-700 max-w-2xl mx-auto">
-              La forma más simple de ganar crypto: Follow @Like2Win y participa según tu tipo de cuenta.<br/>
-              • <strong>Con 🎩 DEGEN:</strong> solo like<br/>
-              • <strong>Sin 🎩:</strong> like + recast + comment<br/>
-              Sorteos bi-semanales de $DEGEN.
+            <p className="text-lg text-amber-700 max-w-2xl mx-auto mb-6">
+              La forma más simple de ganar crypto: Follow @Like2Win y participa según tu tipo de cuenta.
+            </p>
+            
+            {/* Participation Options Cards */}
+            <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6">
+              {/* DEGEN Holder Option */}
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg">
+                <div className="text-center">
+                  <div className="text-4xl mb-3">🎩</div>
+                  <h3 className="text-xl font-bold text-purple-800 mb-3">Con DEGEN</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-4 py-2">
+                      <span className="text-2xl">❤️</span>
+                      <span className="font-semibold text-purple-700">Solo LIKE</span>
+                    </div>
+                  </div>
+                  <p className="text-purple-600 text-sm mt-3">
+                    ¡Súper fácil! Con sombrero DEGEN solo necesitas dar like.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Non-DEGEN Option */}
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg">
+                <div className="text-center">
+                  <div className="text-4xl mb-3">👤</div>
+                  <h3 className="text-xl font-bold text-orange-800 mb-3">Sin DEGEN</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
+                      <span className="text-lg">❤️</span>
+                      <span className="font-medium text-orange-700">LIKE</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
+                      <span className="text-lg">🔄</span>
+                      <span className="font-medium text-orange-700">RECAST</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
+                      <span className="text-lg">💬</span>
+                      <span className="font-medium text-orange-700">COMMENT</span>
+                    </div>
+                  </div>
+                  <p className="text-orange-600 text-sm mt-3">
+                    Sin sombrero DEGEN necesitas las 3 acciones.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-amber-600 font-semibold">
+              🎯 Sorteos bi-semanales de $DEGEN
             </p>
             
             {/* Show follow prompt only if user is not following yet */}
