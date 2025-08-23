@@ -286,7 +286,7 @@ export default function AdminDashboard() {
             {!loading && stats?.currentRaffle && (
               <Like2WinCard variant="info">
                 <h2 className="text-xl font-semibold text-blue-800 mb-4">
-                  🎯 {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
+                  🎯 Sorteo Actual
                 </h2>
                 <div className="text-center">
                   <p className="text-blue-700 mb-2">Tiempo restante:</p>
@@ -294,7 +294,7 @@ export default function AdminDashboard() {
                     {timeLeft}
                   </div>
                   <p className="text-sm text-blue-600 mt-2">
-                    {stats.currentRaffle.totalParticipants || 0} participantes • {stats.currentRaffle?.totalTickets || 0} tickets totales
+                    {stats.totalUsers || 0} participantes • {stats.currentRaffle?.totalTickets || 0} tickets totales
                   </p>
                 </div>
               </Like2WinCard>
@@ -304,7 +304,7 @@ export default function AdminDashboard() {
             {!loading && stats?.currentRaffle && (
               <Like2WinCard variant="success">
                 <h2 className="text-xl font-semibold text-green-800 mb-4">
-                  🏆 Leaderboard - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
+                  🏆 Leaderboard
                 </h2>
             <div className="space-y-3">
               {(stats.topUsers || []).slice(0, 20).map((user) => {
@@ -447,11 +447,11 @@ export default function AdminDashboard() {
             {!loading && stats?.currentRaffle && (
               <Like2WinCard variant="info">
                 <h2 className="text-xl font-semibold text-blue-800 mb-4">
-                  🎯 Sorteo Activo - {stats.currentRaffle?.weekPeriod || 'Sorteo Actual'}
+                  🎯 Sorteo Activo
                 </h2>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <p><strong>Estado:</strong> {stats.currentRaffle.status}</p>
-                  <p><strong>Participantes:</strong> {stats.currentRaffle.totalParticipants || 0}</p>
+                  <p><strong>Participantes:</strong> {stats.totalUsers || 0}</p>
                   <p><strong>Inicio:</strong> {new Date(stats.currentRaffle.startDate).toLocaleDateString()}</p>
                   <p><strong>Fin:</strong> {new Date(stats.currentRaffle.endDate).toLocaleDateString()}</p>
                   <p><strong>Tiempo restante:</strong></p>
