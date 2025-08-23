@@ -2,11 +2,9 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useAccount } from 'wagmi';
 
 export function BottomAppBar() {
   const pathname = usePathname();
-  const { isConnected, address } = useAccount();
 
   const navItems = [
     {
@@ -27,22 +25,6 @@ export function BottomAppBar() {
         </svg>
       ),
     },
-    {
-      href: '#wallet',
-      label: isConnected ? 'Wallet' : 'Conectar',
-      icon: isConnected ? (
-        <div className="relative">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-          </svg>
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></div>
-        </div>
-      ) : (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-        </svg>
-      ),
-    },
   ];
 
   return (
@@ -50,31 +32,6 @@ export function BottomAppBar() {
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
-          const isWallet = item.href === '#wallet';
-          
-          if (isWallet) {
-            return (
-              <button
-                key={item.href}
-                onClick={() => {
-                  // This will trigger the wallet connection modal
-                  // The actual wallet connection logic should be handled by the OnchainKit provider
-                  const walletButton = document.querySelector('[data-testid="connect-wallet"]') as HTMLButtonElement;
-                  if (walletButton) {
-                    walletButton.click();
-                  }
-                }}
-                className="flex flex-col items-center justify-center flex-1 h-full px-2 py-2 text-xs"
-              >
-                <div className={`${isConnected ? 'text-green-300' : 'text-orange-100'}`}>
-                  {item.icon}
-                </div>
-                <span className={`mt-1 ${isConnected ? 'text-green-300' : 'text-orange-100'} text-xs font-medium`}>
-                  {isConnected ? `${address?.slice(0, 4)}...` : item.label}
-                </span>
-              </button>
-            );
-          }
           
           return (
             <Link
