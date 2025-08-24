@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
         data: {
           raffles: {
             total: rafflesResult.rows.length,
-            list: rafflesResult.rows.map(r => ({
+            list: rafflesResult.rows.map((r: any) => ({
               id: r.id,
               weekPeriod: r.weekPeriod,
               status: r.status,
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
           },
           tickets: {
             total: ticketsResult.rows.length,
-            list: ticketsResult.rows.map(t => ({
+            list: ticketsResult.rows.map((t: any) => ({
               raffleId: t.raffleId,
               userFid: t.userFid.toString(),
               ticketsCount: t.ticketsCount,
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
           },
           itsaiUser: {
             found: itsaiResult.rows.length > 0,
-            data: itsaiResult.rows.map(t => ({
+            data: itsaiResult.rows.map((t: any) => ({
               raffleId: t.raffleId,
               userFid: t.userFid.toString(),
               ticketsCount: t.ticketsCount,
