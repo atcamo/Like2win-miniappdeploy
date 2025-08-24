@@ -21,14 +21,14 @@ export function Header() {
   const pathname = usePathname();
   const { isConnected, address } = useAccount();
   
+  // Get MiniKit context for Farcaster user info - must call hooks before conditional returns
+  const miniKit = useMiniKit();
+  const farcasterUser = miniKit?.context?.user;
+  
   // Hide header in MiniApp and Dashboard routes
   if (pathname === '/miniapp' || pathname === '/admin') {
     return null;
   }
-  
-  // Get MiniKit context for Farcaster user info
-  const miniKit = useMiniKit();
-  const farcasterUser = miniKit?.context?.user;
 
   const navItems = [
     {
