@@ -48,13 +48,23 @@ export async function POST(request: NextRequest) {
       console.log(`📝 Post content: "${post.text.substring(0, 100)}..."`);
 
       try {
-        // Get reactions for this cast
-        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${post.hash}&types=likes&limit=100`, {
+        // Get reactions for this cast - try multiple endpoint formats
+        let reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?identifier=${post.hash}&type=hash&limit=100`, {
           headers: {
             'accept': 'application/json',
             'api_key': NEYNAR_API_KEY
           }
         });
+
+        // If that fails, try the old format
+        if (!reactionsResponse.ok) {
+          reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${post.hash}&types=likes&limit=100`, {
+            headers: {
+              'accept': 'application/json',
+              'api_key': NEYNAR_API_KEY
+            }
+          });
+        }
 
         if (!reactionsResponse.ok) {
           console.log(`⚠️ Failed to fetch reactions for ${post.hash}: ${reactionsResponse.status}`);
@@ -62,7 +72,17 @@ export async function POST(request: NextRequest) {
         }
 
         const reactionsData = await reactionsResponse.json();
-        const likes = reactionsData.reactions?.likes || [];
+        console.log(`📊 Raw reaction data:`, JSON.stringify(reactionsData, null, 2));
+        
+        // Handle different response formats
+        let likes = [];
+        if (reactionsData.reactions?.likes) {
+          likes = reactionsData.reactions.likes;
+        } else if (reactionsData.likes) {
+          likes = reactionsData.likes;
+        } else if (Array.isArray(reactionsData.reactions)) {
+          likes = reactionsData.reactions.filter((r: any) => r.type === 'like');
+        }
 
         console.log(`❤️ Found ${likes.length} likes on this post`);
 
