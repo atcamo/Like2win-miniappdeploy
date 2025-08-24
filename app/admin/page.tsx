@@ -199,13 +199,13 @@ export default function AdminDashboard() {
         
         {/* Header */}
         <Like2WinCard variant="gradient" className="text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="flex items-center justify-center gap-3 mb-4 md:mb-2">
             <Like2WinLogo size="lg" animated={true} />
-            <h1 className="text-3xl font-bold text-amber-800">
+            <h1 className="text-3xl font-bold text-amber-800 md:text-xl">
               Like2Win Dashboard
             </h1>
           </div>
-          <p className="text-amber-700">
+          <p className="text-amber-700 md:text-sm">
             {isAdmin ? 'Panel de administración completo' : 'Leaderboard del sorteo actual'}
           </p>
         </Like2WinCard>
@@ -304,17 +304,17 @@ export default function AdminDashboard() {
             {/* Leaderboard del Sorteo Actual */}
             {!loading && stats?.currentRaffle && (
               <Like2WinCard variant="success">
-                <h2 className="text-xl font-semibold text-green-800 mb-4">
+                <h2 className="text-xl font-semibold text-green-800 mb-4 md:text-lg md:mb-2">
                   🏆 Leaderboard
                 </h2>
-            <div className="space-y-3">
+            <div className="space-y-3 md:space-y-1">
               {(stats.topUsers || []).slice(0, 20).map((user) => {
                 const medals = ['🥇', '🥈', '🥉'];
                 
                 return (
                   <div 
                     key={user.userFid} 
-                    className={`flex justify-between items-center p-3 rounded-lg ${
+                    className={`flex justify-between items-center p-3 rounded-lg md:p-2 md:rounded ${
                       user.isTopThree 
                         ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-2 border-yellow-300' 
                         : 'bg-green-50 hover:bg-green-100'
@@ -536,7 +536,7 @@ export default function AdminDashboard() {
         )}
         
         {/* Debug Info - Only in development */}
-        <DebugInfo />
+        {process.env.NODE_ENV === 'development' && <DebugInfo />}
       </div>
     </div>
   );

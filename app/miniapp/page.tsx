@@ -217,42 +217,42 @@ export default function Like2WinMiniApp() {
     <div className="min-h-screen md:h-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-auto md:overflow-visible">
       
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0 md:py-3 md:space-y-4 md:pt-3">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0 md:py-1 md:space-y-2 md:pt-1">
         
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
-          <div className="space-y-4">
-            <MainTitle className="text-3xl">
+          <div className="space-y-4 md:space-y-2">
+            <MainTitle className="text-3xl md:text-2xl">
               ¡Gana $DEGEN con tus Likes!
             </MainTitle>
-            <p className="text-lg text-amber-700 max-w-2xl mx-auto mb-6">
-              La forma más simple de ganar crypto: Follow @Like2Win y participa según tu tipo de cuenta.
+            <p className="text-lg text-amber-700 max-w-2xl mx-auto mb-6 md:text-base md:mb-3">
+              Follow @Like2Win y participa según tu cuenta.
             </p>
             
             {/* Participation Options Cards */}
-            <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6">
+            <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6 md:gap-2 md:mb-3">
               {/* DEGEN Holder Option */}
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg md:p-4">
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg md:p-2 md:rounded-lg">
                 <div className="text-center">
-                  <div className="text-4xl mb-3 md:text-3xl md:mb-2">🎩</div>
-                  <h3 className="text-xl font-bold text-purple-800 mb-3 md:text-lg md:mb-2">Con DEGEN</h3>
+                  <div className="text-4xl mb-3 md:text-2xl md:mb-1">🎩</div>
+                  <h3 className="text-xl font-bold text-purple-800 mb-3 md:text-base md:mb-1">Con DEGEN</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-4 py-2">
                       <span className="text-2xl">❤️</span>
                       <span className="font-semibold text-purple-700">Solo LIKE</span>
                     </div>
                   </div>
-                  <p className="text-purple-600 text-sm mt-3">
-                    ¡Súper fácil! Con sombrero DEGEN solo necesitas dar like.
+                  <p className="text-purple-600 text-sm mt-3 md:text-xs md:mt-1">
+                    Con sombrero DEGEN solo like.
                   </p>
                 </div>
               </div>
               
               {/* Non-DEGEN Option */}
-              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg md:p-4">
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg md:p-2 md:rounded-lg">
                 <div className="text-center">
-                  <div className="text-4xl mb-3 md:text-3xl md:mb-2">👤</div>
-                  <h3 className="text-xl font-bold text-orange-800 mb-3 md:text-lg md:mb-2">Sin DEGEN</h3>
+                  <div className="text-4xl mb-3 md:text-2xl md:mb-1">👤</div>
+                  <h3 className="text-xl font-bold text-orange-800 mb-3 md:text-base md:mb-1">Sin DEGEN</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
                       <span className="text-lg">❤️</span>
@@ -267,8 +267,8 @@ export default function Like2WinMiniApp() {
                       <span className="font-medium text-orange-700">COMMENT</span>
                     </div>
                   </div>
-                  <p className="text-orange-600 text-sm mt-3">
-                    Sin sombrero DEGEN necesitas las 3 acciones.
+                  <p className="text-orange-600 text-sm mt-3 md:text-xs md:mt-1">
+                    Sin sombrero: 3 acciones.
                   </p>
                 </div>
               </div>
@@ -278,9 +278,9 @@ export default function Like2WinMiniApp() {
               🎯 Sorteos bi-semanales de $DEGEN
             </p>
             
-            {/* Show follow prompt only if user is not following yet */}
+            {/* Show follow prompt only if user is not following yet - Hidden on desktop */}
             {isFollowing === false && (
-              <div className="bg-amber-100 border border-amber-300 rounded-lg p-4">
+              <div className="bg-amber-100 border border-amber-300 rounded-lg p-4 md:hidden">
                 <p className="text-amber-800 font-semibold mb-3">
                   🚀 ¡Bienvenido a Like2Win!
                 </p>
@@ -299,9 +299,9 @@ export default function Like2WinMiniApp() {
               </div>
             )}
             
-            {/* Show welcome message if already following */}
+            {/* Show welcome message if already following - Hidden on desktop */}
             {isFollowing === true && (
-              <div className="bg-green-100 border border-green-300 rounded-lg p-4">
+              <div className="bg-green-100 border border-green-300 rounded-lg p-4 md:hidden">
                 <p className="text-green-800 font-semibold mb-2">
                   ✅ ¡Ya sigues @Like2Win!
                 </p>
@@ -311,9 +311,9 @@ export default function Like2WinMiniApp() {
               </div>
             )}
             
-            {/* Show loading state while checking */}
+            {/* Show loading state while checking - Hidden on desktop */}
             {isFollowing === null && (
-              <div className="bg-blue-100 border border-blue-300 rounded-lg p-4">
+              <div className="bg-blue-100 border border-blue-300 rounded-lg p-4 md:hidden">
                 <p className="text-blue-800 font-semibold mb-2">
                   🔍 Verificando estado de follow...
                 </p>
@@ -329,74 +329,78 @@ export default function Like2WinMiniApp() {
         </Like2WinCard>
 
 
-        {/* Engagement System - Real Engagement Tracker with APIs */}
-        {userFid && isFollowing === true && <EngagementTracker userFid={userFid} />}
+        {/* Engagement System - Real Engagement Tracker with APIs - Hidden on desktop */}
+        {userFid && isFollowing === true && <div className="md:hidden"><EngagementTracker userFid={userFid} /></div>}
         
-        {/* Blocked feed for non-followers */}
+        {/* Blocked feed for non-followers - Hidden on desktop for space */}
         {userFid && isFollowing === false && (
-          <Like2WinCard variant="gradient">
-            <div className="text-center py-12">
-              <div className="mb-6">
-                <div className="w-20 h-20 mx-auto bg-amber-200 rounded-full flex items-center justify-center mb-4">
-                  <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
+          <div className="md:hidden">
+            <Like2WinCard variant="gradient">
+              <div className="text-center py-12">
+                <div className="mb-6">
+                  <div className="w-20 h-20 mx-auto bg-amber-200 rounded-full flex items-center justify-center mb-4">
+                    <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-amber-800 mb-3">
+                    📋 Posts Oficiales Bloqueados
+                  </h3>
+                  <p className="text-amber-700 mb-6 max-w-md mx-auto">
+                    Para ver los posts oficiales de @Like2Win y participar en los sorteos, primero necesitas seguir la cuenta.
+                  </p>
+                  <Like2WinButton 
+                    variant="gradient" 
+                    size="lg"
+                    onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
+                  >
+                    🎯 Seguir @Like2Win
+                  </Like2WinButton>
                 </div>
-                <h3 className="text-xl font-semibold text-amber-800 mb-3">
-                  📋 Posts Oficiales Bloqueados
-                </h3>
-                <p className="text-amber-700 mb-6 max-w-md mx-auto">
-                  Para ver los posts oficiales de @Like2Win y participar en los sorteos, primero necesitas seguir la cuenta.
-                </p>
-                <Like2WinButton 
-                  variant="gradient" 
-                  size="lg"
-                  onClick={() => window.open('https://warpcast.com/like2win', '_blank')}
-                >
-                  🎯 Seguir @Like2Win
-                </Like2WinButton>
-              </div>
-              
-              {/* Preview placeholder */}
-              <div className="border-t border-amber-200 pt-6">
-                <div className="space-y-3 opacity-30">
-                  <div className="bg-amber-100 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-amber-300 rounded-full"></div>
-                      <div className="flex-1">
-                        <div className="h-3 bg-amber-300 rounded w-24 mb-2"></div>
-                        <div className="h-2 bg-amber-200 rounded w-full mb-1"></div>
-                        <div className="h-2 bg-amber-200 rounded w-3/4"></div>
+                
+                {/* Preview placeholder */}
+                <div className="border-t border-amber-200 pt-6">
+                  <div className="space-y-3 opacity-30">
+                    <div className="bg-amber-100 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 bg-amber-300 rounded-full"></div>
+                        <div className="flex-1">
+                          <div className="h-3 bg-amber-300 rounded w-24 mb-2"></div>
+                          <div className="h-2 bg-amber-200 rounded w-full mb-1"></div>
+                          <div className="h-2 bg-amber-200 rounded w-3/4"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-amber-100 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 bg-amber-300 rounded-full"></div>
+                        <div className="flex-1">
+                          <div className="h-3 bg-amber-300 rounded w-24 mb-2"></div>
+                          <div className="h-2 bg-amber-200 rounded w-full mb-1"></div>
+                          <div className="h-2 bg-amber-200 rounded w-2/3"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="bg-amber-100 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-amber-300 rounded-full"></div>
-                      <div className="flex-1">
-                        <div className="h-3 bg-amber-300 rounded w-24 mb-2"></div>
-                        <div className="h-2 bg-amber-200 rounded w-full mb-1"></div>
-                        <div className="h-2 bg-amber-200 rounded w-2/3"></div>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="text-xs text-amber-600 mt-3">
+                    Vista previa de posts oficiales (disponible después de seguir)
+                  </p>
                 </div>
-                <p className="text-xs text-amber-600 mt-3">
-                  Vista previa de posts oficiales (disponible después de seguir)
-                </p>
               </div>
-            </div>
-          </Like2WinCard>
+            </Like2WinCard>
+          </div>
         )}
         
-        {/* Loading state while checking follow status */}
+        {/* Loading state while checking follow status - Hidden on desktop */}
         {userFid && isFollowing === null && (
-          <Like2WinCard variant="gradient">
-            <div className="text-center py-8">
-              <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p className="text-amber-700">Verificando acceso a posts oficiales...</p>
-            </div>
-          </Like2WinCard>
+          <div className="md:hidden">
+            <Like2WinCard variant="gradient">
+              <div className="text-center py-8">
+                <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-amber-700">Verificando acceso a posts oficiales...</p>
+              </div>
+            </Like2WinCard>
+          </div>
         )}
 
         {/* Call to Action - Hidden since posts are shown directly below */}
@@ -439,8 +443,8 @@ export default function Like2WinMiniApp() {
           </Like2WinCard>
         )}
 
-        {/* Save MiniApp - Simple & Clean */}
-        <div className="mt-6 text-center py-3 border-t border-amber-200">
+        {/* Save MiniApp - Simple & Clean - Hidden on desktop for space */}
+        <div className="mt-6 text-center py-3 border-t border-amber-200 md:hidden">
           <p className="text-amber-600 text-sm mb-3">
             💾 Guarda Like2Win para acceso rápido
           </p>
@@ -460,7 +464,7 @@ export default function Like2WinMiniApp() {
       </main>
 
       {/* Debug Info - Only in development */}
-      <DebugInfo />
+      {process.env.NODE_ENV === 'development' && <DebugInfo />}
     </div>
   );
 }
