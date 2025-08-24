@@ -216,7 +216,7 @@ export default function Like2WinMiniApp() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-hidden">
       
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-8">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-8 pb-20 md:pb-4">
         
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
@@ -439,7 +439,7 @@ export default function Like2WinMiniApp() {
         )}
 
         {/* Save MiniApp - Simple & Clean */}
-        <div className="mt-8 text-center py-4 border-t border-amber-200">
+        <div className="mt-6 text-center py-3 border-t border-amber-200">
           <p className="text-amber-600 text-sm mb-3">
             💾 Guarda Like2Win para acceso rápido
           </p>
@@ -458,25 +458,6 @@ export default function Like2WinMiniApp() {
 
       </main>
 
-      {/* Footer */}
-      <footer className="mt-12 bg-amber-400 border-t border-amber-500 py-6 shadow-md">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Like2WinLogo size="sm" animated={false} />
-            <span className="font-semibold text-amber-700">Like2Win</span>
-          </div>
-          <p className="text-sm text-amber-600 mb-2">
-            Donde cada like se convierte en una oportunidad real ✨
-          </p>
-          <div className="flex justify-center items-center gap-2 text-xs text-amber-600">
-            <span>Built on Base</span>
-            <span>•</span>
-            <span>Powered by Farcaster</span>
-            <span>•</span>
-            <span>Open Source</span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
