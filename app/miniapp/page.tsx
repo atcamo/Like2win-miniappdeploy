@@ -213,7 +213,7 @@ export default function Like2WinMiniApp() {
 
   // Main app content
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-hidden">
+    <div className="min-h-screen md:h-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-auto md:overflow-visible">
       
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0">
