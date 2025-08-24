@@ -194,8 +194,8 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen md:h-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 p-4 pt-2.5 pb-20 md:pb-0 overflow-auto md:overflow-visible">
-      <div className="max-w-6xl mx-auto space-y-6 py-4">
+    <div className="min-h-screen md:h-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 p-4 pt-2.5 pb-20 md:pb-0 overflow-auto md:overflow-visible md:p-2 md:pt-1">
+      <div className="max-w-6xl mx-auto space-y-6 py-4 md:space-y-3 md:py-2">
         
         {/* Header */}
         <Like2WinCard variant="gradient" className="text-center">

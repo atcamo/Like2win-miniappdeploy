@@ -217,7 +217,7 @@ export default function Like2WinMiniApp() {
     <div className="min-h-screen md:h-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-auto md:overflow-visible">
       
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0 md:py-3 md:space-y-4 md:pt-3">
         
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
@@ -232,10 +232,10 @@ export default function Like2WinMiniApp() {
             {/* Participation Options Cards */}
             <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6">
               {/* DEGEN Holder Option */}
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg">
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg md:p-4">
                 <div className="text-center">
-                  <div className="text-4xl mb-3">🎩</div>
-                  <h3 className="text-xl font-bold text-purple-800 mb-3">Con DEGEN</h3>
+                  <div className="text-4xl mb-3 md:text-3xl md:mb-2">🎩</div>
+                  <h3 className="text-xl font-bold text-purple-800 mb-3 md:text-lg md:mb-2">Con DEGEN</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-4 py-2">
                       <span className="text-2xl">❤️</span>
@@ -249,10 +249,10 @@ export default function Like2WinMiniApp() {
               </div>
               
               {/* Non-DEGEN Option */}
-              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg">
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg md:p-4">
                 <div className="text-center">
-                  <div className="text-4xl mb-3">👤</div>
-                  <h3 className="text-xl font-bold text-orange-800 mb-3">Sin DEGEN</h3>
+                  <div className="text-4xl mb-3 md:text-3xl md:mb-2">👤</div>
+                  <h3 className="text-xl font-bold text-orange-800 mb-3 md:text-lg md:mb-2">Sin DEGEN</h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
                       <span className="text-lg">❤️</span>
