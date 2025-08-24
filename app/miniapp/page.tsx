@@ -8,6 +8,7 @@ import {
   Like2WinButton, 
   Like2WinLogo
 } from '@/app/components/Like2WinComponents';
+import { DebugInfo } from '@/app/components/DebugInfo';
 // import { EngagementTracker } from '@/app/components/EngagementTracker';
 import { EngagementTracker } from '@/app/components/EngagementTracker';
 import { useEngagement } from '@/lib/hooks/useEngagement';
@@ -458,6 +459,8 @@ export default function Like2WinMiniApp() {
 
       </main>
 
+      {/* Debug Info - Only in development */}
+      <DebugInfo />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import {
   Like2WinButton, 
   Like2WinLogo 
 } from '@/app/components/Like2WinComponents';
+import { DebugInfo } from '@/app/components/DebugInfo';
 
 interface RaffleData {
   id: string;
@@ -533,6 +534,9 @@ export default function AdminDashboard() {
             )}
           </>
         )}
+        
+        {/* Debug Info - Only in development */}
+        <DebugInfo />
       </div>
     </div>
   );
