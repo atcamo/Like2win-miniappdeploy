@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CacheService } from '@/lib/services/cacheService';
 import { BackgroundSyncService } from '@/lib/services/backgroundSync';
+import { EngagementService } from '@/lib/services/engagementService';
 
 /**
  * Neynar Webhook Handler for Farcaster Events
@@ -102,25 +103,17 @@ async function handleReactionEvent(eventData: any) {
         });
     }
 
-    // Process the engagement
-    const processResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/engagement/process`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: engagementType,
-        userFid: user.fid,
-        castHash: cast.hash,
-        timestamp: reaction.timestamp || new Date().toISOString(),
-        authorFid: cast.author?.fid
-      })
+    // Process the engagement directly with EngagementService
+    const processResult = await EngagementService.processLikeEvent({
+      type: engagementType as 'like' | 'recast' | 'comment',
+      userFid: user.fid.toString(),
+      castHash: cast.hash,
+      timestamp: new Date(reaction.timestamp || new Date().toISOString()),
+      authorFid: cast.author?.fid?.toString()
     });
 
-    const processResult = await processResponse.json();
-
     // If engagement was successful, immediately update cache
-    if (processResult.success && processResult.ticketsAwarded) {
+    if (processResult.success) {
       try {
         // Invalidate user cache to force fresh data
         await CacheService.invalidateUserCache(user.fid.toString());
@@ -131,7 +124,7 @@ async function handleReactionEvent(eventData: any) {
         // Invalidate raffle cache if totals changed
         await CacheService.invalidateRaffleCache();
         
-        console.log(`🚀 Cache updated immediately for user ${user.fid} (+${processResult.ticketsAwarded} tickets)`);
+        console.log(`🚀 Cache updated immediately for user ${user.fid} (+${processResult.ticketsAwarded || 0} tickets)`);
       } catch (cacheError) {
         console.error('⚠️ Cache update failed (engagement still processed):', cacheError);
       }
