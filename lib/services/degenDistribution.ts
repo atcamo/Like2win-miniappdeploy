@@ -3,7 +3,7 @@
  * Handles automatic distribution of DEGEN tokens to raffle winners
  */
 
-import { createWalletClient, http, parseUnits, formatUnits } from 'viem';
+import { createWalletClient, createPublicClient, http, parseUnits, formatUnits } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { base } from 'viem/chains';
 
@@ -49,6 +49,7 @@ interface DistributionResult {
 
 export class DegenDistributionService {
   private walletClient: any;
+  private publicClient: any;
   private account: any;
 
   constructor() {
@@ -63,6 +64,10 @@ export class DegenDistributionService {
       chain: base,
       transport: http()
     });
+    this.publicClient = createPublicClient({
+      chain: base,
+      transport: http()
+    });
   }
 
   /**
@@ -70,7 +75,7 @@ export class DegenDistributionService {
    */
   async getBalance(): Promise<{ balance: string; formattedBalance: string }> {
     try {
-      const balance = await this.walletClient.readContract({
+      const balance = await this.publicClient.readContract({
         address: DEGEN_TOKEN_ADDRESS,
         abi: DEGEN_ABI,
         functionName: 'balanceOf',
