@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
       // 1. Get current active raffle
       const activeRaffleResult = await pool.query(`
-        SELECT id, "weekPeriod", "totalTickets", "totalParticipants", "prizePool"
+        SELECT id, "weekPeriod", "totalTickets", "totalParticipants", "totalPool"
         FROM raffles 
         WHERE status = 'ACTIVE'
         ORDER BY "createdAt" DESC 
@@ -78,20 +78,20 @@ export async function POST(request: NextRequest) {
         WHERE id = $3
       `, [winner.userFid, winner.ticketsCount, raffle.id]);
 
-      // 5. Update winner in users table (add winnings)
+      // 5. Update winner in users table (add winnings) - Using fixed 1000 DEGEN prize
+      const prizeAmount = 1000; // Fixed 1000 DEGEN prize
       const updateWinnerResult = await pool.query(`
         UPDATE users 
-        SET "totalWinnings" = COALESCE("totalWinnings", 0) + $1,
-            "lastWinAt" = CURRENT_TIMESTAMP
+        SET "totalWinnings" = COALESCE("totalWinnings", 0) + $1
         WHERE fid = $2
-      `, [raffle.prizePool, winner.userFid.toString()]);
+      `, [prizeAmount, winner.userFid.toString()]);
 
       // 6. Create winner record (if table exists)
       try {
         await pool.query(`
           INSERT INTO raffle_winners ("raffleId", "winnerFid", "winnerTickets", "prizeAmount", "createdAt")
           VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)
-        `, [raffle.id, winner.userFid, winner.ticketsCount, raffle.prizePool]);
+        `, [raffle.id, winner.userFid, winner.ticketsCount, prizeAmount]);
       } catch (error) {
         console.log('Note: raffle_winners table may not exist yet');
       }
@@ -110,30 +110,18 @@ export async function POST(request: NextRequest) {
         try {
           distributionResult = await distributor.distributeToWinner(
             winner.userFid.toString(),
-            1000 // 1000 DEGEN prize
+            prizeAmount // Use the same prize amount
           );
           
           console.log('🎉 Distribution result:', distributionResult);
           
-          // Update the database with distribution status
+          // Update the database with distribution status (Note: these fields may not exist in schema)
           if (distributionResult.success) {
-            await pool.query(`
-              UPDATE raffles 
-              SET "distributionStatus" = 'COMPLETED',
-                  "transactionHash" = $1
-              WHERE id = $2
-            `, [distributionResult.transactionHash, raffle.id]);
-            
             console.log('✅ Prize distributed successfully!');
+            console.log(`💰 Transaction hash: ${distributionResult.transactionHash}`);
           } else {
-            await pool.query(`
-              UPDATE raffles 
-              SET "distributionStatus" = 'FAILED',
-                  "distributionError" = $1
-              WHERE id = $2
-            `, [distributionResult.error || distributionResult.message, raffle.id]);
-            
             console.log('❌ Prize distribution failed');
+            console.log(`Error: ${distributionResult.error || distributionResult.message}`);
           }
         } catch (error) {
           console.error('❌ Distribution error:', error);
@@ -159,13 +147,13 @@ export async function POST(request: NextRequest) {
           weekPeriod: raffle.weekPeriod,
           totalParticipants: raffle.totalParticipants,
           totalTickets: raffle.totalTickets,
-          prizePool: raffle.prizePool
+          prizePool: prizeAmount
         },
         winner: {
           fid: winner.userFid,
           tickets: winner.ticketsCount,
           probability: (winner.ticketsCount / totalTickets * 100).toFixed(2) + '%',
-          prizeAmount: raffle.prizePool
+          prizeAmount: prizeAmount
         },
         selectionDetails: {
           totalTickets,
