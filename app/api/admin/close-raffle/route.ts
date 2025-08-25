@@ -68,18 +68,20 @@ export async function POST(request: NextRequest) {
 
       console.log(`🏆 Winner selected: FID ${winner.userFid} with ${winner.ticketsCount} tickets`);
 
+      // Set fixed prize amount
+      const prizeAmount = 1000; // Fixed 1000 DEGEN prize
+
       // 4. Update raffle status to COMPLETED and set winner
       const updateRaffleResult = await pool.query(`
         UPDATE raffles 
         SET status = 'COMPLETED',
-            "winnerFid" = $1,
-            "winnerTickets" = $2,
-            "completedAt" = CURRENT_TIMESTAMP
+            "firstPlaceFid" = $1,
+            "firstPrize" = $2,
+            "executedAt" = CURRENT_TIMESTAMP
         WHERE id = $3
-      `, [winner.userFid, winner.ticketsCount, raffle.id]);
+      `, [winner.userFid, prizeAmount, raffle.id]);
 
-      // 5. Update winner in users table (add winnings) - Using fixed 1000 DEGEN prize
-      const prizeAmount = 1000; // Fixed 1000 DEGEN prize
+      // 5. Update winner in users table (add winnings)
       const updateWinnerResult = await pool.query(`
         UPDATE users 
         SET "totalWinnings" = COALESCE("totalWinnings", 0) + $1
