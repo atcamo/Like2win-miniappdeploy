@@ -88,15 +88,8 @@ export async function POST(request: NextRequest) {
         WHERE fid = $2
       `, [prizeAmount, winner.userFid.toString()]);
 
-      // 6. Create winner record (if table exists)
-      try {
-        await pool.query(`
-          INSERT INTO raffle_winners ("raffleId", "winnerFid", "winnerTickets", "prizeAmount", "createdAt")
-          VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)
-        `, [raffle.id, winner.userFid, winner.ticketsCount, prizeAmount]);
-      } catch (error) {
-        console.log('Note: raffle_winners table may not exist yet');
-      }
+      // 6. Create winner record (if table exists) - Skip for now as table structure is unknown
+      console.log('🏆 Winner data stored in raffles table as firstPlaceFid');
 
       await pool.query('COMMIT');
 
