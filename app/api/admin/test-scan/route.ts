@@ -52,10 +52,10 @@ export async function POST(request: NextRequest) {
         apiTests: {}
       };
 
-      // Test 1: New reactions endpoint
+      // Test 1: WORKING v2 reactions endpoint
       try {
-        console.log('🧪 Test 1: reactions endpoint with identifier...');
-        const reactionsResponse1 = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?identifier=${post.hash}&type=hash&limit=25`, {
+        console.log('🧪 Test 1: WORKING reactions/cast endpoint...');
+        const reactionsResponse1 = await fetch(`https://api.neynar.com/v2/farcaster/reactions/cast?hash=${post.hash}&types=likes&limit=25`, {
           headers: {
             'accept': 'application/json',
             'api_key': NEYNAR_API_KEY
@@ -66,16 +66,16 @@ export async function POST(request: NextRequest) {
         
         if (reactionsResponse1.ok) {
           const reactionsData1 = await reactionsResponse1.json();
-          postResult.apiTests.identifierEndpoint = {
+          postResult.apiTests.workingEndpoint = {
             status: reactionsResponse1.status,
             success: true,
             data: reactionsData1,
-            likesFound: reactionsData1.reactions?.likes?.length || 0
+            likesFound: reactionsData1.reactions?.length || 0
           };
-          console.log(`✅ Success! Found ${reactionsData1.reactions?.likes?.length || 0} likes`);
+          console.log(`✅ Success! Found ${reactionsData1.reactions?.length || 0} likes`);
         } else {
           const errorText = await reactionsResponse1.text();
-          postResult.apiTests.identifierEndpoint = {
+          postResult.apiTests.workingEndpoint = {
             status: reactionsResponse1.status,
             success: false,
             error: errorText
@@ -84,15 +84,15 @@ export async function POST(request: NextRequest) {
         }
       } catch (error) {
         console.log(`❌ Error in test 1: ${error}`);
-        postResult.apiTests.identifierEndpoint = {
+        postResult.apiTests.workingEndpoint = {
           error: error instanceof Error ? error.message : String(error)
         };
       }
 
-      // Test 2: Old reactions endpoint
+      // Test 2: Alternative v2 endpoint format
       try {
-        console.log('🧪 Test 2: reactions endpoint with hash...');
-        const reactionsResponse2 = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${post.hash}&types=likes&limit=25`, {
+        console.log('🧪 Test 2: reactions endpoint without slash...');
+        const reactionsResponse2 = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?cast_hash=${post.hash}&types=likes&limit=25`, {
           headers: {
             'accept': 'application/json',
             'api_key': NEYNAR_API_KEY

@@ -48,23 +48,13 @@ export async function POST(request: NextRequest) {
       console.log(`📝 Post content: "${post.text.substring(0, 100)}..."`);
 
       try {
-        // Get reactions for this cast - try multiple endpoint formats
-        let reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?identifier=${post.hash}&type=hash&limit=100`, {
+        // Get reactions for this cast using the CORRECT working endpoint
+        const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/reactions/cast?hash=${post.hash}&types=likes&limit=100`, {
           headers: {
             'accept': 'application/json',
             'api_key': NEYNAR_API_KEY
           }
         });
-
-        // If that fails, try the old format
-        if (!reactionsResponse.ok) {
-          reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast/reactions?hash=${post.hash}&types=likes&limit=100`, {
-            headers: {
-              'accept': 'application/json',
-              'api_key': NEYNAR_API_KEY
-            }
-          });
-        }
 
         if (!reactionsResponse.ok) {
           console.log(`⚠️ Failed to fetch reactions for ${post.hash}: ${reactionsResponse.status}`);
@@ -74,19 +64,13 @@ export async function POST(request: NextRequest) {
         const reactionsData = await reactionsResponse.json();
         console.log(`📊 Raw reaction data:`, JSON.stringify(reactionsData, null, 2));
         
-        // Handle different response formats
-        let likes = [];
-        if (reactionsData.reactions?.likes) {
-          likes = reactionsData.reactions.likes;
-        } else if (reactionsData.likes) {
-          likes = reactionsData.likes;
-        } else if (Array.isArray(reactionsData.reactions)) {
-          likes = reactionsData.reactions.filter((r: any) => r.type === 'like');
-        }
+        // Handle the correct response format from /v2/farcaster/reactions/cast
+        const likes = reactionsData.reactions || [];
+        console.log(`📊 Full reaction data structure:`, JSON.stringify(reactionsData, null, 2));
 
         console.log(`❤️ Found ${likes.length} likes on this post`);
 
-        // Process each like
+        // Process each like with the correct data structure
         for (const like of likes) {
           const userFid = like.user.fid;
           const username = like.user.username;
@@ -94,12 +78,12 @@ export async function POST(request: NextRequest) {
           try {
             console.log(`  👤 Processing like from ${username} (FID: ${userFid})`);
 
-            // Use EngagementService to award ticket
+            // Use EngagementService to award ticket with correct timestamp field
             const result = await EngagementService.processLikeEvent({
               type: 'like',
               userFid: userFid.toString(),
               castHash: post.hash,
-              timestamp: new Date(like.timestamp),
+              timestamp: new Date(like.reaction_timestamp),
               authorFid: '1206612'
             });
 
