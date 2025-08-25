@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       console.log(`👥 Found ${participants.length} participants`);
 
       // 3. Select winner using weighted random selection
-      const totalTickets = participants.reduce((sum, p) => sum + p.ticketsCount, 0);
+      const totalTickets = participants.reduce((sum: number, p: any) => sum + p.ticketsCount, 0);
       const randomNumber = Math.floor(Math.random() * totalTickets) + 1;
       
       let runningTotal = 0;
