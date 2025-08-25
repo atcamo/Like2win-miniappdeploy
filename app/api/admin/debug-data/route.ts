@@ -102,11 +102,11 @@ export async function GET(request: NextRequest) {
           engagementLogs: engagementResult.rows[0] || {},
           users: usersResult.rows[0] || {},
           analysis: {
-            hasActiveRaffle: rafflesResult.rows.some(r => r.status === 'ACTIVE'),
+            hasActiveRaffle: rafflesResult.rows.some((r: any) => r.status === 'ACTIVE'),
             topUserFid: ticketsResult.rows[0]?.userFid?.toString() || 'none',
             maxTickets: ticketsResult.rows[0]?.ticketsCount || 0,
             dataLooksReal: ticketsResult.rows.length > 4 && 
-                         ticketsResult.rows.some(r => r.ticketsCount !== 25 && r.ticketsCount !== 18)
+                         ticketsResult.rows.some((r: any) => r.ticketsCount !== 25 && r.ticketsCount !== 18)
           }
         }
       });
