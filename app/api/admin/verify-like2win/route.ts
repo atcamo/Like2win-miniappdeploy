@@ -64,6 +64,73 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Test different reaction endpoints with a recent post
+    let reactionTests = [];
+    if (recentCasts && recentCasts.length > 0) {
+      const testHash = recentCasts[0].hash;
+      console.log(`🧪 Testing reaction endpoints with hash: ${testHash}`);
+      
+      // Test 1: /v2/farcaster/cast/reactions/ with cast_hash parameter
+      try {
+        const url1 = `https://api.neynar.com/v2/farcaster/cast/reactions/?cast_hash=${testHash}&types=likes&limit=10`;
+        const response1 = await fetch(url1, {
+          headers: { 'accept': 'application/json', 'api_key': NEYNAR_API_KEY }
+        });
+        reactionTests.push({
+          test: 'v2/reactions/ with cast_hash',
+          url: url1,
+          status: response1.status,
+          ok: response1.ok,
+          data: response1.ok ? await response1.json() : await response1.text()
+        });
+      } catch (error) {
+        reactionTests.push({
+          test: 'v2/reactions/ with cast_hash',
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+
+      // Test 2: /v2/farcaster/cast/reactions without trailing slash
+      try {
+        const url2 = `https://api.neynar.com/v2/farcaster/cast/reactions?cast_hash=${testHash}&types=likes&limit=10`;
+        const response2 = await fetch(url2, {
+          headers: { 'accept': 'application/json', 'api_key': NEYNAR_API_KEY }
+        });
+        reactionTests.push({
+          test: 'v2/reactions without slash',
+          url: url2,
+          status: response2.status,
+          ok: response2.ok,
+          data: response2.ok ? await response2.json() : await response2.text()
+        });
+      } catch (error) {
+        reactionTests.push({
+          test: 'v2/reactions without slash',
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+
+      // Test 3: Try with hash parameter instead of cast_hash
+      try {
+        const url3 = `https://api.neynar.com/v2/farcaster/cast/reactions?hash=${testHash}&types=likes&limit=10`;
+        const response3 = await fetch(url3, {
+          headers: { 'accept': 'application/json', 'api_key': NEYNAR_API_KEY }
+        });
+        reactionTests.push({
+          test: 'v2/reactions with hash param',
+          url: url3,
+          status: response3.status,
+          ok: response3.ok,
+          data: response3.ok ? await response3.json() : await response3.text()
+        });
+      } catch (error) {
+        reactionTests.push({
+          test: 'v2/reactions with hash param',
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+
     return NextResponse.json({
       success: true,
       data: {
@@ -86,11 +153,13 @@ export async function GET(request: NextRequest) {
           verified: fidData.users[0].power_badge
         } : null : null,
         recentCasts,
+        reactionTests,
         currentFidInCode: 1206612,
         recommendations: {
           correctFid: userData?.user?.fid || fidData?.users?.[0]?.fid,
           hasRecentActivity: recentCasts && recentCasts.length > 0,
-          accountExists: !!(userData?.user || fidData?.users?.[0])
+          accountExists: !!(userData?.user || fidData?.users?.[0]),
+          workingReactionEndpoint: reactionTests.find(t => t.ok)?.url || 'None found'
         }
       }
     });
