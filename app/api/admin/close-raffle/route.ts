@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createDegenDistributor } from '@/lib/services/degenDistribution';
 
 /**
- * Close current raffle and execute winner selection
+ * Close current raffle, execute winner selection, and distribute DEGEN automatically
  */
 export async function POST(request: NextRequest) {
   try {
@@ -99,6 +100,57 @@ export async function POST(request: NextRequest) {
 
       console.log('✅ Raffle closed successfully');
 
+      // 7. Distribute DEGEN to winner automatically
+      console.log('💰 Starting automatic DEGEN distribution...');
+      
+      const distributor = createDegenDistributor();
+      let distributionResult = null;
+      
+      if (distributor) {
+        try {
+          distributionResult = await distributor.distributeToWinner(
+            winner.userFid.toString(),
+            1000 // 1000 DEGEN prize
+          );
+          
+          console.log('🎉 Distribution result:', distributionResult);
+          
+          // Update the database with distribution status
+          if (distributionResult.success) {
+            await pool.query(`
+              UPDATE raffles 
+              SET "distributionStatus" = 'COMPLETED',
+                  "transactionHash" = $1
+              WHERE id = $2
+            `, [distributionResult.transactionHash, raffle.id]);
+            
+            console.log('✅ Prize distributed successfully!');
+          } else {
+            await pool.query(`
+              UPDATE raffles 
+              SET "distributionStatus" = 'FAILED',
+                  "distributionError" = $1
+              WHERE id = $2
+            `, [distributionResult.error || distributionResult.message, raffle.id]);
+            
+            console.log('❌ Prize distribution failed');
+          }
+        } catch (error) {
+          console.error('❌ Distribution error:', error);
+          distributionResult = {
+            success: false,
+            message: 'Distribution service error',
+            error: error instanceof Error ? error.message : String(error)
+          };
+        }
+      } else {
+        distributionResult = {
+          success: false,
+          message: 'DEGEN distributor not available',
+          error: 'Missing configuration'
+        };
+      }
+
       return NextResponse.json({
         success: true,
         message: 'Raffle closed and winner selected',
@@ -119,7 +171,8 @@ export async function POST(request: NextRequest) {
           totalTickets,
           randomNumber,
           winningTicketRange: `${runningTotal - winner.ticketsCount + 1}-${runningTotal}`
-        }
+        },
+        distribution: distributionResult
       });
 
     } catch (error) {
