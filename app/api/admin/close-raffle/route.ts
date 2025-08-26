@@ -106,10 +106,31 @@ export async function POST(request: NextRequest) {
           
           console.log('🎉 Distribution result:', distributionResult);
           
-          // Update the database with distribution status (Note: these fields may not exist in schema)
+          // Send notification
           if (distributionResult.success) {
             console.log('✅ Prize distributed successfully!');
             console.log(`💰 Transaction hash: ${distributionResult.transactionHash}`);
+            
+            // Notify winner
+            try {
+              await fetch(`${process.env.NEXT_PUBLIC_URL}/api/admin/notify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  type: 'raffle_winner',
+                  data: {
+                    winnerFid: winner.userFid,
+                    tickets: winner.ticketsCount,
+                    prizeAmount: prizeAmount,
+                    transactionHash: distributionResult.transactionHash,
+                    raffleId: raffle.id,
+                    weekPeriod: raffle.weekPeriod
+                  }
+                })
+              });
+            } catch (notifyError) {
+              console.log('⚠️ Notification failed:', notifyError);
+            }
           } else {
             console.log('❌ Prize distribution failed');
             console.log(`Error: ${distributionResult.error || distributionResult.message}`);
