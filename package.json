@@ -10,7 +10,11 @@
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
     "design-check": "echo 'Checking FruteroKit compliance...' && npm run type-check",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "contract:compile": "hardhat compile",
+    "contract:deploy": "hardhat run contracts/deploy.js --network base",
+    "contract:deploy:testnet": "hardhat run contracts/deploy.js --network base-sepolia",
+    "contract:test": "hardhat test"
   },
   "dependencies": {
     "@coinbase/onchainkit": "latest",
@@ -35,6 +39,7 @@
     "wagmi": "^2.14.11"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -45,6 +50,8 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.19.4",
     "postcss": "^8",
     "prettier": "^3.5.3",
     "tailwindcss": "^3.4.1",

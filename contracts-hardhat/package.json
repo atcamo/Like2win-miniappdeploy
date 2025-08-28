@@ -1,0 +1,16 @@
+{
+  "name": "like2win-contracts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run deploy.js --network base",
+    "deploy:testnet": "hardhat run deploy.js --network base-sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "dotenv": "^17.2.1",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.19.4"
+  }
+}
