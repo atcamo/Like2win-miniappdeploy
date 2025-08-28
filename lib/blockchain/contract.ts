@@ -78,7 +78,7 @@ export async function getCurrentRaffle(): Promise<RaffleData | null> {
       functionName: 'currentRaffleId',
     });
 
-    if (currentRaffleId === 0n) {
+    if (currentRaffleId === BigInt(0)) {
       return null;
     }
 
@@ -135,7 +135,7 @@ export async function getDegenBalance(address: string): Promise<bigint> {
     return balance as bigint;
   } catch (error) {
     console.error('Error fetching DEGEN balance:', error);
-    return 0n;
+    return BigInt(0);
   }
 }
 
