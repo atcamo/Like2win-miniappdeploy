@@ -328,7 +328,7 @@ export default function AdminNewDashboard() {
             <Like2WinButton 
               onClick={loadDashboardData}
               disabled={loading}
-              size="small"
+              size="sm"
               variant="secondary"
             >
               Refresh
