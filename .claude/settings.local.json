@@ -31,7 +31,15 @@
       "Bash(bunx next dev:*)",
       "Bash(npx prisma:*)",
       "Bash(npx next build:*)",
-      "Bash(bunx hardhat compile:*)"
+      "Bash(bunx hardhat compile:*)",
+      "Bash(npx vercel:*)",
+      "WebFetch(domain:vercel.com)",
+      "WebFetch(domain:like2win-52wkc6vrm-atilioacm-gmailcoms-projects.vercel.app)",
+      "WebFetch(domain:like2win-app.vercel.app)",
+      "WebFetch(domain:like2win-dogqbnykg-atilioacm-gmailcoms-projects.vercel.app)",
+      "WebFetch(domain:like2win-ignjf6o9l-atilioacm-gmailcoms-projects.vercel.app)",
+      "Bash(bun add:*)",
+      "WebFetch(domain:like2win-aolpvvax6-atilioacm-gmailcoms-projects.vercel.app)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",

@@ -19,3 +19,227 @@ Retrying 1/3...
 Request timed out after 3000ms
 
 Retrying 1/3...
+ ✓ Compiled /miniapp in 157s (10484 modules)
+(node:10372) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ Compiled in 15.5s (5026 modules)
+ ✓ Compiled in 7.8s (5026 modules)
+ ✓ Compiled in 2.8s (5026 modules)
+ ✓ Compiled in 12.2s (5026 modules)
+ ✓ Compiled in 2.7s (5026 modules)
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx

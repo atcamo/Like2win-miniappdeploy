@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { engagementService } from '@/lib/services/engagement-service';
+import { EngagementService } from '@/lib/services/engagementService';
 
 // POST /api/engagement/check
 // Check user engagement and award tickets
@@ -15,23 +15,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Ensure engagement service is initialized
-    if (!engagementService.isInitialized()) {
-      return NextResponse.json(
-        { error: 'Engagement service not available' },
-        { status: 503 }
-      );
-    }
+    console.log('🎫 Processing engagement check:', { userFid, castHash });
 
-    // Process engagement
-    const result = await engagementService.processEngagementForTicket(
-      parseInt(userFid), 
-      castHash
-    );
+    // Process engagement using the new EngagementService
+    const result = await EngagementService.processLikeEvent({
+      type: 'like',
+      userFid: userFid.toString(),
+      castHash: castHash,
+      timestamp: new Date(),
+      authorFid: '1206612' // Like2Win FID
+    });
 
     return NextResponse.json({
-      success: true,
-      data: result
+      success: result.success,
+      ticketAwarded: result.success && result.ticketsAwarded && result.ticketsAwarded > 0,
+      message: result.message,
+      userTickets: result.totalTickets || 0
     });
 
   } catch (error) {
@@ -58,22 +57,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (!engagementService.isInitialized()) {
-      return NextResponse.json(
-        { error: 'Engagement service not available' },
-        { status: 503 }
-      );
+    console.log('🎯 Checking eligibility for:', { userFid, castHash });
+
+    // For now, return eligibility based on active raffle
+    const activeRaffle = await EngagementService.getCurrentRaffleInfo();
+    
+    if (!activeRaffle) {
+      return NextResponse.json({
+        success: true,
+        isEligibleForTicket: false,
+        message: 'No active raffle'
+      });
     }
 
-    // Check eligibility only
-    const eligibility = await engagementService.checkTicketEligibility(
-      parseInt(userFid), 
-      castHash
-    );
-
+    // Simple check: if raffle exists, user is eligible (for now)
     return NextResponse.json({
       success: true,
-      data: eligibility
+      isEligibleForTicket: true,
+      message: `Can participate in ${activeRaffle.weekPeriod}`
     });
 
   } catch (error) {
