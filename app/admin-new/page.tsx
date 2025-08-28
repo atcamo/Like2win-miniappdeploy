@@ -268,7 +268,7 @@ export default function AdminNewDashboard() {
               <Like2WinButton 
                 onClick={closeRaffle}
                 disabled={loading || !currentRaffle}
-                variant="error"
+                variant="primary"
                 className="w-full"
               >
                 Close Raffle & Distribute
