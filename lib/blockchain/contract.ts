@@ -156,17 +156,17 @@ export function parseDegen(amount: string): bigint {
 /**
  * Generate signature for ticket allocation (server-side only)
  */
-export function generateTicketSignature(
+export async function generateTicketSignature(
   raffleId: bigint,
   participant: string,
   ticketCount: bigint,
   privateKey: string
-): string {
+): Promise<string> {
   const messageHash = ethers.utils.solidityKeccak256(
     ['uint256', 'address', 'uint256'],
     [raffleId.toString(), participant, ticketCount.toString()]
   );
   
   const wallet = new ethers.Wallet(privateKey);
-  return wallet.signMessage(ethers.utils.arrayify(messageHash));
+  return await wallet.signMessage(ethers.utils.arrayify(messageHash));
 }

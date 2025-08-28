@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate signature for ticket allocation
-    const signature = generateTicketSignature(
+    const signature = await generateTicketSignature(
       BigInt(raffleId),
       user.appWallet,
       BigInt(ticketCount),
