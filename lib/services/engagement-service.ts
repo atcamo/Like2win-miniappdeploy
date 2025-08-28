@@ -663,6 +663,50 @@ export class EngagementService {
   }
 
   /**
+   * Get all reactions for a specific cast (for historical likes loading)
+   */
+  async getCastReactions(castHash: string, reactionType: 'likes' | 'recasts' | 'all' = 'all'): Promise<any[]> {
+    if (!this.client) {
+      console.warn('Cannot fetch cast reactions - service not initialized');
+      return [];
+    }
+
+    try {
+      console.log(`🔍 Fetching ${reactionType} for cast ${castHash}`);
+      
+      // Use Neynar API to get cast reactions
+      const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/reactions/cast/?hash=${castHash}&types=${reactionType === 'all' ? 'likes,recasts' : reactionType}&limit=100`, {
+        headers: {
+          'x-api-key': process.env.NEYNAR_API_KEY || '',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (reactionsResponse.status === 200) {
+        const reactionsData = await reactionsResponse.json();
+        const reactions = reactionsData.reactions || [];
+        
+        // Filter by reaction type if specified
+        const filteredReactions = reactionType === 'all' 
+          ? reactions 
+          : reactions.filter((reaction: any) => 
+              reactionType === 'likes' ? reaction.reaction_type === 'like' :
+              reactionType === 'recasts' ? reaction.reaction_type === 'recast' : true
+            );
+        
+        console.log(`✅ Found ${filteredReactions.length} ${reactionType} for cast ${castHash}`);
+        return filteredReactions;
+      } else {
+        console.warn(`Failed to fetch reactions for cast ${castHash}: ${reactionsResponse.status}`);
+        return [];
+      }
+    } catch (error) {
+      console.error(`Error fetching reactions for cast ${castHash}:`, error);
+      return [];
+    }
+  }
+
+  /**
    * Fallback method to get cast info from our cached Like2Win casts
    */
   private async getCastByHashFallback(castHash: string): Promise<any | null> {

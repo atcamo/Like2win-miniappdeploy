@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { EngagementService } from '@/lib/services/engagementService';
+import { engagementService } from '@/lib/services/engagement-service';
 
 /**
  * Admin endpoint to load historical likes from August 18 onwards
@@ -10,8 +11,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { startDate, endDate, dryRun = false } = body;
 
-    // Default to August 18, 2024 if no start date provided
-    const historyStartDate = startDate ? new Date(startDate) : new Date('2024-08-18T00:00:00.000Z');
+    // Default to August 18, 2025 if no start date provided
+    const historyStartDate = startDate ? new Date(startDate) : new Date('2025-08-18T00:00:00.000Z');
     const historyEndDate = endDate ? new Date(endDate) : new Date();
 
     console.log('🔍 Loading historical likes:', {
@@ -30,33 +31,68 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Simulate some historical engagement data
-    // In a real implementation, you would:
-    // 1. Query Neynar API for @Like2Win casts between historyStartDate and historyEndDate
-    // 2. For each cast, get the likes using Neynar
-    // 3. Process each like as historical engagement
+    // Get real historical likes from Like2Win publications
+    console.log('📥 Fetching Like2Win historical casts and their likes...');
+    
+    if (!engagementService.isInitialized()) {
+      return NextResponse.json(
+        { error: 'Engagement service not available - cannot fetch historical likes' },
+        { status: 503 }
+      );
+    }
 
-    const historicalLikes = [
-      // Example historical data - replace with real Neynar API calls
-      {
-        userFid: '432789', // Example user FID
-        castHash: '0xhistorical1',
-        timestamp: new Date('2024-08-20T10:00:00.000Z'),
-        authorFid: '1206612' // Like2Win FID
-      },
-      {
-        userFid: '432789',
-        castHash: '0xhistorical2', 
-        timestamp: new Date('2024-08-22T15:30:00.000Z'),
-        authorFid: '1206612'
-      },
-      {
-        userFid: '123456', // Different user
-        castHash: '0xhistorical1',
-        timestamp: new Date('2024-08-19T12:00:00.000Z'),
-        authorFid: '1206612'
+    // Fetch Like2Win casts from the historical period
+    const like2winCasts = await engagementService.getLike2WinCasts(50); // Get more casts for historical data
+    console.log(`🔍 Found ${like2winCasts.length} Like2Win casts`);
+
+    let historicalLikes: any[] = [];
+    let castsProcessed = 0;
+    
+    // For each cast, get its reactions (likes)
+    for (const cast of like2winCasts) {
+      try {
+        const castDate = new Date(cast.timestamp);
+        
+        // Skip if cast is outside our historical period
+        if (castDate < historyStartDate || castDate > historyEndDate) {
+          continue;
+        }
+        
+        console.log(`📋 Processing cast ${cast.hash} from ${castDate.toISOString()}`);
+        
+        // Get reactions for this cast using Neynar
+        const reactions = await engagementService.getCastReactions(cast.hash, 'likes');
+        
+        if (reactions && reactions.length > 0) {
+          console.log(`   👍 Found ${reactions.length} likes on this cast`);
+          
+          // Add each like as historical engagement
+          for (const reaction of reactions) {
+            historicalLikes.push({
+              userFid: reaction.user.fid.toString(),
+              castHash: cast.hash,
+              timestamp: new Date(reaction.timestamp),
+              authorFid: engagementService.getLike2WinFid().toString(),
+              castText: cast.text.substring(0, 100) + '...',
+              reactionType: 'like'
+            });
+          }
+        } else {
+          console.log(`   ⚠️ No likes found for cast ${cast.hash}`);
+        }
+        
+        castsProcessed++;
+        
+        // Add small delay to respect rate limits
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+      } catch (error) {
+        console.error(`❌ Error processing cast ${cast.hash}:`, error);
+        continue;
       }
-    ];
+    }
+    
+    console.log(`📊 Summary: ${castsProcessed} casts processed, ${historicalLikes.length} historical likes found`);
 
     let processed = 0;
     let awarded = 0;
@@ -104,6 +140,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       summary: {
+        castsProcessed,
         totalLikes: historicalLikes.length,
         processed,
         ticketsAwarded: awarded,
@@ -115,7 +152,7 @@ export async function POST(request: NextRequest) {
         dryRun
       },
       results,
-      message: `Processed ${processed} historical likes, awarded ${awarded} tickets total`
+      message: `🎯 Processed ${castsProcessed} Like2Win casts, found ${historicalLikes.length} historical likes, awarded ${awarded} tickets total`
     });
 
   } catch (error) {
