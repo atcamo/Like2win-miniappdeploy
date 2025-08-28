@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Like2WinCard, Like2WinButton, Like2WinBadge } from '@/app/components/Like2WinComponents';
+import { Like2WinCard, Like2WinButton } from '@/app/components/Like2WinComponents';
 
 interface RaffleData {
   id: string;
@@ -186,9 +186,13 @@ export default function AdminNewDashboard() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-semibold">{currentRaffle.weekPeriod}</span>
-                  <Like2WinBadge variant={currentRaffle.status === 'ACTIVE' ? 'success' : 'secondary'}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    currentRaffle.status === 'ACTIVE' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
                     {currentRaffle.status}
-                  </Like2WinBadge>
+                  </span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -227,9 +231,13 @@ export default function AdminNewDashboard() {
                   <p className="text-sm text-amber-600">Balance</p>
                   <p className="text-lg font-bold">{walletInfo.balance?.formatted}</p>
                 </div>
-                <Like2WinBadge variant={walletInfo.readyForDistribution ? 'success' : 'error'}>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  walletInfo.readyForDistribution 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-red-100 text-red-800'
+                }`}>
                   {walletInfo.readyForDistribution ? 'Ready' : 'Not Ready'}
-                </Like2WinBadge>
+                </span>
               </div>
             ) : (
               <p className="text-amber-600">Loading...</p>
