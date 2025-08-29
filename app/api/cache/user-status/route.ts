@@ -49,8 +49,58 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // If not in cache, fall back to database but trigger cache sync
-    console.log(`⚡ Cache miss for user ${userFid}, falling back to database`);
+    // Try local data first before database
+    console.log(`📁 Cache miss for user ${userFid}, trying local data first...`);
+    
+    try {
+      const { readFileSync, existsSync } = require('fs');
+      const { join } = require('path');
+      
+      const dataPath = join(process.cwd(), 'data');
+      const userTicketsFile = join(dataPath, 'local-user-tickets.json');
+      const raffleDataFile = join(dataPath, 'local-raffle-data.json');
+
+      if (existsSync(userTicketsFile) && existsSync(raffleDataFile)) {
+        console.log(`✅ Found local data files for user ${userFid}`);
+        
+        const userTickets = JSON.parse(readFileSync(userTicketsFile, 'utf8'));
+        const raffleData = JSON.parse(readFileSync(raffleDataFile, 'utf8'));
+        
+        const userData = userTickets[userFid];
+        const currentTickets = userData?.tickets || 0;
+        
+        console.log(`🎫 User ${userFid} has ${currentTickets} tickets from local data`);
+
+        return NextResponse.json({
+          success: true,
+          source: 'local_data',
+          data: {
+            user: {
+              fid: parseInt(userFid),
+              currentTickets,
+              username: userData?.username,
+              displayName: userData?.username || `User ${userFid}`,
+              lastUpdated: userData?.lastActivity || raffleData.lastUpdated
+            },
+            raffle: {
+              id: raffleData.id || 'local-raffle-2025',
+              weekPeriod: raffleData.weekPeriod || 'Week 34-37 2025 (Launch Raffle)',
+              startDate: raffleData.startDate || '2025-08-18T00:00:00.000Z',
+              endDate: raffleData.endDate || '2025-09-15T23:59:59.000Z',
+              status: 'ACTIVE',
+              totalTickets: raffleData.totalTickets || 0,
+              totalParticipants: raffleData.totalParticipants || 0
+            }
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+    } catch (localError) {
+      console.log(`⚠️ Local data not available for user ${userFid}:`, localError);
+    }
+
+    // If not in cache or local data, fall back to database
+    console.log(`⚡ Falling back to database for user ${userFid}`);
     
     // Trigger background sync for this user (don't wait)
     const { BackgroundSyncService } = await import('@/lib/services/backgroundSync');

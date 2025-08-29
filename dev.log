@@ -243,3 +243,154 @@ Import trace for requested module:
 ./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
 ./node_modules/@coinbase/onchainkit/dist/minikit/index.js
 ./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ○ Compiling /api/admin/load-historical-likes ...
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ POST /api/admin/load-historical-likes 500 in 40846ms
+ POST /api/admin/load-historical-likes 500 in 42ms
+ ✓ Compiled /_error in 1334ms (581 modules)
+ ✓ Compiled in 1059ms (581 modules)
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\calde\like2win-app\.next\cache\webpack\server-development\7.pack.gz_' -> 'C:\Users\calde\like2win-app\.next\cache\webpack\server-development\7.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\calde\like2win-app\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx
+ ⨯ ./node_modules/tslib/tslib.es6.mjs
+Error: ENOENT: no such file or directory, open 'C:\Users\calde\like2win-app\node_modules\tslib\tslib.es6.mjs'
+
+Import trace for requested module:
+./node_modules/tslib/tslib.es6.mjs
+./node_modules/async-mutex/lib/Mutex.js
+./node_modules/async-mutex/lib/index.js
+./node_modules/eth-json-rpc-filters/index.js
+./node_modules/eth-json-rpc-filters/subscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/SubscriptionManager.js
+./node_modules/cbw-sdk/dist/provider/CoinbaseWalletProvider.js
+./node_modules/cbw-sdk/dist/index.js
+./node_modules/@wagmi/connectors/dist/esm/coinbaseWallet.js
+./node_modules/@wagmi/connectors/dist/esm/exports/index.js
+./node_modules/wagmi/dist/esm/exports/connectors.js
+./node_modules/@coinbase/onchainkit/dist/OnchainKitProvider-XkVisvoQ.js
+./node_modules/@coinbase/onchainkit/dist/minikit/index.js
+./app/components/header.tsx

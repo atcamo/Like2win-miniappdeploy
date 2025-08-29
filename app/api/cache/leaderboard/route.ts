@@ -16,6 +16,57 @@ export async function GET(request: NextRequest) {
     const cachedRaffle = await CacheService.getActiveRaffle();
     
     if (!cachedRaffle) {
+      console.log('⚠️ No active raffle in cache, checking local data...');
+      
+      // Try local data immediately if cache is empty
+      try {
+        const { readFileSync, existsSync } = require('fs');
+        const { join } = require('path');
+        
+        const dataPath = join(process.cwd(), 'data');
+        const userTicketsFile = join(dataPath, 'local-user-tickets.json');
+        const raffleDataFile = join(dataPath, 'local-raffle-data.json');
+
+        if (existsSync(userTicketsFile) && existsSync(raffleDataFile)) {
+          console.log(`✅ Found local data files`);
+          
+          const userTickets = JSON.parse(readFileSync(userTicketsFile, 'utf8'));
+          const raffleData = JSON.parse(readFileSync(raffleDataFile, 'utf8'));
+          
+          const leaderboard = Object.entries(userTickets)
+            .map(([fid, data]: [string, any], index: number) => ({
+              rank: index + 1,
+              fid: fid,
+              tickets: data.tickets,
+              username: data.username,
+              displayName: data.username || `User ${fid}`
+            }))
+            .sort((a, b) => b.tickets - a.tickets)
+            .slice(0, limit)
+            .map((entry, index) => ({ ...entry, rank: index + 1 }));
+          
+          console.log(`🏆 Loaded ${leaderboard.length} entries from local data (cache bypass)`);
+
+          return NextResponse.json({
+            success: true,
+            source: 'local_data_direct',
+            data: {
+              leaderboard,
+              raffle: {
+                id: raffleData.id || 'local-raffle-2025',
+                weekPeriod: raffleData.weekPeriod || 'Week 34-37 2025 (Launch Raffle)',
+                totalTickets: raffleData.totalTickets || 0,
+                totalParticipants: raffleData.totalParticipants || 0
+              }
+            },
+            timestamp: new Date().toISOString()
+          });
+        }
+      } catch (localError) {
+        console.log(`⚠️ Local data not available:`, localError);
+      }
+
+      // If no local data either, return empty
       return NextResponse.json({
         success: true,
         source: 'cache',
@@ -23,7 +74,7 @@ export async function GET(request: NextRequest) {
           leaderboard: [],
           raffle: null
         },
-        message: 'No active raffle found',
+        message: 'No active raffle found in cache or local data',
         timestamp: new Date().toISOString()
       });
     }
@@ -48,8 +99,58 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // If not in cache, fall back to database
-    console.log(`⚡ Cache miss for leaderboard, falling back to database`);
+    // Try local data first before database
+    console.log(`📁 Cache miss for leaderboard, trying local data first...`);
+    
+    try {
+      const { readFileSync, existsSync } = require('fs');
+      const { join } = require('path');
+      
+      const dataPath = join(process.cwd(), 'data');
+      const userTicketsFile = join(dataPath, 'local-user-tickets.json');
+      const raffleDataFile = join(dataPath, 'local-raffle-data.json');
+
+      if (existsSync(userTicketsFile) && existsSync(raffleDataFile)) {
+        console.log(`✅ Found local data files`);
+        
+        const userTickets = JSON.parse(readFileSync(userTicketsFile, 'utf8'));
+        const raffleData = JSON.parse(readFileSync(raffleDataFile, 'utf8'));
+        
+        const leaderboard = Object.entries(userTickets)
+          .map(([fid, data]: [string, any], index: number) => ({
+            rank: index + 1,
+            fid: fid,
+            tickets: data.tickets,
+            username: data.username,
+            displayName: data.username || `User ${fid}`
+          }))
+          .sort((a, b) => b.tickets - a.tickets)
+          .slice(0, limit)
+          .map((entry, index) => ({ ...entry, rank: index + 1 }));
+        
+        console.log(`🏆 Loaded ${leaderboard.length} entries from local data`);
+
+        return NextResponse.json({
+          success: true,
+          source: 'local_data',
+          data: {
+            leaderboard,
+            raffle: {
+              id: raffleData.id || 'local-raffle-2025',
+              weekPeriod: raffleData.weekPeriod || 'Week 34-37 2025 (Launch Raffle)',
+              totalTickets: raffleData.totalTickets || 0,
+              totalParticipants: raffleData.totalParticipants || 0
+            }
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+    } catch (localError) {
+      console.log(`⚠️ Local data not available:`, localError);
+    }
+
+    // Fall back to database
+    console.log(`⚡ Falling back to database`);
     
     const { Pool } = require('pg');
     const pool = new Pool({
