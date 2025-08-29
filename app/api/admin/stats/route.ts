@@ -11,6 +11,73 @@ export async function GET(request: NextRequest) {
   try {
     console.log('📊 Loading admin stats...');
 
+    // Try local data first
+    try {
+      const { readFileSync, existsSync } = require('fs');
+      const { join } = require('path');
+      
+      const dataPath = join(process.cwd(), 'data');
+      const userTicketsFile = join(dataPath, 'local-user-tickets.json');
+      const raffleDataFile = join(dataPath, 'local-raffle-data.json');
+
+      if (existsSync(userTicketsFile) && existsSync(raffleDataFile)) {
+        console.log('✅ Loading admin stats from local data...');
+        
+        const userTickets = JSON.parse(readFileSync(userTicketsFile, 'utf8'));
+        const raffleData = JSON.parse(readFileSync(raffleDataFile, 'utf8'));
+        
+        // Create current raffle data
+        const currentRaffle = {
+          id: raffleData.id || 'local-raffle-2025',
+          weekPeriod: raffleData.weekPeriod || 'Week 34-37 2025 (Launch Raffle)',
+          startDate: raffleData.startDate || '2025-08-18T00:00:00.000Z',
+          endDate: raffleData.endDate || '2025-09-15T23:59:59.000Z',
+          status: 'ACTIVE',
+          totalTickets: raffleData.totalTickets || 0,
+          totalParticipants: raffleData.totalParticipants || 0
+        };
+
+        // Create leaderboard
+        const topUsers = Object.entries(userTickets)
+          .map(([fid, data]: [string, any]) => ({
+            userFid: fid,
+            username: data.username || `user_${fid}`,
+            displayName: data.username || `User ${fid}`,
+            pfpUrl: '', // No PFP data in local storage
+            ticketsCount: data.tickets
+          }))
+          .sort((a, b) => b.ticketsCount - a.ticketsCount)
+          .map((entry, index) => ({
+            ...entry,
+            rank: index + 1,
+            isTopThree: index < 3
+          }));
+
+        console.log(`🏆 Loaded ${topUsers.length} users from local data`);
+
+        return NextResponse.json({
+          success: true,
+          source: 'local_data',
+          data: {
+            currentRaffle,
+            topUsers,
+            totalUsers: Object.keys(userTickets).length,
+            systemHealth: {
+              cache: false, // No cache in local mode
+              database: false, // No database in local mode
+              background: false // No background sync in local mode
+            },
+            lastUpdated: raffleData.lastUpdated || new Date().toISOString()
+          }
+        });
+      }
+    } catch (localError) {
+      console.log('⚠️ Local data not available:', localError);
+    }
+
+    // Fall back to database
+    console.log('⚡ Falling back to database for admin stats...');
+
     // Get database connection
     const { Pool } = require('pg');
     const pool = new Pool({
