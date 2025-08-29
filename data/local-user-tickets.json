@@ -36,10 +36,11 @@
     ]
   },
   "432789": {
-    "tickets": 6,
+    "tickets": 7,
     "username": "atcamo",
     "lastActivity": "2025-08-18T08:27:43.000Z",
     "casts": [
+      "0x4429321a2723b4b67b9bbe33af136ffa0f32a289",
       "0x352223eced8e4a8016329d0df484174ba78c6f06",
       "0xf467281792abc27b6dead342d4b5511084669bc9",
       "0x9f7a24c3c361340c0f5d1814a0d10a42e18eba08",
