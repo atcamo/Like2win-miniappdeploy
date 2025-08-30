@@ -71,15 +71,37 @@ export async function POST(request: NextRequest) {
       // Set fixed prize amount
       const prizeAmount = 1000; // Fixed 1000 DEGEN prize
 
-      // 4. Update raffle status to COMPLETED and set winner
+      // 4. Update raffle status to COMPLETED and set winner with audit info
       const updateRaffleResult = await pool.query(`
         UPDATE raffles 
         SET status = 'COMPLETED',
             "firstPlaceFid" = $1,
             "firstPrize" = $2,
-            "executedAt" = CURRENT_TIMESTAMP
+            "executedAt" = CURRENT_TIMESTAMP,
+            "winningTicketNumber" = $4,
+            "selectionAlgorithm" = $5,
+            "auditData" = $6
         WHERE id = $3
-      `, [winner.userFid, prizeAmount, raffle.id]);
+      `, [
+        winner.userFid, 
+        prizeAmount, 
+        raffle.id, 
+        randomNumber,
+        'weighted_random_by_tickets',
+        JSON.stringify({
+          totalTickets,
+          totalParticipants: participants.length,
+          randomNumber,
+          winnerTicketRange: `${runningTotal - winner.ticketsCount + 1}-${runningTotal}`,
+          allParticipants: participants.map(p => ({
+            fid: p.userFid,
+            tickets: p.ticketsCount,
+            probability: (p.ticketsCount / totalTickets * 100).toFixed(2) + '%'
+          })),
+          selectionTimestamp: new Date().toISOString(),
+          executionMethod: 'automatic_close_raffle_api'
+        })
+      ]);
 
       // 5. Update winner in users table (add winnings) - Skip as totalWinnings field may not exist
       console.log(`💰 Winner FID ${winner.userFid} should receive ${prizeAmount} DEGEN`);

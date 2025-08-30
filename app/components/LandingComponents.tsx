@@ -199,7 +199,7 @@ export function BenefitsSection() {
     {
       icon: "shield" as const,
       title: "Transparente & Justo",
-      description: "Algoritmo público: más engagement = más tickets. VRF randomization para fairness."
+      description: "Algoritmo público: más engagement = más tickets. Todos los sorteos auditables públicamente."
     }
   ];
 
@@ -229,6 +229,16 @@ export function BenefitsSection() {
               <p className="text-[var(--app-foreground-muted)] leading-relaxed">
                 {benefit.description}
               </p>
+              {benefit.icon === "shield" && (
+                <div className="mt-4">
+                  <Link 
+                    href="/audit" 
+                    className="inline-flex items-center gap-2 text-[var(--app-accent)] hover:text-[var(--app-accent-hover)] font-semibold text-sm transition-colors"
+                  >
+                    🔍 Ver Auditoría Completa
+                  </Link>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -701,9 +711,9 @@ export function Footer() {
             <h3 className="font-bold mb-4">Información</h3>
             <div className="space-y-2">
               <Link href="/?view=frame-info" className="block text-gray-300 hover:text-white transition-colors">Farcaster Frame</Link>
+              <Link href="/audit" className="block text-amber-300 hover:text-amber-100 transition-colors font-semibold">🔍 Auditoría Pública</Link>
               <a href="#" className="block text-gray-300 hover:text-white transition-colors">Estadísticas</a>
               <a href="#" className="block text-gray-300 hover:text-white transition-colors">Leaderboard</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Ganadores</a>
             </div>
           </div>
         </div>
