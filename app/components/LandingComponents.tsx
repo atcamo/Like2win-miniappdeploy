@@ -710,10 +710,10 @@ export function Footer() {
           <div>
             <h3 className="font-bold mb-4">Información</h3>
             <div className="space-y-2">
-              <Link href="/?view=frame-info" className="block text-gray-300 hover:text-white transition-colors">Farcaster Frame</Link>
+              <Link href="/miniapp" className="block text-gray-300 hover:text-white transition-colors">Farcaster MiniApp</Link>
               <Link href="/audit" className="block text-amber-300 hover:text-amber-100 transition-colors font-semibold">🔍 Auditoría Pública</Link>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Estadísticas</a>
-              <a href="#" className="block text-gray-300 hover:text-white transition-colors">Leaderboard</a>
+              <Link href="/audit" className="block text-gray-300 hover:text-white transition-colors">Historial de Ganadores</Link>
+              <a href="https://basescan.org/address/0x4ed4E862860beD51a9570b96d89aF5E1B0Eff945" target="_blank" rel="noopener noreferrer" className="block text-gray-300 hover:text-white transition-colors">Token $DEGEN</a>
             </div>
           </div>
         </div>
