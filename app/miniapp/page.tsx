@@ -50,9 +50,6 @@ export default function Like2WinMiniApp() {
   
   // Get engagement status to check if user is following
   const { isFollowing, checkFollowStatus } = useEngagement();
-  
-  // Get user's raffle status for ticket counter
-  const { data: raffleData } = useRaffleStatus(userFid);
 
   useEffect(() => {
     setMounted(true);
@@ -92,6 +89,9 @@ export default function Like2WinMiniApp() {
 
   // Get user FID from MiniKit context or default to null
   const userFid = context?.user?.fid || null;
+  
+  // Get user's raffle status for ticket counter
+  const { data: raffleData } = useRaffleStatus(userFid);
 
   // Check follow status when userFid is available
   useEffect(() => {
