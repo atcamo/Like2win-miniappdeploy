@@ -273,7 +273,7 @@ export default function Like2WinMiniApp() {
             </p>
             
             {/* Participation Options Cards */}
-            <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-6 md:gap-2 md:mb-3">
+            <div className="grid grid-cols-2 gap-4 max-w-4xl mx-auto mb-6 md:gap-2 md:mb-3">
               {/* DEGEN Holder Option */}
               <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg md:p-2 md:rounded-lg">
                 <div className="text-center">
