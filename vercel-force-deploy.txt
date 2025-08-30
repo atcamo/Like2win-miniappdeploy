@@ -1,0 +1,8 @@
+Force deploy trigger - timestamp: 2025-08-30T07:07:00Z
+
+This file exists solely to trigger a Vercel deployment when GitHub webhooks 
+are not working correctly. Changes to any file should trigger auto-deploy.
+
+Last update: Manual trigger attempt
+Status: Testing if file changes trigger deployment
+Expected: Vercel should detect this change and deploy automatically
