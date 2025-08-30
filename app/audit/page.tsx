@@ -77,10 +77,19 @@ export default function AuditPage() {
 
   const fetchAuditData = async () => {
     try {
-      const response = await fetch('/api/audit/raffles');
+      // Try main audit API first
+      let response = await fetch('/api/audit/raffles');
+      
+      // If main API fails, try local fallback
+      if (!response.ok) {
+        console.log('Main audit API failed, trying local fallback...');
+        response = await fetch('/api/audit/local');
+      }
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
       const data = await response.json();
       setAuditData(data);
     } catch (err) {
