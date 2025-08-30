@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
           totalParticipants: participants.length,
           randomNumber,
           winnerTicketRange: `${runningTotal - winner.ticketsCount + 1}-${runningTotal}`,
-          allParticipants: participants.map(p => ({
+          allParticipants: participants.map((p: any) => ({
             fid: p.userFid,
             tickets: p.ticketsCount,
             probability: (p.ticketsCount / totalTickets * 100).toFixed(2) + '%'
