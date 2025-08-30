@@ -7,7 +7,7 @@
     }
   },
   "env": {
-    "NEXT_PUBLIC_URL": "https://like2win-app.vercel.app",
+    "NEXT_PUBLIC_URL": "https://like2win-miniappdeploy.vercel.app",
     "NEXT_PUBLIC_APP_OG_TITLE": "Like2Win",
     "NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR": "#F59E0B"
   },
