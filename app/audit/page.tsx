@@ -28,6 +28,7 @@ interface Raffle {
   executedAt: string;
   winningTicketNumber: number;
   selectionAlgorithm: string;
+  firstPlaceFid?: number;
 }
 
 interface AuditData {
