@@ -15,10 +15,6 @@
   "framework": "nextjs",
   "crons": [
     {
-      "path": "/api/cron/scan-engagement",
-      "schedule": "0 8 * * *"
-    },
-    {
       "path": "/api/cron/update-local-data",
       "schedule": "0 12 * * *"
     }

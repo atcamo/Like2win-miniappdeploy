@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 export async function GET(request: NextRequest) {
   try {
-    console.log('🕐 Cron: Updating local data...');
+    console.log('🕐 Cron: Daily Like2Win data update...');
 
     // Verify cron authorization
     const authHeader = request.headers.get('authorization');
