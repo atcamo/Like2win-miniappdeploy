@@ -20,7 +20,7 @@
     },
     {
       "path": "/api/cron/update-local-data",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 12 * * *"
     }
   ]
 }
