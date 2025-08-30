@@ -311,7 +311,7 @@ export default function AuditPage() {
                           </div>
                           
                           {/* Participants Breakdown */}
-                          {entry.auditTrail.allParticipants && (
+                          {entry.auditTrail.allParticipants && entry.auditTrail.allParticipants.length > 0 && (
                             <div className="mt-4">
                               <h6 className="font-semibold text-gray-800 mb-2">👥 Todos los Participantes</h6>
                               <div className="max-h-40 overflow-y-auto">

@@ -12,25 +12,25 @@ export async function GET() {
       max: 1
     });
 
-    // Get all completed raffles with winner information
+    // Get all completed raffles with winner information - using safe field selection
     const completedRafflesResult = await pool.query(`
       SELECT 
         id,
         "weekPeriod",
         "startDate",
         "endDate", 
-        "totalTickets",
-        "totalParticipants",
+        COALESCE("totalTickets", 0) as "totalTickets",
+        COALESCE("totalParticipants", 0) as "totalParticipants",
         "firstPlaceFid",
-        "firstPrize",
-        "executedAt",
+        COALESCE("firstPrize", 1000) as "firstPrize",
+        COALESCE("executedAt", "createdAt") as "executedAt",
         "winningTicketNumber",
-        "selectionAlgorithm",
+        COALESCE("selectionAlgorithm", 'weighted_random_by_tickets') as "selectionAlgorithm",
         "auditData",
         "createdAt"
       FROM raffles 
       WHERE status = 'COMPLETED'
-      ORDER BY "executedAt" DESC, "createdAt" DESC
+      ORDER BY COALESCE("executedAt", "createdAt") DESC
     `);
 
     // Get winner details from Neynar for each completed raffle
@@ -89,8 +89,8 @@ export async function GET() {
           prizeAmount: raffle.firstPrize,
           executedAt: raffle.executedAt,
           createdAt: raffle.createdAt,
-          winningTicketNumber: raffle.winningTicketNumber,
-          selectionAlgorithm: raffle.selectionAlgorithm
+          winningTicketNumber: raffle.winningTicketNumber || null,
+          selectionAlgorithm: raffle.selectionAlgorithm || 'weighted_random_by_tickets'
         },
         winner: winnerInfo,
         auditTrail: parsedAuditData
