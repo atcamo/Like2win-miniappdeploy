@@ -12,6 +12,7 @@ import { DebugInfo } from '@/app/components/DebugInfo';
 // import { EngagementTracker } from '@/app/components/EngagementTracker';
 import { EngagementTracker } from '@/app/components/EngagementTracker';
 import { useEngagement } from '@/lib/hooks/useEngagement';
+import { useRaffleStatus } from '@/lib/hooks/useRaffleStatus';
 
 // Type for MiniKit hook return value
 interface MiniKitHookResult {
@@ -49,6 +50,9 @@ export default function Like2WinMiniApp() {
   
   // Get engagement status to check if user is following
   const { isFollowing, checkFollowStatus } = useEngagement();
+  
+  // Get user's raffle status for ticket counter
+  const { data: raffleData } = useRaffleStatus(userFid);
 
   useEffect(() => {
     setMounted(true);
@@ -218,6 +222,45 @@ export default function Like2WinMiniApp() {
       
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0 md:py-1 md:space-y-2 md:pt-1">
+        
+        {/* Ticket Counter Card - First Position */}
+        {(() => {
+          const shouldShow = !!raffleData?.user;
+          const ticketsCount = raffleData?.user?.currentTickets ?? 0;
+          const hasZeroTickets = ticketsCount === 0;
+          
+          return shouldShow && (
+            <Like2WinCard variant={hasZeroTickets ? "warning" : "success"}>
+              <div className="text-center">
+                <h3 className={`text-lg font-semibold mb-2 ${
+                  hasZeroTickets ? 'text-red-800' : 'text-green-800'
+                }`}>
+                  {hasZeroTickets ? '⚠️ Sin Tickets' : '🎫 Tus Tickets Actuales'}
+                </h3>
+                <div className={`text-3xl font-bold mb-2 ${
+                  hasZeroTickets ? 'text-red-600' : 'text-green-600'
+                }`}>
+                  {ticketsCount}
+                </div>
+                <p className={`text-sm ${
+                  hasZeroTickets ? 'text-red-700' : 'text-green-700'
+                }`}>
+                  {hasZeroTickets 
+                    ? '¡Dale like a posts oficiales para ganar tickets!' 
+                    : 'Tickets para el sorteo actual'
+                  }
+                </p>
+                {hasZeroTickets && (
+                  <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-800 text-xs font-semibold">
+                      💡 Follow @Like2Win y dale like para participar
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Like2WinCard>
+          );
+        })()}
         
         {/* Hero Section */}
         <Like2WinCard variant="gradient" className="text-center">
