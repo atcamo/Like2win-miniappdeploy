@@ -274,28 +274,30 @@ export default function Like2WinMiniApp() {
               Follow @Like2Win y participa según tu cuenta.
             </p>
             
-            {/* Participation Options Cards - Compact for mobile */}
+            {/* Participation Options Cards - Tight layout */}
             <div className="grid grid-cols-1 gap-3 max-w-sm mx-auto mb-4 md:grid-cols-2 md:max-w-4xl md:gap-2 md:mb-3">
               {/* DEGEN Holder Option */}
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-lg p-4 shadow-lg">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">🎩</div>
-                  <h3 className="text-lg font-bold text-purple-800 mb-3">Con DEGEN</h3>
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-lg p-3 shadow-lg">
+                <div className="text-center space-y-2">
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-xl">🎩</span>
+                    <h3 className="text-base font-bold text-purple-800">Con DEGEN</h3>
+                  </div>
                   
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <div className="bg-purple-50 rounded-lg px-3 py-2 border border-purple-200 flex items-center gap-1">
-                      <span className="text-lg">👤</span>
-                      <span className="text-xs font-semibold text-purple-800">Follow</span>
+                  <div className="flex items-center justify-center gap-1 text-xs">
+                    <div className="bg-purple-50 rounded px-2 py-1 border border-purple-200 flex items-center gap-1">
+                      <span className="text-sm">👤</span>
+                      <span className="font-medium text-purple-800">Follow</span>
                     </div>
                     <span className="text-purple-600 font-bold">+</span>
-                    <div className="bg-purple-50 rounded-lg px-3 py-2 border border-purple-200 flex items-center gap-1">
-                      <span className="text-lg">❤️</span>
-                      <span className="text-xs font-semibold text-purple-800">Like</span>
+                    <div className="bg-purple-50 rounded px-2 py-1 border border-purple-200 flex items-center gap-1">
+                      <span className="text-sm">❤️</span>
+                      <span className="font-medium text-purple-800">Like</span>
                     </div>
                   </div>
                   
-                  <div className="border-t border-purple-200 pt-2">
-                    <span className="inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+                  <div className="pt-1">
+                    <span className="inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                       = 1 Ticket 🎫
                     </span>
                   </div>
@@ -303,32 +305,34 @@ export default function Like2WinMiniApp() {
               </div>
               
               {/* Non-DEGEN Option */}
-              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-lg p-4 shadow-lg">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">👤</div>
-                  <h3 className="text-lg font-bold text-orange-800 mb-3">Sin DEGEN</h3>
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-lg p-3 shadow-lg">
+                <div className="text-center space-y-2">
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-xl">👤</span>
+                    <h3 className="text-base font-bold text-orange-800">Sin DEGEN</h3>
+                  </div>
                   
-                  <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
-                      <div className="text-sm mb-1">👤</div>
-                      <div className="text-xs font-semibold text-orange-800">Follow</div>
+                  <div className="grid grid-cols-2 gap-1 text-xs">
+                    <div className="bg-orange-50 rounded px-1 py-1 border border-orange-200 flex items-center justify-center gap-1">
+                      <span className="text-xs">👤</span>
+                      <span className="font-medium text-orange-800">Follow</span>
                     </div>
-                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
-                      <div className="text-sm mb-1">❤️</div>
-                      <div className="text-xs font-semibold text-orange-800">Like</div>
+                    <div className="bg-orange-50 rounded px-1 py-1 border border-orange-200 flex items-center justify-center gap-1">
+                      <span className="text-xs">❤️</span>
+                      <span className="font-medium text-orange-800">Like</span>
                     </div>
-                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
-                      <div className="text-sm mb-1">🔄</div>
-                      <div className="text-xs font-semibold text-orange-800">Recast</div>
+                    <div className="bg-orange-50 rounded px-1 py-1 border border-orange-200 flex items-center justify-center gap-1">
+                      <span className="text-xs">🔄</span>
+                      <span className="font-medium text-orange-800">Recast</span>
                     </div>
-                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
-                      <div className="text-sm mb-1">💬</div>
-                      <div className="text-xs font-semibold text-orange-800">Comment</div>
+                    <div className="bg-orange-50 rounded px-1 py-1 border border-orange-200 flex items-center justify-center gap-1">
+                      <span className="text-xs">💬</span>
+                      <span className="font-medium text-orange-800">Comment</span>
                     </div>
                   </div>
                   
-                  <div className="border-t border-orange-200 pt-2">
-                    <span className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+                  <div className="pt-1">
+                    <span className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                       = 1 Ticket 🎫
                     </span>
                   </div>
