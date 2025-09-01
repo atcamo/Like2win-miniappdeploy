@@ -14,7 +14,8 @@ import {
   Footer,
 } from './LandingComponents';
 import {
-  Like2WinLogo
+  Like2WinLogo,
+  ParticipationModes
 } from './Like2WinComponents';
 
 /**
@@ -93,9 +94,7 @@ export function FrameAwareLanding() {
                     </h2>
                     
                     <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                      Sigue @Like2Win y participa en sorteos bi-semanales:<br/>
-                      • Con 🎩 DEGEN: solo like<br/>
-                      • Sin 🎩: like + recast + comment
+                      Sigue @Like2Win y participa en sorteos bi-semanales
                     </p>
                     
                     {/* Inline stats - more compact */}
@@ -135,6 +134,16 @@ export function FrameAwareLanding() {
               <div className="bg-white/70 backdrop-blur-sm border border-amber-200/50 rounded-xl p-4 shadow-sm">
                 <FrameActions variant="full" />
               </div>
+            </div>
+          </section>
+
+          {/* Participation Modes - Clear & Visual */}
+          <section className="px-4 py-4">
+            <div className="max-w-md mx-auto">
+              <h3 className="text-lg font-bold text-gray-800 mb-4 text-center">
+                ¿Cómo Participar?
+              </h3>
+              <ParticipationModes />
             </div>
           </section>
 

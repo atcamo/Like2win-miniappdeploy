@@ -387,3 +387,80 @@ export function FallingAnimation({
     </div>
   );
 }
+
+type ParticipationModeProps = {
+  className?: string;
+}
+
+export function ParticipationModes({ className = "" }: ParticipationModeProps) {
+  return (
+    <div className={`space-y-4 ${className}`}>
+      {/* DEGEN Tippers Mode */}
+      <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300 rounded-xl p-4 shadow-lg">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="text-3xl">🎩</div>
+          <div>
+            <h3 className="text-lg font-bold text-amber-800">Con DEGEN</h3>
+            <p className="text-sm text-amber-600">Para usuarios que hacen tips</p>
+          </div>
+        </div>
+        
+        <div className="bg-white/70 rounded-lg p-4 border border-amber-200">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">👤</span>
+              <span className="text-sm font-medium">Follow @Like2Win</span>
+            </div>
+            <span className="text-amber-500 font-bold">+</span>
+            <div className="flex items-center gap-2">
+              <span className="text-lg">❤️</span>
+              <span className="text-sm font-medium">Like</span>
+            </div>
+          </div>
+          <div className="text-center">
+            <span className="inline-block bg-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+              = 1 Ticket
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Regular Users Mode */}
+      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-300 rounded-xl p-4 shadow-lg">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="text-3xl">👤</div>
+          <div>
+            <h3 className="text-lg font-bold text-blue-800">Sin DEGEN</h3>
+            <p className="text-sm text-blue-600">Para usuarios normales</p>
+          </div>
+        </div>
+        
+        <div className="bg-white/70 rounded-lg p-4 border border-blue-200">
+          <div className="grid grid-cols-2 gap-2 mb-3">
+            <div className="flex items-center gap-1">
+              <span className="text-base">👤</span>
+              <span className="text-xs font-medium">Follow</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-base">❤️</span>
+              <span className="text-xs font-medium">Like</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-base">🔄</span>
+              <span className="text-xs font-medium">Recast</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-base">💬</span>
+              <span className="text-xs font-medium">Comment</span>
+            </div>
+          </div>
+          <div className="text-center">
+            <span className="inline-block bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+              = 1 Ticket
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
