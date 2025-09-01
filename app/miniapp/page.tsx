@@ -220,8 +220,8 @@ export default function Like2WinMiniApp() {
   return (
     <div className="min-h-screen md:h-auto bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 relative overflow-auto md:overflow-visible">
       
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 pt-6 pb-12 md:pb-0 md:py-1 md:space-y-2 md:pt-1">
+      {/* Main Content - Compact spacing */}
+      <main className="max-w-4xl mx-auto px-4 py-4 space-y-4 pt-4 pb-8 md:pb-0 md:py-1 md:space-y-2 md:pt-1">
         
         {/* Ticket Counter Card - First Position */}
         {(() => {
@@ -232,17 +232,19 @@ export default function Like2WinMiniApp() {
           return shouldShow && (
             <Like2WinCard variant={hasZeroTickets ? "warning" : "success"}>
               <div className="text-center">
-                <h3 className={`text-lg font-semibold mb-2 ${
-                  hasZeroTickets ? 'text-red-800' : 'text-green-800'
-                }`}>
-                  {hasZeroTickets ? '⚠️ Sin Tickets' : '🎫 Tus Tickets Actuales'}
-                </h3>
-                <div className={`text-3xl font-bold mb-2 ${
-                  hasZeroTickets ? 'text-red-600' : 'text-green-600'
-                }`}>
-                  {ticketsCount}
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <h3 className={`text-base font-semibold ${
+                    hasZeroTickets ? 'text-red-800' : 'text-green-800'
+                  }`}>
+                    {hasZeroTickets ? '⚠️ Sin Tickets' : '🎫 Tus Tickets'}
+                  </h3>
+                  <div className={`text-xl font-bold ${
+                    hasZeroTickets ? 'text-red-600' : 'text-green-600'
+                  }`}>
+                    {ticketsCount}
+                  </div>
                 </div>
-                <p className={`text-sm ${
+                <p className={`text-xs ${
                   hasZeroTickets ? 'text-red-700' : 'text-green-700'
                 }`}>
                   {hasZeroTickets 
@@ -251,7 +253,7 @@ export default function Like2WinMiniApp() {
                   }
                 </p>
                 {hasZeroTickets && (
-                  <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-red-800 text-xs font-semibold">
                       💡 Follow @Like2Win y dale like para participar
                     </p>
@@ -262,40 +264,38 @@ export default function Like2WinMiniApp() {
           );
         })()}
         
-        {/* Hero Section */}
+        {/* Hero Section - Compact */}
         <Like2WinCard variant="gradient" className="text-center">
-          <div className="space-y-4 md:space-y-2">
-            <MainTitle className="text-3xl md:text-2xl">
+          <div className="space-y-3 md:space-y-2">
+            <MainTitle className="text-2xl md:text-2xl">
               ¡Gana $DEGEN con tus Likes!
             </MainTitle>
-            <p className="text-lg text-amber-700 max-w-2xl mx-auto mb-6 md:text-base md:mb-3">
+            <p className="text-base text-amber-700 max-w-2xl mx-auto mb-4 md:text-base md:mb-3">
               Follow @Like2Win y participa según tu cuenta.
             </p>
             
-            {/* Participation Options Cards - Stack vertically on mobile */}
-            <div className="grid grid-cols-1 gap-4 max-w-md mx-auto mb-6 md:grid-cols-2 md:max-w-4xl md:gap-2 md:mb-3">
+            {/* Participation Options Cards - Compact for mobile */}
+            <div className="grid grid-cols-1 gap-3 max-w-sm mx-auto mb-4 md:grid-cols-2 md:max-w-4xl md:gap-2 md:mb-3">
               {/* DEGEN Holder Option */}
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg">
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-lg p-4 shadow-lg">
                 <div className="text-center">
-                  <div className="text-4xl mb-3">🎩</div>
-                  <h3 className="text-xl font-bold text-purple-800 mb-4">Con DEGEN</h3>
+                  <div className="text-2xl mb-2">🎩</div>
+                  <h3 className="text-lg font-bold text-purple-800 mb-3">Con DEGEN</h3>
                   
-                  <div className="space-y-3 mb-4">
-                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                      <div className="text-2xl mb-2">👤</div>
-                      <div className="text-sm font-semibold text-purple-800">Follow @Like2Win</div>
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="bg-purple-50 rounded-lg px-3 py-2 border border-purple-200 flex items-center gap-1">
+                      <span className="text-lg">👤</span>
+                      <span className="text-xs font-semibold text-purple-800">Follow</span>
                     </div>
-                    
-                    <div className="text-purple-600 font-bold text-lg">+</div>
-                    
-                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                      <div className="text-2xl mb-2">❤️</div>
-                      <div className="text-sm font-semibold text-purple-800">Like Post</div>
+                    <span className="text-purple-600 font-bold">+</span>
+                    <div className="bg-purple-50 rounded-lg px-3 py-2 border border-purple-200 flex items-center gap-1">
+                      <span className="text-lg">❤️</span>
+                      <span className="text-xs font-semibold text-purple-800">Like</span>
                     </div>
                   </div>
                   
-                  <div className="border-t border-purple-200 pt-3">
-                    <span className="inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-base font-bold px-4 py-2 rounded-full shadow-lg">
+                  <div className="border-t border-purple-200 pt-2">
+                    <span className="inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-sm font-bold px-3 py-1 rounded-full">
                       = 1 Ticket 🎫
                     </span>
                   </div>
@@ -303,39 +303,32 @@ export default function Like2WinMiniApp() {
               </div>
               
               {/* Non-DEGEN Option */}
-              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg">
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-lg p-4 shadow-lg">
                 <div className="text-center">
-                  <div className="text-4xl mb-3">👤</div>
-                  <h3 className="text-xl font-bold text-orange-800 mb-4">Sin DEGEN</h3>
+                  <div className="text-2xl mb-2">👤</div>
+                  <h3 className="text-lg font-bold text-orange-800 mb-3">Sin DEGEN</h3>
                   
-                  <div className="space-y-3 mb-4">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-                        <div className="text-lg mb-1">👤</div>
-                        <div className="text-xs font-semibold text-orange-800">Follow</div>
-                      </div>
-                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-                        <div className="text-lg mb-1">❤️</div>
-                        <div className="text-xs font-semibold text-orange-800">Like</div>
-                      </div>
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
+                      <div className="text-sm mb-1">👤</div>
+                      <div className="text-xs font-semibold text-orange-800">Follow</div>
                     </div>
-                    
-                    <div className="text-orange-600 font-bold text-lg">+</div>
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-                        <div className="text-lg mb-1">🔄</div>
-                        <div className="text-xs font-semibold text-orange-800">Recast</div>
-                      </div>
-                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
-                        <div className="text-lg mb-1">💬</div>
-                        <div className="text-xs font-semibold text-orange-800">Comment</div>
-                      </div>
+                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
+                      <div className="text-sm mb-1">❤️</div>
+                      <div className="text-xs font-semibold text-orange-800">Like</div>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
+                      <div className="text-sm mb-1">🔄</div>
+                      <div className="text-xs font-semibold text-orange-800">Recast</div>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg px-2 py-2 border border-orange-200 text-center">
+                      <div className="text-sm mb-1">💬</div>
+                      <div className="text-xs font-semibold text-orange-800">Comment</div>
                     </div>
                   </div>
                   
-                  <div className="border-t border-orange-200 pt-3">
-                    <span className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 text-white text-base font-bold px-4 py-2 rounded-full shadow-lg">
+                  <div className="border-t border-orange-200 pt-2">
+                    <span className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full">
                       = 1 Ticket 🎫
                     </span>
                   </div>
