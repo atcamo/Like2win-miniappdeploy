@@ -272,47 +272,73 @@ export default function Like2WinMiniApp() {
               Follow @Like2Win y participa según tu cuenta.
             </p>
             
-            {/* Participation Options Cards */}
-            <div className="grid grid-cols-2 gap-4 max-w-4xl mx-auto mb-6 md:gap-2 md:mb-3">
+            {/* Participation Options Cards - Stack vertically on mobile */}
+            <div className="grid grid-cols-1 gap-4 max-w-md mx-auto mb-6 md:grid-cols-2 md:max-w-4xl md:gap-2 md:mb-3">
               {/* DEGEN Holder Option */}
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg md:p-2 md:rounded-lg">
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 shadow-lg">
                 <div className="text-center">
-                  <div className="text-4xl mb-3 md:text-2xl md:mb-1">🎩</div>
-                  <h3 className="text-xl font-bold text-purple-800 mb-3 md:text-base md:mb-1">Con DEGEN</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-4 py-2">
-                      <span className="text-2xl">❤️</span>
-                      <span className="font-semibold text-purple-700">Solo LIKE</span>
+                  <div className="text-4xl mb-3">🎩</div>
+                  <h3 className="text-xl font-bold text-purple-800 mb-4">Con DEGEN</h3>
+                  
+                  <div className="space-y-3 mb-4">
+                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                      <div className="text-2xl mb-2">👤</div>
+                      <div className="text-sm font-semibold text-purple-800">Follow @Like2Win</div>
+                    </div>
+                    
+                    <div className="text-purple-600 font-bold text-lg">+</div>
+                    
+                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                      <div className="text-2xl mb-2">❤️</div>
+                      <div className="text-sm font-semibold text-purple-800">Like Post</div>
                     </div>
                   </div>
-                  <p className="text-purple-600 text-sm mt-3 md:text-xs md:mt-1">
-                    Con sombrero DEGEN solo like.
-                  </p>
+                  
+                  <div className="border-t border-purple-200 pt-3">
+                    <span className="inline-block bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-base font-bold px-4 py-2 rounded-full shadow-lg">
+                      = 1 Ticket 🎫
+                    </span>
+                  </div>
                 </div>
               </div>
               
               {/* Non-DEGEN Option */}
-              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg md:p-2 md:rounded-lg">
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-6 shadow-lg">
                 <div className="text-center">
-                  <div className="text-4xl mb-3 md:text-2xl md:mb-1">👤</div>
-                  <h3 className="text-xl font-bold text-orange-800 mb-3 md:text-base md:mb-1">Sin DEGEN</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
-                      <span className="text-lg">❤️</span>
-                      <span className="font-medium text-orange-700">LIKE</span>
+                  <div className="text-4xl mb-3">👤</div>
+                  <h3 className="text-xl font-bold text-orange-800 mb-4">Sin DEGEN</h3>
+                  
+                  <div className="space-y-3 mb-4">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                        <div className="text-lg mb-1">👤</div>
+                        <div className="text-xs font-semibold text-orange-800">Follow</div>
+                      </div>
+                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                        <div className="text-lg mb-1">❤️</div>
+                        <div className="text-xs font-semibold text-orange-800">Like</div>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
-                      <span className="text-lg">🔄</span>
-                      <span className="font-medium text-orange-700">RECAST</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-2 bg-white/60 rounded-lg px-3 py-1 text-sm">
-                      <span className="text-lg">💬</span>
-                      <span className="font-medium text-orange-700">COMMENT</span>
+                    
+                    <div className="text-orange-600 font-bold text-lg">+</div>
+                    
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                        <div className="text-lg mb-1">🔄</div>
+                        <div className="text-xs font-semibold text-orange-800">Recast</div>
+                      </div>
+                      <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                        <div className="text-lg mb-1">💬</div>
+                        <div className="text-xs font-semibold text-orange-800">Comment</div>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-orange-600 text-sm mt-3 md:text-xs md:mt-1">
-                    Sin sombrero: 3 acciones.
-                  </p>
+                  
+                  <div className="border-t border-orange-200 pt-3">
+                    <span className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 text-white text-base font-bold px-4 py-2 rounded-full shadow-lg">
+                      = 1 Ticket 🎫
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
