@@ -405,22 +405,29 @@ export function ParticipationModes({ className = "" }: ParticipationModeProps) {
           </div>
         </div>
         
-        <div className="bg-white/70 rounded-lg p-4 border border-amber-200">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">👤</span>
-              <span className="text-sm font-medium">Follow @Like2Win</span>
+        <div className="bg-white/70 rounded-lg p-6 border border-amber-200">
+          <div className="space-y-4">
+            <div className="flex items-center justify-center gap-2">
+              <div className="bg-amber-100 rounded-xl p-4 flex-1 text-center">
+                <div className="text-2xl mb-2">👤</div>
+                <div className="text-sm font-semibold text-amber-800">Follow @Like2Win</div>
+              </div>
             </div>
-            <span className="text-amber-500 font-bold">+</span>
-            <div className="flex items-center gap-2">
-              <span className="text-lg">❤️</span>
-              <span className="text-sm font-medium">Like</span>
+            
+            <div className="text-center text-amber-600 font-bold text-lg">+</div>
+            
+            <div className="flex items-center justify-center gap-2">
+              <div className="bg-amber-100 rounded-xl p-4 flex-1 text-center">
+                <div className="text-2xl mb-2">❤️</div>
+                <div className="text-sm font-semibold text-amber-800">Like Post</div>
+              </div>
             </div>
-          </div>
-          <div className="text-center">
-            <span className="inline-block bg-amber-500 text-white text-sm font-bold px-3 py-1 rounded-full">
-              = 1 Ticket
-            </span>
+            
+            <div className="text-center pt-2 border-t border-amber-200">
+              <span className="inline-block bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-lg font-bold px-6 py-2 rounded-full shadow-lg">
+                = 1 Ticket 🎫
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -435,29 +442,37 @@ export function ParticipationModes({ className = "" }: ParticipationModeProps) {
           </div>
         </div>
         
-        <div className="bg-white/70 rounded-lg p-4 border border-blue-200">
-          <div className="grid grid-cols-2 gap-2 mb-3">
-            <div className="flex items-center gap-1">
-              <span className="text-base">👤</span>
-              <span className="text-xs font-medium">Follow</span>
+        <div className="bg-white/70 rounded-lg p-6 border border-blue-200">
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-blue-100 rounded-xl p-3 text-center">
+                <div className="text-xl mb-1">👤</div>
+                <div className="text-xs font-semibold text-blue-800">Follow</div>
+              </div>
+              <div className="bg-blue-100 rounded-xl p-3 text-center">
+                <div className="text-xl mb-1">❤️</div>
+                <div className="text-xs font-semibold text-blue-800">Like</div>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-base">❤️</span>
-              <span className="text-xs font-medium">Like</span>
+            
+            <div className="text-center text-blue-600 font-bold text-lg">+</div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-blue-100 rounded-xl p-3 text-center">
+                <div className="text-xl mb-1">🔄</div>
+                <div className="text-xs font-semibold text-blue-800">Recast</div>
+              </div>
+              <div className="bg-blue-100 rounded-xl p-3 text-center">
+                <div className="text-xl mb-1">💬</div>
+                <div className="text-xs font-semibold text-blue-800">Comment</div>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-base">🔄</span>
-              <span className="text-xs font-medium">Recast</span>
+            
+            <div className="text-center pt-2 border-t border-blue-200">
+              <span className="inline-block bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-lg font-bold px-6 py-2 rounded-full shadow-lg">
+                = 1 Ticket 🎫
+              </span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-base">💬</span>
-              <span className="text-xs font-medium">Comment</span>
-            </div>
-          </div>
-          <div className="text-center">
-            <span className="inline-block bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full">
-              = 1 Ticket
-            </span>
           </div>
         </div>
       </div>
