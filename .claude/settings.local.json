@@ -39,7 +39,9 @@
       "WebFetch(domain:like2win-dogqbnykg-atilioacm-gmailcoms-projects.vercel.app)",
       "WebFetch(domain:like2win-ignjf6o9l-atilioacm-gmailcoms-projects.vercel.app)",
       "Bash(bun add:*)",
-      "WebFetch(domain:like2win-aolpvvax6-atilioacm-gmailcoms-projects.vercel.app)"
+      "WebFetch(domain:like2win-aolpvvax6-atilioacm-gmailcoms-projects.vercel.app)",
+      "Bash(npm install:*)",
+      "Bash(npx hardhat:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",

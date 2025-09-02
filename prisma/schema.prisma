@@ -254,6 +254,13 @@ model Raffle {
   executedAt            DateTime?
   createdAt             DateTime      @default(now())
   
+  // Daily Raffle Fields
+  raffleType            RaffleType?   @default(BIWEEKLY)
+  dayNumber             Int?          // 1-7 for daily raffles
+  prizeAmount           Int?          // Prize amount in DEGEN
+  winningTicketNumber   Int?          // The winning ticket number
+  selectionAlgorithm    String?       // Algorithm used for selection
+  
   // Relations
   firstPlaceWinner      User?         @relation("FirstPlaceWinner", fields: [firstPlaceFid], references: [fid])
   secondPlaceWinner     User?         @relation("SecondPlaceWinner", fields: [secondPlaceFid], references: [fid])
@@ -263,6 +270,8 @@ model Raffle {
 
   @@index([weekPeriod])
   @@index([status])
+  @@index([raffleType])
+  @@index([dayNumber])
   @@map("raffles")
 }
 
@@ -270,7 +279,8 @@ model UserTickets {
   id            String    @id @default(uuid())
   raffleId      String
   userFid       BigInt
-  ticketsCount  Int       @default(0)
+  tickets       Int       @default(0)  // Changed from ticketsCount to tickets
+  ticketsCount  Int       @default(0)  // Keep both for compatibility during migration
   firstLikeAt   DateTime?
   lastLikeAt    DateTime?
   
@@ -279,6 +289,7 @@ model UserTickets {
 
   @@unique([raffleId, userFid])
   @@index([raffleId, userFid])
+  @@index([tickets])
   @@index([ticketsCount])
   @@map("user_tickets")
 }
@@ -331,6 +342,12 @@ enum RaffleStatus {
   ACTIVE
   DRAWING
   COMPLETED
+  CANCELLED
+}
+
+enum RaffleType {
+  BIWEEKLY
+  DAILY
 }
 
 enum EventType {

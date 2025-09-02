@@ -42,7 +42,7 @@ jobs:
         echo "🤖 Triggering daily raffle automation: $ACTION"
         
         # Call the automation API
-        RESPONSE=$(curl -s -X POST "$PRODUCTION_URL/api/automation/daily-raffle" \
+        RESPONSE=$(curl -s -X POST "$PRODUCTION_URL/api/automation/daily-raffle-simple" \
           -H "Content-Type: application/json" \
           -d "{\"action\": \"$ACTION\", \"authorization\": \"$AUTOMATION_SECRET\"}")
         
