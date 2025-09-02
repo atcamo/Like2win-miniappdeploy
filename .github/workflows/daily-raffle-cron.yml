@@ -1,0 +1,64 @@
+name: Daily Raffle Automation
+
+on:
+  schedule:
+    # Execute daily raffle at 23:59 UTC
+    - cron: '59 23 * * *'
+    # Start next raffle at 00:01 UTC  
+    - cron: '1 0 * * *'
+  
+  # Allow manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'full_daily_cycle'
+        type: choice
+        options:
+        - execute_daily_raffle
+        - start_next_raffle
+        - full_daily_cycle
+
+jobs:
+  daily-raffle-automation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Execute Daily Raffle Automation
+      env:
+        AUTOMATION_SECRET: ${{ secrets.AUTOMATION_SECRET }}
+        PRODUCTION_URL: ${{ secrets.PRODUCTION_URL }}
+      run: |
+        # Determine action based on trigger
+        if [[ "${{ github.event_name }}" == "schedule" ]]; then
+          # For scheduled runs, use full cycle to handle both execution and start
+          ACTION="full_daily_cycle"
+        else
+          # For manual runs, use the selected action
+          ACTION="${{ github.event.inputs.action }}"
+        fi
+        
+        echo "🤖 Triggering daily raffle automation: $ACTION"
+        
+        # Call the automation API
+        RESPONSE=$(curl -s -X POST "$PRODUCTION_URL/api/automation/daily-raffle" \
+          -H "Content-Type: application/json" \
+          -d "{\"action\": \"$ACTION\", \"authorization\": \"$AUTOMATION_SECRET\"}")
+        
+        echo "📊 Response: $RESPONSE"
+        
+        # Check if the request was successful
+        if echo "$RESPONSE" | grep -q '"success":true'; then
+          echo "✅ Daily raffle automation completed successfully"
+        else
+          echo "❌ Daily raffle automation failed"
+          echo "$RESPONSE"
+          exit 1
+        fi
+
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "❌ Daily raffle automation failed at $(date)"
+        # TODO: Add notification to Discord/Slack if needed
