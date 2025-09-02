@@ -14,19 +14,21 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win-miniappdeploy.vercel.app";
+  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win-app.vercel.app";
   const PROJECT_NAME = "Like2Win";
   
-  // Like2Win Mini App embed metadata
+  // Like2Win Mini App embed metadata for social sharing
   const miniAppEmbed = {
     version: "1",
-    imageUrl: `${URL}/hero.png`,
+    imageUrl: `${URL}/hero.png?v=${Date.now()}`,
     button: {
-      title: "Launch Like2Win",
+      title: "🎫 Play & Win $DEGEN",
       action: {
         type: "launch_miniapp",
         name: "Like2Win",
-        url: `${URL}/miniapp/simple`,
+        url: `${URL}/miniapp`,
+        splashImageUrl: `${URL}/splash.png`,
+        splashBackgroundColor: "#F59E0B"
       },
     },
   };
@@ -34,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
     description:
-      "🎫 Like2Win: La forma más simple de ganar $DEGEN en Farcaster. Follow @Like2Win y participa según tu tipo:\n• Con 🎩 DEGEN: solo like\n• Sin 🎩: like + recast + comment\nSorteos bi-semanales. Zero friction, maximum fun!",
+      "🎫 Like2Win: La forma más simple de ganar $DEGEN en Farcaster. Follow @Like2Win y participa según tu tipo: Con 🎩 DEGEN: solo like, Sin 🎩: like + recast + comment. Sorteos bi-semanales. Zero friction, maximum fun!",
     keywords: [
       "Farcaster",
       "DEGEN", 
@@ -49,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: "Like2Win",
     openGraph: {
       title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
-      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster.\n• Con 🎩 DEGEN: solo like\n• Sin 🎩: like + recast + comment",
+      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster. Con 🎩 DEGEN: solo like, Sin 🎩: like + recast + comment",
       url: URL,
       siteName: PROJECT_NAME,
       images: [
@@ -66,13 +68,24 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: `${PROJECT_NAME} - Follow + Like = Win $DEGEN`,
-      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster.\n• Con 🎩 DEGEN: solo like\n• Sin 🎩: like + recast + comment",
+      description: "🎫 La forma más simple de ganar $DEGEN en Farcaster. Con 🎩 DEGEN: solo like, Sin 🎩: like + recast + comment",
       images: [`${URL}/hero.png`],
       creator: "@Like2Win"
     },
     other: {
       // Mini App embed metadata (required for Farcaster)
       "fc:miniapp": JSON.stringify(miniAppEmbed),
+      // For backward compatibility with older Farcaster clients
+      "fc:frame": JSON.stringify({
+        ...miniAppEmbed,
+        button: {
+          ...miniAppEmbed.button,
+          action: {
+            ...miniAppEmbed.button.action,
+            type: "launch_frame" // backward compatibility
+          }
+        }
+      }),
     },
   };
 }

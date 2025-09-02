@@ -41,7 +41,8 @@
       "Bash(bun add:*)",
       "WebFetch(domain:like2win-aolpvvax6-atilioacm-gmailcoms-projects.vercel.app)",
       "Bash(npm install:*)",
-      "Bash(npx hardhat:*)"
+      "Bash(npx hardhat:*)",
+      "WebFetch(domain:like2win-miniappdeploy.vercel.app)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",

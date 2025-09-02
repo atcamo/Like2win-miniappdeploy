@@ -7,8 +7,9 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET() {
   return NextResponse.json({
     success: true,
-    message: 'Like2Win Daily Raffle Automation API (Simple)',
+    message: 'Like2Win Daily Raffle Automation API (Simple) - Updated',
     status: 'operational',
+    lastUpdate: 'September 2, 2025 - Deployment Test',
     endpoints: {
       'POST /': 'Execute automation actions',
       actions: [
