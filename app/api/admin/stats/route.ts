@@ -31,7 +31,16 @@ export async function GET(request: NextRequest) {
           id: raffleData.id || 'local-raffle-2025',
           weekPeriod: raffleData.weekPeriod || 'Week 34-37 2025 (Launch Raffle)',
           startDate: raffleData.startDate || '2025-08-18T00:00:00.000Z',
-          endDate: raffleData.endDate || '2025-09-15T23:59:59.000Z',
+          endDate: raffleData.endDate || (() => {
+            // Calculate next daily raffle end (today at 23:59:59 UTC)
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+            // If it's already past today's deadline, set for tomorrow
+            if (now > today) {
+              today.setDate(today.getDate() + 1);
+            }
+            return today.toISOString();
+          })(),
           status: 'ACTIVE',
           totalTickets: raffleData.totalTickets || 0,
           totalParticipants: raffleData.totalParticipants || 0

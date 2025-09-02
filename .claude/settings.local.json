@@ -42,7 +42,11 @@
       "WebFetch(domain:like2win-aolpvvax6-atilioacm-gmailcoms-projects.vercel.app)",
       "Bash(npm install:*)",
       "Bash(npx hardhat:*)",
-      "WebFetch(domain:like2win-miniappdeploy.vercel.app)"
+      "WebFetch(domain:like2win-miniappdeploy.vercel.app)",
+      "Bash(gh repo view:*)",
+      "WebFetch(domain:docs.farcaster.xyz)",
+      "Bash(gh secret set:*)",
+      "WebFetch(domain:farcaster.xyz)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",

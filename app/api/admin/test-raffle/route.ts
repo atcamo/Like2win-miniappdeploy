@@ -38,6 +38,15 @@ export async function GET() {
       console.log('❌ No active raffle found, attempting to create/fix...');
       
       // Check if there are any raffles at all
+      // Calculate next daily raffle end (today at 23:59:59 UTC)
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+      // If it's already past today's deadline, set for tomorrow
+      if (now > today) {
+        today.setDate(today.getDate() + 1);
+      }
+      const nextRaffleEnd = today.toISOString();
+
       const allRafflesResult = await pool.query('SELECT COUNT(*) as total FROM raffles');
       const totalRaffles = parseInt(allRafflesResult.rows[0].total);
       
@@ -52,29 +61,30 @@ export async function GET() {
             "totalTickets", 
             "totalParticipants"
           ) VALUES (
-            'Week 34-37 2025 (Launch Raffle)',
+            $1,
             '2025-08-18T00:00:00.000Z',
-            '2025-09-15T23:59:59.000Z',
+            $2,
             'ACTIVE',
             0,
             0
           )
-        `);
+        `, [`Daily Raffle ${new Date().toDateString()}`, nextRaffleEnd]);
         console.log('✅ Created new active raffle');
       } else {
-        // Update existing raffles to have correct 2025 dates
+
+        // Update existing raffles to have correct daily dates
         await pool.query(`
           UPDATE raffles 
           SET 
             "startDate" = '2025-08-18T00:00:00.000Z',
-            "endDate" = '2025-09-15T23:59:59.000Z',
-            "weekPeriod" = 'Week 34-37 2025 (Launch Raffle)',
+            "endDate" = $1,
+            "weekPeriod" = $2,
             status = 'ACTIVE'
           WHERE id IN (
             SELECT id FROM raffles ORDER BY "createdAt" DESC LIMIT 1
           )
-        `);
-        console.log('✅ Updated latest raffle with 2025 dates');
+        `, [nextRaffleEnd, `Daily Raffle ${new Date().toDateString()}`]);
+        console.log('✅ Updated latest raffle with daily schedule');
       }
 
       // Re-query for active raffles
