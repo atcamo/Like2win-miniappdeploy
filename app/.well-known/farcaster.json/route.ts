@@ -1,5 +1,5 @@
 export async function GET() {
-  // Force cache refresh by adding timestamp
+  // Force cache refresh by adding timestamp - Base Builder integration
   const timestamp = new Date().toISOString();
   const headers = {
     'Content-Type': 'application/json',
