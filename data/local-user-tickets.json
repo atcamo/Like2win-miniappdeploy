@@ -67,6 +67,13 @@
       "0xf467281792abc27b6dead342d4b5511084669bc9"
     ]
   },
+  "999999": {
+    "tickets": 1,
+    "username": "user_999999",
+    "lastActivity": "2025-09-05T05:50:37.494Z",
+    "isFollowing": false,
+    "engagementCount": 1
+  },
   "1051182": {
     "tickets": 1,
     "username": "sianidamir",
