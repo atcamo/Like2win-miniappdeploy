@@ -424,7 +424,7 @@ export function EngagementTracker({ userFid }: EngagementTrackerProps) {
           <p>• <strong>Sigue</strong> @Like2Win en Farcaster</p>
           <p>• <strong>Dale like</strong> a los posts oficiales durante el periodo de rifa</p>
           <p>• <strong>Gana tickets</strong> automáticamente por cada like</p>
-          <p>• <strong>Participa</strong> en el sorteo bi-semanal de $DEGEN</p>
+          <p>• <strong>Participa</strong> en el sorteo diario de $DEGEN</p>
         </div>
       </Like2WinCard>
     </div>

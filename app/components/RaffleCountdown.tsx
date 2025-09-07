@@ -118,8 +118,8 @@ export function RaffleCountdown({ endDate }: RaffleCountdownProps) {
           className="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full transition-all duration-1000"
           style={{ 
             width: `${Math.max(0, Math.min(100, 
-              ((new Date().getTime() - new Date(Date.now() - 7*24*60*60*1000).getTime()) / 
-               (new Date(endDate).getTime() - new Date(Date.now() - 7*24*60*60*1000).getTime())) * 100
+              ((new Date().getTime() - new Date(Date.now() - 1*24*60*60*1000).getTime()) / 
+               (new Date(endDate).getTime() - new Date(Date.now() - 1*24*60*60*1000).getTime())) * 100
             ))}%` 
           }}
         />

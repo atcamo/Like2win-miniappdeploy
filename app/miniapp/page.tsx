@@ -341,7 +341,7 @@ export default function Like2WinMiniApp() {
             </div>
             
             <p className="text-amber-600 font-semibold">
-              🎯 Sorteos bi-semanales de $DEGEN
+              🎯 Sorteos diarios de $DEGEN
             </p>
             
             {/* Show follow prompt only if user is not following yet - Hidden on desktop */}

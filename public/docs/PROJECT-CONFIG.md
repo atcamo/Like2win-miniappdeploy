@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Like2Win** is a Farcaster-native MiniKit application that gamifies social engagement through bi-weekly $DEGEN raffles. Users earn tickets by following @Like2Win and liking official posts - zero friction, maximum fun! This document outlines the complete project configuration and development standards.
+**Like2Win** is a Farcaster-native MiniKit application that gamifies social engagement through daily $DEGEN raffles. Users earn tickets by following @Like2Win and liking official posts - zero friction, maximum fun! This document outlines the complete project configuration and development standards.
 
 ## 🎨 Design System Configuration
 

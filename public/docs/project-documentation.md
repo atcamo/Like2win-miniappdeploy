@@ -7,7 +7,7 @@ Status: MVP Development Ready
 
 1. PRODUCT OVERVIEW
 Resumen Ejecutivo
-Like2Win es una Mini App de Farcaster que convierte interacciones con publicaciones oficiales en tickets para sorteos bi-semanales de $DEGEN. Los usuarios con tip allowance ganan tickets con solo dar like, mientras usuarios sin allowance necesitan like + comment + recast. Like2Win redistribuye el 90% de los tips recibidos como premios.
+Like2Win es una Mini App de Farcaster que convierte interacciones con publicaciones oficiales en tickets para sorteos diarios de $DEGEN. Los usuarios con tip allowance ganan tickets con solo dar like, mientras usuarios sin allowance necesitan like + comment + recast. Like2Win redistribuye el 90% de los tips recibidos como premios.
 
 Propuesta de Valor MVP
 Para Users: Zero friction - solo follow + like para participar en sorteos
@@ -358,7 +358,7 @@ interface PoolManagementService {
 
 // 4. Raffle Execution Service
 interface RaffleExecutionService {
-  // Execute bi-weekly raffle
+  // Execute daily raffle
   executeRaffle(raffleId: string): Promise<RaffleResult>;
   
   // Distribute prizes to winners
@@ -593,7 +593,7 @@ Deliverables:
 - VRF integration for randomness
 - Winner selection algorithm
 - Prize distribution logic
-- Automated bi-weekly execution
+- Automated daily execution
 
 Success Criteria:
 ✅ Provably fair randomness

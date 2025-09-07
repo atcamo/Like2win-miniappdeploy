@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Like2Win** is a Next.js-based Farcaster MiniKit app that gamifies social engagement through bi-weekly $DEGEN raffles. Users simply follow @Like2Win and like official posts to earn raffle tickets - zero friction, maximum fun!
+**Like2Win** is a Next.js-based Farcaster MiniKit app that gamifies social engagement through daily $DEGEN raffles. Users simply follow @Like2Win and like official posts to earn raffle tickets - zero friction, maximum fun!
 
 ## Current Development Status
 

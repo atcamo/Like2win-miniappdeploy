@@ -2,12 +2,12 @@
 
 ## Overview
 
-Like2Win is a Farcaster MiniKit app that gamifies social engagement through bi-weekly $DEGEN raffles. Users simply follow @Like2Win and like official posts to earn raffle tickets - zero friction, maximum fun!
+Like2Win is a Farcaster MiniKit app that gamifies social engagement through daily $DEGEN raffles. Users simply follow @Like2Win and like official posts to earn raffle tickets - zero friction, maximum fun!
 
 **Key Features:**
 - Follow @Like2Win to become eligible for raffles
 - Earn tickets by liking official posts
-- Bi-weekly $DEGEN prize pools
+- Daily $DEGEN prize pools
 - Zero wallet connection required for participation
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-onchain --mini`](https://docs.base.org/base-app/build-with-minikit/overview), configured with:
