@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       const userTicketsFile = join(dataPath, 'local-user-tickets.json');
       const raffleDataFile = join(dataPath, 'local-raffle-data.json');
 
-      let userTickets = {};
+      let userTickets: any = {};
       let raffleData = { 
         totalTickets: 0, 
         totalParticipants: 0,
