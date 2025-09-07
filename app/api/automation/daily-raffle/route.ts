@@ -141,7 +141,7 @@ async function executeCurrentRaffle() {
     }
 
     // Calculate total tickets and select winner
-    const totalTickets = activeRaffle.userTickets.reduce((sum, ut) => sum + ut.ticketsCount, 0);
+    const totalTickets = activeRaffle.userTickets.reduce((sum: number, ut) => sum + ut.ticketsCount, 0);
     
     // Generate random winning ticket number
     const winningTicket = Math.floor(Math.random() * totalTickets) + 1;
