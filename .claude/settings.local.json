@@ -46,7 +46,8 @@
       "Bash(gh repo view:*)",
       "WebFetch(domain:docs.farcaster.xyz)",
       "Bash(gh secret set:*)",
-      "WebFetch(domain:farcaster.xyz)"
+      "WebFetch(domain:farcaster.xyz)",
+      "Bash(gh secret:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits",

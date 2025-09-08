@@ -1484,3 +1484,8 @@ Import trace for requested module:
 <w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\calde\like2win-app\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
  ✓ Compiled in 3.6s (5172 modules)
  ✓ Compiled in 31.6s (5358 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from C:\Users\calde\like2win-app\.next\cache\webpack\client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+ ✓ Compiled in 6.2s (5172 modules)
+ ✓ Compiled in 2.7s (5172 modules)
+ ✓ Compiled in 1786ms (5172 modules)
+ ✓ Compiled in 5.7s (5385 modules)
