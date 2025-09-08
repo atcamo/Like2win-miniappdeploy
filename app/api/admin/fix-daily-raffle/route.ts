@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       `);
       
       console.log(`✅ Closed ${closeResult.rows.length} old raffles`);
-      closeResult.rows.forEach(raffle => {
+      closeResult.rows.forEach((raffle: any) => {
         console.log(`   - ${raffle.weekPeriod} (${raffle.id})`);
       });
       
