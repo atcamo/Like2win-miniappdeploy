@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
       background: false // No background sync needed with Redis
     };
 
-    console.log(`✅ Redis daily raffle admin data: ${stats.totalParticipants} participants, ${stats.totalTickets} tickets`);
+    console.log(`✅ Redis daily raffle admin data: ${stats.totalParticipants} participants, ${stats.totalTickets} tickets [${new Date().toISOString()}]`);
 
     return NextResponse.json({
       success: true,
