@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
+import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
 
 /**
  * Admin Stats API
@@ -82,11 +82,12 @@ export async function GET(request: NextRequest) {
       console.log('⚠️ Local data not available:', localError);
     }
 
-    // Use daily raffle service for real-time data
-    console.log('⚡ Using daily raffle service for admin stats...');
+    // Use Redis-based daily raffle service for real-time data
+    console.log('⚡ Using Redis daily raffle service for admin stats...');
 
-    const raffleInfo = dailyRaffleService.getRaffleInfo();
-    const leaderboard = dailyRaffleService.getLeaderboard(50);
+    const raffleInfo = dailyRaffleRedisService.getRaffleInfo();
+    const stats = await dailyRaffleRedisService.getTotalStats();
+    const leaderboard = await dailyRaffleRedisService.getLeaderboard(50);
     
     // Create current daily raffle data
     const currentRaffle = {
@@ -95,8 +96,8 @@ export async function GET(request: NextRequest) {
       startDate: raffleInfo.startDate,
       endDate: raffleInfo.endDate,
       status: raffleInfo.status,
-      totalTickets: raffleInfo.totalTickets,
-      totalParticipants: raffleInfo.totalParticipants
+      totalTickets: stats.totalTickets,
+      totalParticipants: stats.totalParticipants
     };
 
     // Convert leaderboard to admin format
@@ -105,27 +106,28 @@ export async function GET(request: NextRequest) {
       userFid: user.fid.toString(),
       username: `user_${user.fid}`,
       displayName: `User ${user.fid}`,
-      pfpUrl: '', // No PFP data in daily service
+      pfpUrl: '', // No PFP data in Redis service
       ticketsCount: user.tickets,
       isTopThree: user.isTopThree
     }));
 
-    // System health - daily service is healthy
+    // System health - Redis service status
+    const debugInfo = await dailyRaffleRedisService.getDebugInfo();
     const systemHealth = {
-      cache: false, // No cache in daily mode
-      database: true, // Daily service is working
-      background: false // No background sync needed
+      cache: debugInfo.redisAvailable, // Redis is our cache/storage
+      database: debugInfo.redisAvailable, // Redis as persistent storage
+      background: false // No background sync needed with Redis
     };
 
-    console.log(`✅ Daily raffle admin data: ${raffleInfo.totalParticipants} participants, ${raffleInfo.totalTickets} tickets`);
+    console.log(`✅ Redis daily raffle admin data: ${stats.totalParticipants} participants, ${stats.totalTickets} tickets`);
 
     return NextResponse.json({
       success: true,
-      source: 'daily_service',
+      source: 'redis_daily_service',
       data: {
         currentRaffle,
         topUsers,
-        totalUsers: raffleInfo.totalParticipants,
+        totalUsers: stats.totalParticipants,
         systemHealth,
         lastUpdated: new Date().toISOString()
       }
