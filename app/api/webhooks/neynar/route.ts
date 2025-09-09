@@ -101,53 +101,10 @@ async function handleReactionEvent(eventData: any) {
         });
     }
 
-    // Check if user follows @like2win before awarding tickets
-    console.log(`🔍 Checking if user ${user.fid} follows @like2win...`);
-    
-    let isFollowing = false;
-    try {
-      const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY;
-      if (NEYNAR_API_KEY) {
-        const followResponse = await fetch(`https://api.neynar.com/v1/farcaster/user-by-fid?fid=${user.fid}`, {
-          headers: {
-            'accept': 'application/json',
-            'api_key': NEYNAR_API_KEY
-          }
-        });
-        
-        if (followResponse.ok) {
-          const userData = await followResponse.json();
-          // Check if user follows Like2Win (FID: 1206612)
-          isFollowing = userData.result?.user?.following?.some((follow: any) => 
-            follow.fid === 1206612 || follow.username === 'like2win'
-          ) || false;
-        }
-      }
-    } catch (followError) {
-      console.log(`⚠️ Could not verify follow status for user ${user.fid}:`, followError);
-      // Default to false if can't verify
-      isFollowing = false;
-    }
-
-    if (!isFollowing) {
-      console.log(`❌ User ${user.fid} doesn't follow @like2win - no ticket awarded`);
-      
-      return NextResponse.json({
-        message: 'Like detected but user must follow @like2win to earn tickets',
-        processed: false,
-        result: {
-          success: false,
-          userFid: user.fid,
-          engagementType: engagementType,
-          ticketsAwarded: 0,
-          reason: 'Must follow @like2win to participate',
-          followStatus: {
-            isFollowing: false,
-            message: 'Please follow @like2win to earn raffle tickets'
-          }
-        }
-      });
-    }
+    // TODO: Follow verification temporarily disabled for testing
+    // We'll re-enable once basic webhook functionality is confirmed
+    console.log(`⚠️ Follow verification temporarily disabled - awarding ticket for testing`);
+    let isFollowing = true; // Temporarily allow all users
 
     // Process the engagement with daily raffle service (user follows @like2win)
     const userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType);
