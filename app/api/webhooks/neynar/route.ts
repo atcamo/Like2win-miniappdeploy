@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { CacheService } from '@/lib/services/cacheService';
-import { BackgroundSyncService } from '@/lib/services/backgroundSync';
-import { EngagementService } from '@/lib/services/engagementService';
+import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
  * Neynar Webhook Handler for Farcaster Events
@@ -103,38 +101,23 @@ async function handleReactionEvent(eventData: any) {
         });
     }
 
-    // Process the engagement directly with EngagementService
-    const processResult = await EngagementService.processLikeEvent({
-      type: engagementType as 'like' | 'recast' | 'comment',
-      userFid: user.fid.toString(),
-      castHash: cast.hash,
-      timestamp: new Date(reaction.timestamp || new Date().toISOString()),
-      authorFid: cast.author?.fid?.toString()
-    });
-
-    // If engagement was successful, immediately update cache
-    if (processResult.success) {
-      try {
-        // Invalidate user cache to force fresh data
-        await CacheService.invalidateUserCache(user.fid.toString());
-        
-        // Force sync this specific user's data immediately  
-        await BackgroundSyncService.syncUserData(user.fid.toString());
-        
-        // Invalidate raffle cache if totals changed
-        await CacheService.invalidateRaffleCache();
-        
-        console.log(`🚀 Cache updated immediately for user ${user.fid} (+${processResult.ticketsAwarded || 0} tickets)`);
-      } catch (cacheError) {
-        console.error('⚠️ Cache update failed (engagement still processed):', cacheError);
-      }
-    }
+    // Process the engagement with daily raffle service
+    const userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType);
+    
+    console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets})`);
 
     return NextResponse.json({
-      message: 'Reaction processed',
+      message: 'Reaction processed with daily raffle service',
       processed: true,
-      result: processResult,
-      cacheUpdated: true
+      result: {
+        success: true,
+        userFid: user.fid,
+        engagementType: engagementType,
+        ticketsAwarded: 1,
+        totalTickets: userTickets.tickets,
+        timestamp: userTickets.lastActivity
+      },
+      cacheUpdated: false // No cache needed with daily service
     });
 
   } catch (error) {

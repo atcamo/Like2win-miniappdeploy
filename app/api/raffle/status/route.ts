@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
  * Raffle Status API (Daily Reset Fixed)
- * Returns current raffle status showing only today's tickets
+ * Returns current raffle status using daily service
  */
 export async function GET(request: NextRequest) {
   try {
@@ -11,50 +12,38 @@ export async function GET(request: NextRequest) {
 
     console.log(`🎯 Raffle Status API (Daily Reset): ${userFid ? `User ${userFid}` : 'General status'}`);
 
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    const now = new Date();
-    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
-    
-    // Calculate time remaining
-    const timeRemainingMs = Math.max(0, endOfDay.getTime() - now.getTime());
-    const hoursRemaining = Math.floor(timeRemainingMs / (1000 * 60 * 60));
-    const minutesRemaining = Math.floor((timeRemainingMs % (1000 * 60 * 60)) / (1000 * 60));
+    // Get raffle info and stats from daily service
+    const raffleInfo = dailyRaffleService.getRaffleInfo();
+    const userTickets = userFid ? dailyRaffleService.getUserTickets(parseInt(userFid)) : null;
 
-    // For now, return only today's empty state to ensure daily reset
-    // This forces users to start fresh each day
     const response = {
       success: true,
       source: 'daily_reset_fixed',
       raffle: {
-        id: `daily-raffle-${todayStr}`,
-        weekPeriod: `Daily Raffle - ${todayStr}`,
+        id: raffleInfo.id,
+        weekPeriod: raffleInfo.weekPeriod,
         raffleType: 'DAILY',
-        status: 'ACTIVE',
-        startDate: `${todayStr}T00:01:00.000Z`,
-        endDate: endOfDay.toISOString(),
+        status: raffleInfo.status,
+        startDate: raffleInfo.startDate,
+        endDate: raffleInfo.endDate,
         prizeAmount: 500,
         totalPool: 500,
-        totalTickets: 0, // Reset daily
-        totalParticipants: 0, // Reset daily
-        dayNumber: today.getDay() || 7,
-        timeRemaining: {
-          hours: hoursRemaining,
-          minutes: minutesRemaining,
-          total: timeRemainingMs
-        }
+        totalTickets: raffleInfo.totalTickets,
+        totalParticipants: raffleInfo.totalParticipants,
+        dayNumber: new Date().getDay() || 7,
+        timeRemaining: raffleInfo.timeRemaining
       },
       user: userFid ? {
         fid: parseInt(userFid),
-        tickets: 0, // Always start with 0 tickets each day
+        tickets: userTickets?.tickets || 0,
         displayName: `User ${userFid}`,
         username: `user_${userFid}`,
         isFollowing: false,
-        engagementCount: 0,
-        lastActivity: null
+        engagementCount: userTickets?.engagements.length || 0,
+        lastActivity: userTickets?.lastActivity || null
       } : null,
-      timestamp: now.toISOString(),
-      message: 'Daily reset active - tickets reset at midnight UTC'
+      timestamp: new Date().toISOString(),
+      message: `Daily reset active - ${raffleInfo.totalTickets} tickets, ${raffleInfo.totalParticipants} participants today`
     };
 
     return NextResponse.json(response);
