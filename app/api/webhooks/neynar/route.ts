@@ -101,13 +101,61 @@ async function handleReactionEvent(eventData: any) {
         });
     }
 
-    // Process the engagement with daily raffle service
+    // Check if user follows @like2win before awarding tickets
+    console.log(`🔍 Checking if user ${user.fid} follows @like2win...`);
+    
+    let isFollowing = false;
+    try {
+      const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY;
+      if (NEYNAR_API_KEY) {
+        const followResponse = await fetch(`https://api.neynar.com/v1/farcaster/user-by-fid?fid=${user.fid}`, {
+          headers: {
+            'accept': 'application/json',
+            'api_key': NEYNAR_API_KEY
+          }
+        });
+        
+        if (followResponse.ok) {
+          const userData = await followResponse.json();
+          // Check if user follows Like2Win (FID: 1206612)
+          isFollowing = userData.result?.user?.following?.some((follow: any) => 
+            follow.fid === 1206612 || follow.username === 'like2win'
+          ) || false;
+        }
+      }
+    } catch (followError) {
+      console.log(`⚠️ Could not verify follow status for user ${user.fid}:`, followError);
+      // Default to false if can't verify
+      isFollowing = false;
+    }
+
+    if (!isFollowing) {
+      console.log(`❌ User ${user.fid} doesn't follow @like2win - no ticket awarded`);
+      
+      return NextResponse.json({
+        message: 'Like detected but user must follow @like2win to earn tickets',
+        processed: false,
+        result: {
+          success: false,
+          userFid: user.fid,
+          engagementType: engagementType,
+          ticketsAwarded: 0,
+          reason: 'Must follow @like2win to participate',
+          followStatus: {
+            isFollowing: false,
+            message: 'Please follow @like2win to earn raffle tickets'
+          }
+        }
+      });
+    }
+
+    // Process the engagement with daily raffle service (user follows @like2win)
     const userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType);
     
-    console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets})`);
+    console.log(`🎫 Webhook processed: User ${user.fid} (follows @like2win) got 1 ticket for ${engagementType} (total: ${userTickets.tickets})`);
 
     return NextResponse.json({
-      message: 'Reaction processed with daily raffle service',
+      message: 'Reaction processed with daily raffle service - user follows @like2win',
       processed: true,
       result: {
         success: true,
@@ -115,9 +163,13 @@ async function handleReactionEvent(eventData: any) {
         engagementType: engagementType,
         ticketsAwarded: 1,
         totalTickets: userTickets.tickets,
-        timestamp: userTickets.lastActivity
+        timestamp: userTickets.lastActivity,
+        followStatus: {
+          isFollowing: true,
+          verified: true
+        }
       },
-      cacheUpdated: false // No cache needed with daily service
+      cacheUpdated: false
     });
 
   } catch (error) {
