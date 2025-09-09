@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { EngagementService } from '@/lib/services/engagementService';
+import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
 
 /**
  * Admin API to scan existing likes on @Like2Win posts and award tickets retroactively
@@ -78,22 +78,12 @@ export async function POST(request: NextRequest) {
           try {
             console.log(`  👤 Processing like from ${username} (FID: ${userFid})`);
 
-            // Use EngagementService to award ticket with correct timestamp field
-            const result = await EngagementService.processLikeEvent({
-              type: 'like',
-              userFid: userFid.toString(),
-              castHash: post.hash,
-              timestamp: new Date(like.reaction_timestamp),
-              authorFid: '1206612'
-            });
-
-            if (result.success) {
-              totalTicketsAwarded += result.ticketsAwarded || 0;
-              processedUsers.add(userFid);
-              console.log(`    ✅ Awarded ${result.ticketsAwarded || 0} tickets to ${username}`);
-            } else {
-              console.log(`    ⚠️ No ticket awarded: ${result.message}`);
-            }
+            // Use Redis-based daily raffle service to award ticket
+            const userTickets = await dailyRaffleRedisService.addTickets(userFid, 1, 'like');
+            
+            totalTicketsAwarded += 1;
+            processedUsers.add(userFid);
+            console.log(`    ✅ Awarded 1 ticket to ${username} (total: ${userTickets.tickets}) - Redis storage`);
 
             totalLikesProcessed++;
 
