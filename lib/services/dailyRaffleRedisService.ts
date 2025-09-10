@@ -193,7 +193,23 @@ class DailyRaffleRedisService {
       // Parse and sort users
       const users = usersData
         .filter(data => data !== null)
-        .map(data => JSON.parse(data as string) as UserTickets)
+        .map(data => {
+          try {
+            // Handle both string and object data from Redis
+            if (typeof data === 'string') {
+              return JSON.parse(data) as UserTickets;
+            } else if (typeof data === 'object') {
+              return data as UserTickets;
+            } else {
+              console.warn('Unexpected Redis data type:', typeof data, data);
+              return null;
+            }
+          } catch (error) {
+            console.error('Redis JSON parse error:', error, 'Data:', data);
+            return null;
+          }
+        })
+        .filter(user => user !== null)
         .sort((a, b) => b.tickets - a.tickets)
         .slice(0, limit)
         .map((user, index) => ({
