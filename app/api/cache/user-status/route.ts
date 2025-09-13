@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
+import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
  * Cache-based User Status API (Daily Reset Fixed)
@@ -22,38 +24,57 @@ export async function GET(request: NextRequest) {
     const todayStr = today.toISOString().split('T')[0];
     const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
 
-    // Always return fresh daily data
+    // Use Redis if available, fallback to in-memory for local development
+    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
+    
+    let userTickets, stats, raffleInfo;
+    
+    if (isRedisAvailable) {
+      userTickets = await dailyRaffleRedisService.getUserTickets(parseInt(userFid));
+      stats = await dailyRaffleRedisService.getTotalStats();
+      raffleInfo = dailyRaffleRedisService.getRaffleInfo();
+    } else {
+      userTickets = dailyRaffleService.getUserTickets(parseInt(userFid));
+      stats = dailyRaffleService.getTotalStats();
+      raffleInfo = dailyRaffleService.getRaffleInfo();
+    }
+
+    const currentTickets = userTickets?.tickets || 0;
+    const totalTickets = stats.totalTickets;
+    const totalParticipants = stats.totalParticipants;
+
+    // Return real data from raffle services
     return NextResponse.json({
       success: true,
       source: 'daily_reset_fixed',
       data: {
         user: {
           fid: parseInt(userFid),
-          currentTickets: 0, // Always 0 for daily reset
+          currentTickets: currentTickets,
           username: `user_${userFid}`,
           displayName: `User ${userFid}`,
-          lastUpdated: null,
-          probability: 0,
+          lastUpdated: userTickets?.lastActivity || null,
+          probability: totalTickets > 0 ? (currentTickets / totalTickets) * 100 : 0,
           tipAllowanceEnabled: false,
           isFollowing: false,
-          totalLifetimeTickets: 0,
+          totalLifetimeTickets: currentTickets,
           totalWinnings: 0
         },
         raffle: {
-          id: `daily-raffle-${todayStr}`,
-          weekPeriod: `Daily Raffle - ${todayStr}`,
+          id: raffleInfo.id,
+          weekPeriod: raffleInfo.weekPeriod,
           prizePool: 500,
-          totalParticipants: 0,
-          totalTickets: 0,
-          endDate: endOfDay.toISOString(),
-          timeUntilEnd: `Until end of day`,
+          totalParticipants: totalParticipants,
+          totalTickets: totalTickets,
+          endDate: raffleInfo.endDate,
+          timeUntilEnd: `${raffleInfo.timeRemaining.hours}h ${raffleInfo.timeRemaining.minutes}m`,
           isSelfSustaining: true,
-          startDate: `${todayStr}T00:01:00.000Z`,
-          status: 'ACTIVE'
+          startDate: raffleInfo.startDate,
+          status: raffleInfo.status
         },
         lastWinners: []
       },
-      message: 'Daily reset active - showing fresh data',
+      message: `Showing real data - ${currentTickets} tickets for user, ${totalTickets} total tickets`,
       timestamp: today.toISOString()
     });
 

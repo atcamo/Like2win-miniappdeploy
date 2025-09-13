@@ -144,7 +144,7 @@ class DailyRaffleService {
   clearMockUsers(): number {
     this.ensureCurrentDay();
     
-    const mockFids = [12345, 67890, 11111, 22222, 99999, 123456, 546204, 999999, 987654, 999888];
+    const mockFids = [12345, 67890, 11111, 22222, 99999, 123456, 546204, 999999, 987654, 999888, 555888, 777999, 888777];
     let removedCount = 0;
     
     mockFids.forEach(fid => {

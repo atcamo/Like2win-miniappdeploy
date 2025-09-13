@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
+import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
  * Cache-based Leaderboard API (Daily Reset Fixed)
@@ -9,25 +11,51 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10');
 
-    console.log(`🏆 Cache API: Daily Reset Active (limit: ${limit})`);
+    console.log(`🏆 Cache API: Getting real leaderboard data (limit: ${limit})`);
 
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
 
-    // Always return empty for daily reset - no cache, no local data
+    // Use Redis if available, fallback to in-memory for local development
+    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
+    
+    let leaderboard, raffleInfo, stats;
+    
+    if (isRedisAvailable) {
+      leaderboard = await dailyRaffleRedisService.getLeaderboard(limit);
+      raffleInfo = dailyRaffleRedisService.getRaffleInfo();
+      stats = await dailyRaffleRedisService.getTotalStats();
+    } else {
+      leaderboard = dailyRaffleService.getLeaderboard(limit);
+      raffleInfo = dailyRaffleService.getRaffleInfo();
+      stats = dailyRaffleService.getTotalStats();
+    }
+
+    // Return real leaderboard data
     return NextResponse.json({
       success: true,
       source: 'daily_reset_fixed',
       data: {
-        leaderboard: [],
+        leaderboard: leaderboard.map(user => ({
+          fid: user.fid,
+          tickets: user.tickets,
+          rank: user.rank,
+          isTopThree: user.isTopThree,
+          displayName: `User ${user.fid}`,
+          username: `user_${user.fid}`,
+          engagementCount: user.engagements?.length || 0,
+          lastActivity: user.lastActivity
+        })),
         raffle: {
-          id: `daily-raffle-${todayStr}`,
-          weekPeriod: `Daily Raffle - ${todayStr}`,
-          totalTickets: 0,
-          totalParticipants: 0
+          id: raffleInfo.id,
+          weekPeriod: raffleInfo.weekPeriod,
+          totalTickets: stats.totalTickets,
+          totalParticipants: stats.totalParticipants,
+          status: raffleInfo.status,
+          endDate: raffleInfo.endDate
         }
       },
-      message: 'Daily reset active - leaderboard cleared',
+      message: `Real leaderboard data - ${stats.totalParticipants} participants with ${stats.totalTickets} total tickets`,
       timestamp: today.toISOString()
     });
 

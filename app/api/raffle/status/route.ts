@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
 import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
@@ -12,9 +13,22 @@ export async function GET(request: NextRequest) {
 
     console.log(`🎯 Raffle Status API (Daily Reset): ${userFid ? `User ${userFid}` : 'General status'}`);
 
-    // Get raffle info and stats from daily service
-    const raffleInfo = dailyRaffleService.getRaffleInfo();
-    const userTickets = userFid ? dailyRaffleService.getUserTickets(parseInt(userFid)) : null;
+    // Use Redis if available, fallback to in-memory for local development
+    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
+    
+    let raffleInfo, stats, userTickets;
+    
+    if (isRedisAvailable) {
+      // Get raffle info and stats from daily Redis service
+      raffleInfo = dailyRaffleRedisService.getRaffleInfo();
+      stats = await dailyRaffleRedisService.getTotalStats();
+      userTickets = userFid ? await dailyRaffleRedisService.getUserTickets(parseInt(userFid)) : null;
+    } else {
+      // Get raffle info and stats from daily in-memory service (local dev)
+      raffleInfo = dailyRaffleService.getRaffleInfo();
+      stats = dailyRaffleService.getTotalStats();
+      userTickets = userFid ? dailyRaffleService.getUserTickets(parseInt(userFid)) : null;
+    }
 
     const response = {
       success: true,
@@ -28,8 +42,8 @@ export async function GET(request: NextRequest) {
         endDate: raffleInfo.endDate,
         prizeAmount: 500,
         totalPool: 500,
-        totalTickets: raffleInfo.totalTickets,
-        totalParticipants: raffleInfo.totalParticipants,
+        totalTickets: stats.totalTickets,
+        totalParticipants: stats.totalParticipants,
         dayNumber: new Date().getDay() || 7,
         timeRemaining: raffleInfo.timeRemaining
       },
@@ -43,7 +57,7 @@ export async function GET(request: NextRequest) {
         lastActivity: userTickets?.lastActivity || null
       } : null,
       timestamp: new Date().toISOString(),
-      message: `Daily reset active - ${raffleInfo.totalTickets} tickets, ${raffleInfo.totalParticipants} participants today`
+      message: `Daily reset active - ${stats.totalTickets} tickets, ${stats.totalParticipants} participants today`
     };
 
     return NextResponse.json(response);

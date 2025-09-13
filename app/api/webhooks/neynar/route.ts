@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
+import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
  * Neynar Webhook Handler for Farcaster Events
@@ -106,10 +107,17 @@ async function handleReactionEvent(eventData: any) {
     console.log(`⚠️ Follow verification temporarily disabled - awarding ticket for testing`);
     let isFollowing = true; // Temporarily allow all users
 
-    // Process the engagement with Redis-based daily raffle service
-    const userTickets = await dailyRaffleRedisService.addTickets(user.fid, 1, engagementType);
+    // Process the engagement - use Redis if available, fallback to in-memory for local dev
+    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
     
-    console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets}) - Redis persistent storage`);
+    let userTickets;
+    if (isRedisAvailable) {
+      userTickets = await dailyRaffleRedisService.addTickets(user.fid, 1, engagementType);
+    } else {
+      userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType);
+    }
+    
+    console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets}) - ${isRedisAvailable ? 'Redis persistent' : 'In-memory'} storage`);
 
     return NextResponse.json({
       message: 'Reaction processed with Redis daily raffle service',
@@ -121,7 +129,7 @@ async function handleReactionEvent(eventData: any) {
         ticketsAwarded: 1,
         totalTickets: userTickets.tickets,
         timestamp: userTickets.lastActivity,
-        storage: 'redis_persistent'
+        storage: isRedisAvailable ? 'redis_persistent' : 'in_memory'
       },
       cacheUpdated: false
     });

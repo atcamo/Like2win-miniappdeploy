@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService';
 import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 
 /**
@@ -18,10 +19,19 @@ export async function POST(request: NextRequest) {
 
     console.log(`🎫 Raffle Participation (Daily Reset): User ${userFid}, Action: ${action || 'participate'}`);
 
-    // Add tickets using the daily raffle service
+    // Use Redis if available, fallback to in-memory for local development
+    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
+    
     const ticketsToAdd = 1; // Base participation gives 1 ticket
-    const userTickets = dailyRaffleService.addTickets(parseInt(userFid), ticketsToAdd, action || 'participate');
-    const raffleInfo = dailyRaffleService.getRaffleInfo();
+    let userTickets, raffleInfo;
+    
+    if (isRedisAvailable) {
+      userTickets = await dailyRaffleRedisService.addTickets(parseInt(userFid), ticketsToAdd, action || 'participate');
+      raffleInfo = dailyRaffleRedisService.getRaffleInfo();
+    } else {
+      userTickets = dailyRaffleService.addTickets(parseInt(userFid), ticketsToAdd, action || 'participate');
+      raffleInfo = dailyRaffleService.getRaffleInfo();
+    }
 
     const response = {
       success: true,
@@ -86,8 +96,15 @@ export async function GET(request: NextRequest) {
 
     console.log(`🔍 Checking participation eligibility (Daily Reset) for user ${userFid}`);
 
-    // Get current user tickets from daily service
-    const userTickets = dailyRaffleService.getUserTickets(parseInt(userFid));
+    // Use Redis if available, fallback to in-memory for local development
+    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
+    
+    let userTickets;
+    if (isRedisAvailable) {
+      userTickets = await dailyRaffleRedisService.getUserTickets(parseInt(userFid));
+    } else {
+      userTickets = dailyRaffleService.getUserTickets(parseInt(userFid));
+    }
     const currentTickets = userTickets?.tickets || 0;
 
     return NextResponse.json({
