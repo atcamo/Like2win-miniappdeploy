@@ -39,7 +39,7 @@ async function testLikeDetection() {
 
         // 2. Obtener likes del post
         console.log('2️⃣ Verificando likes actuales...');
-        
+
         const reactionsResponse = await fetch(`https://api.neynar.com/v2/farcaster/cast?identifier=${latestPost.hash}&type=hash`, {
             headers: {
                 'accept': 'application/json',
@@ -47,10 +47,11 @@ async function testLikeDetection() {
             }
         });
 
+        let likes = [];
         if (reactionsResponse.ok) {
             const reactionData = await reactionsResponse.json();
-            const likes = reactionData.cast?.reactions?.likes || [];
-            
+            likes = reactionData.cast?.reactions?.likes || [];
+
             console.log(`✅ Likes actuales: ${likes.length}`);
             if (likes.length > 0) {
                 console.log('   Últimos que dieron like:');

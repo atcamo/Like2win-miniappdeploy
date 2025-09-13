@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win-miniappdeploy.vercel.app";
+  const URL = process.env.NEXT_PUBLIC_URL || "https://like2win-app.vercel.app";
   const PROJECT_NAME = "Like2Win";
   
   // Like2Win Mini App embed metadata for social sharing

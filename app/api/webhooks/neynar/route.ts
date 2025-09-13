@@ -201,7 +201,7 @@ export async function GET(request: NextRequest) {
       'reaction.created (likes, recasts)',
       'cast.mentioned (@Like2Win mentions)'
     ],
-    webhookUrl: `${process.env.NEXT_PUBLIC_URL}/api/webhooks/neynar`,
+    webhookUrl: 'https://like2win-app.vercel.app/api/webhooks/neynar',
     status: 'active',
     lastChecked: new Date().toISOString()
   });

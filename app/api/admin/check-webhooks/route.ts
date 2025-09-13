@@ -42,14 +42,14 @@ export async function GET(request: NextRequest) {
     let like2winWebhook = null;
     if (webhooksList?.webhooks) {
       like2winWebhook = webhooksList.webhooks.find((w: any) => 
-        w.url?.includes('like2win-miniappdeploy.vercel.app') || 
+        w.url?.includes('like2win-app.vercel.app') || 
         w.name?.toLowerCase().includes('like2win')
       );
     }
 
     // 3. Test our webhook endpoint
     console.log('🧪 Testing our webhook endpoint...');
-    const webhookTestResponse = await fetch('https://like2win-miniappdeploy.vercel.app/api/webhooks/neynar', {
+    const webhookTestResponse = await fetch('https://like2win-app.vercel.app/api/webhooks/neynar', {
       method: 'GET'
     });
 

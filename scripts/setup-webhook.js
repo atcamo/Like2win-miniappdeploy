@@ -1,6 +1,6 @@
 // Configurar webhook de Neynar automáticamente
 const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY || 'TU_API_KEY_AQUI';
-const WEBHOOK_URL = 'https://like2win-miniappdeploy.vercel.app/api/webhooks/neynar';
+const WEBHOOK_URL = 'https://like2win-app.vercel.app/api/webhooks/neynar';
 const LIKE2WIN_FID = 1206612;
 
 async function setupNeynarWebhook() {

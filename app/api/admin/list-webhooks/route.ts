@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     
     // Analyze and categorize webhooks
     const webhooks = data.webhooks?.map((webhook: any) => {
-      const isCorrect = webhook.url === 'https://like2win-miniappdeploy.vercel.app/api/webhooks/neynar' &&
+      const isCorrect = webhook.url === 'https://like2win-app.vercel.app/api/webhooks/neynar' &&
                        webhook.subscription?.['cast.reaction.created'];
       
       const isLike2WinRelated = webhook.url?.includes('like2win') || 
