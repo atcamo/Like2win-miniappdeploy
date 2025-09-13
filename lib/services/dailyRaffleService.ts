@@ -8,6 +8,9 @@ interface UserTickets {
   tickets: number;
   lastActivity: string;
   engagements: string[];
+  username?: string;
+  displayName?: string;
+  pfpUrl?: string;
 }
 
 interface DailyRaffleData {
@@ -42,7 +45,7 @@ class DailyRaffleService {
     }
   }
 
-  addTickets(userFid: number, ticketsToAdd: number, activity: string = 'participate'): UserTickets {
+  addTickets(userFid: number, ticketsToAdd: number, activity: string = 'participate', userInfo?: { username?: string; displayName?: string; pfpUrl?: string }): UserTickets {
     this.ensureCurrentDay();
     
     const existing = this.currentData!.tickets.get(userFid);
@@ -51,12 +54,19 @@ class DailyRaffleService {
       existing.tickets += ticketsToAdd;
       existing.lastActivity = new Date().toISOString();
       existing.engagements.push(activity);
+      // Update user info if provided
+      if (userInfo?.username) existing.username = userInfo.username;
+      if (userInfo?.displayName) existing.displayName = userInfo.displayName;
+      if (userInfo?.pfpUrl) existing.pfpUrl = userInfo.pfpUrl;
     } else {
       const newUser: UserTickets = {
         fid: userFid,
         tickets: ticketsToAdd,
         lastActivity: new Date().toISOString(),
-        engagements: [activity]
+        engagements: [activity],
+        username: userInfo?.username,
+        displayName: userInfo?.displayName,
+        pfpUrl: userInfo?.pfpUrl
       };
       this.currentData!.tickets.set(userFid, newUser);
       this.currentData!.totalParticipants++;
@@ -65,7 +75,8 @@ class DailyRaffleService {
     this.currentData!.totalTickets += ticketsToAdd;
     
     const userTickets = this.currentData!.tickets.get(userFid)!;
-    console.log(`🎫 User ${userFid}: +${ticketsToAdd} tickets (total: ${userTickets.tickets})`);
+    const displayName = userTickets.displayName || userTickets.username || `User ${userFid}`;
+    console.log(`🎫 ${displayName}: +${ticketsToAdd} tickets (total: ${userTickets.tickets})`);
     
     return userTickets;
   }

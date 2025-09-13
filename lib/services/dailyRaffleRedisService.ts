@@ -10,6 +10,9 @@ interface UserTickets {
   tickets: number;
   lastActivity: string;
   engagements: string[];
+  username?: string;
+  displayName?: string;
+  pfpUrl?: string;
 }
 
 interface DailyRaffleStats {
@@ -68,14 +71,17 @@ class DailyRaffleRedisService {
     return Math.ceil((tomorrow.getTime() - now.getTime()) / 1000);
   }
 
-  async addTickets(userFid: number, ticketsToAdd: number, activity: string = 'participate'): Promise<UserTickets> {
+  async addTickets(userFid: number, ticketsToAdd: number, activity: string = 'participate', userInfo?: { username?: string; displayName?: string; pfpUrl?: string }): Promise<UserTickets> {
     if (!this.isRedisAvailable || !this.redis) {
       // Fallback for development/testing
       return {
         fid: userFid,
         tickets: ticketsToAdd,
         lastActivity: new Date().toISOString(),
-        engagements: [activity]
+        engagements: [activity],
+        username: userInfo?.username,
+        displayName: userInfo?.displayName,
+        pfpUrl: userInfo?.pfpUrl
       };
     }
 
@@ -96,7 +102,11 @@ class DailyRaffleRedisService {
           ...existingUser,
           tickets: existingUser.tickets + ticketsToAdd,
           lastActivity: new Date().toISOString(),
-          engagements: [...existingUser.engagements, activity]
+          engagements: [...existingUser.engagements, activity],
+          // Update user info if provided
+          username: userInfo?.username || existingUser.username,
+          displayName: userInfo?.displayName || existingUser.displayName,
+          pfpUrl: userInfo?.pfpUrl || existingUser.pfpUrl
         };
       } else {
         // New user
@@ -105,7 +115,10 @@ class DailyRaffleRedisService {
           fid: userFid,
           tickets: ticketsToAdd,
           lastActivity: new Date().toISOString(),
-          engagements: [activity]
+          engagements: [activity],
+          username: userInfo?.username,
+          displayName: userInfo?.displayName,
+          pfpUrl: userInfo?.pfpUrl
         };
       }
 

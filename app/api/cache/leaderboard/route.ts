@@ -41,10 +41,11 @@ export async function GET(request: NextRequest) {
           tickets: user.tickets,
           rank: user.rank,
           isTopThree: user.isTopThree,
-          displayName: `User ${user.fid}`,
-          username: `user_${user.fid}`,
+          displayName: user.displayName || user.username || `User ${user.fid}`,
+          username: user.username || `user_${user.fid}`,
           engagementCount: user.engagements?.length || 0,
-          lastActivity: user.lastActivity
+          lastActivity: user.lastActivity,
+          pfpUrl: user.pfpUrl
         })),
         raffle: {
           id: raffleInfo.id,

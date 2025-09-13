@@ -107,14 +107,21 @@ async function handleReactionEvent(eventData: any) {
     console.log(`⚠️ Follow verification temporarily disabled - awarding ticket for testing`);
     let isFollowing = true; // Temporarily allow all users
 
+    // Extract user information from webhook data
+    const userInfo = {
+      username: user.username,
+      displayName: user.display_name || user.displayName,
+      pfpUrl: user.pfp_url || user.pfpUrl
+    };
+
     // Process the engagement - use Redis if available, fallback to in-memory for local dev
     const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
     
     let userTickets;
     if (isRedisAvailable) {
-      userTickets = await dailyRaffleRedisService.addTickets(user.fid, 1, engagementType);
+      userTickets = await dailyRaffleRedisService.addTickets(user.fid, 1, engagementType, userInfo);
     } else {
-      userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType);
+      userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType, userInfo);
     }
     
     console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets}) - ${isRedisAvailable ? 'Redis persistent' : 'In-memory'} storage`);

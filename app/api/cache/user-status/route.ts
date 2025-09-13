@@ -51,8 +51,8 @@ export async function GET(request: NextRequest) {
         user: {
           fid: parseInt(userFid),
           currentTickets: currentTickets,
-          username: `user_${userFid}`,
-          displayName: `User ${userFid}`,
+          username: userTickets?.username || `user_${userFid}`,
+          displayName: userTickets?.displayName || userTickets?.username || `User ${userFid}`,
           lastUpdated: userTickets?.lastActivity || null,
           probability: totalTickets > 0 ? (currentTickets / totalTickets) * 100 : 0,
           tipAllowanceEnabled: false,
