@@ -115,20 +115,86 @@ async function handleReactionEvent(eventData: any) {
       pfpUrl: user.pfp_url || user.pfpUrl
     };
 
-    // Process the engagement - use Redis if available, fallback to in-memory for local dev
-    const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
-    
+    // Process the engagement - use same system as admin stats (local data first, then Redis)
     let userTickets;
-    if (isRedisAvailable) {
-      userTickets = await dailyRaffleRedisService.addTickets(user.fid, 1, engagementType, userInfo);
-    } else {
-      userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType, userInfo);
+    let storageType = 'unknown';
+
+    try {
+      // Try to use local data system first (same as admin stats)
+      const { readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs');
+      const { join } = require('path');
+
+      const dataPath = join(process.cwd(), 'data');
+      const userTicketsFile = join(dataPath, 'local-user-tickets.json');
+      const raffleDataFile = join(dataPath, 'local-raffle-data.json');
+
+      if (existsSync(userTicketsFile) && existsSync(raffleDataFile)) {
+        console.log('🎫 Using local data system for webhook (same as admin stats)');
+
+        // Ensure data directory exists
+        if (!existsSync(dataPath)) {
+          mkdirSync(dataPath, { recursive: true });
+        }
+
+        // Load current data
+        const userTicketsData = JSON.parse(readFileSync(userTicketsFile, 'utf8'));
+        const raffleData = JSON.parse(readFileSync(raffleDataFile, 'utf8'));
+
+        // Add tickets to user
+        const currentUserData = userTicketsData[user.fid] || {
+          username: userInfo.username || `user_${user.fid}`,
+          tickets: 0,
+          lastActivity: new Date().toISOString(),
+          engagements: []
+        };
+
+        currentUserData.tickets += 1;
+        currentUserData.lastActivity = new Date().toISOString();
+        currentUserData.engagements.push(engagementType);
+        currentUserData.username = userInfo.username || currentUserData.username;
+
+        // Update user data
+        userTicketsData[user.fid] = currentUserData;
+
+        // Update raffle totals
+        raffleData.totalTickets = (raffleData.totalTickets || 0) + 1;
+        raffleData.totalParticipants = Object.keys(userTicketsData).length;
+        raffleData.lastUpdated = new Date().toISOString();
+
+        // Save updated data
+        writeFileSync(userTicketsFile, JSON.stringify(userTicketsData, null, 2));
+        writeFileSync(raffleDataFile, JSON.stringify(raffleData, null, 2));
+
+        userTickets = {
+          fid: user.fid,
+          tickets: currentUserData.tickets,
+          lastActivity: currentUserData.lastActivity,
+          engagements: currentUserData.engagements
+        };
+
+        storageType = 'local_data';
+      } else {
+        throw new Error('Local data files not found');
+      }
+    } catch (localError) {
+      console.log('⚠️ Local data not available, trying Redis:', localError.message);
+
+      // Fallback to Redis system
+      const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
+
+      if (isRedisAvailable) {
+        userTickets = await dailyRaffleRedisService.addTickets(user.fid, 1, engagementType, userInfo);
+        storageType = 'redis_persistent';
+      } else {
+        userTickets = dailyRaffleService.addTickets(user.fid, 1, engagementType, userInfo);
+        storageType = 'in_memory';
+      }
     }
     
-    console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets}) - ${isRedisAvailable ? 'Redis persistent' : 'In-memory'} storage`);
+    console.log(`🎫 Webhook processed: User ${user.fid} got 1 ticket for ${engagementType} (total: ${userTickets.tickets}) - ${storageType} storage`);
 
     return NextResponse.json({
-      message: 'Reaction processed with Redis daily raffle service',
+      message: 'Reaction processed with local data system',
       processed: true,
       result: {
         success: true,
@@ -137,9 +203,9 @@ async function handleReactionEvent(eventData: any) {
         ticketsAwarded: 1,
         totalTickets: userTickets.tickets,
         timestamp: userTickets.lastActivity,
-        storage: isRedisAvailable ? 'redis_persistent' : 'in_memory'
+        storage: storageType
       },
-      cacheUpdated: false
+      cacheUpdated: true
     });
 
   } catch (error) {
