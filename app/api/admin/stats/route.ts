@@ -28,16 +28,23 @@ export async function GET(request: NextRequest) {
       totalParticipants: stats.totalParticipants
     };
 
-    // Convert leaderboard to admin format with real user data
-    const topUsers = leaderboard.map((user) => ({
-      rank: user.rank,
-      userFid: user.fid.toString(),
-      username: user.username || `user_${user.fid}`, // Use real username or fallback
-      displayName: user.displayName || `User ${user.fid}`, // Use real displayName or fallback
-      pfpUrl: user.pfpUrl || '', // Use real profile picture URL if available
-      ticketsCount: user.tickets,
-      isTopThree: user.isTopThree
-    }));
+    // Convert leaderboard to admin format with clean user data (no FIDs shown)
+    const topUsers = leaderboard.map((user) => {
+      const cleanUsername = user.username || `user_${user.fid}`;
+      const cleanDisplayName = user.displayName && user.displayName !== cleanUsername
+        ? user.displayName
+        : ''; // Only show displayName if different from username
+
+      return {
+        rank: user.rank,
+        userFid: user.fid.toString(), // Keep for backend reference but not displayed
+        username: cleanUsername,
+        displayName: cleanDisplayName,
+        pfpUrl: user.pfpUrl || '',
+        ticketsCount: user.tickets,
+        isTopThree: user.isTopThree
+      };
+    });
 
     // System health - Redis service status
     const debugInfo = await dailyRaffleRedisService.getDebugInfo();
