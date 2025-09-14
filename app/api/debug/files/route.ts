@@ -10,7 +10,7 @@ export async function GET() {
     const result = {
       dataDirectory: {
         exists: existsSync(dataPath),
-        contents: []
+        contents: [] as string[]
       },
       files: {
         userTickets: false,
@@ -27,7 +27,7 @@ export async function GET() {
       try {
         result.dataDirectory.contents = readdirSync(dataPath);
       } catch (error) {
-        result.dataDirectory.contents = [`Error reading: ${error.message}`];
+        result.dataDirectory.contents = [`Error reading: ${error instanceof Error ? error.message : String(error)}`];
       }
 
       const userTicketsFile = join(dataPath, 'local-user-tickets.json');

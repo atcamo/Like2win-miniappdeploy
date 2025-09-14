@@ -86,3 +86,4 @@ $ next dev
 }
 ✅ Redis daily raffle admin data: 0 participants, 0 tickets [2025-09-14T03:40:05.622Z]
  GET /api/admin/stats 200 in 24328ms
+ ✓ Compiled in 457ms (295 modules)
