@@ -177,7 +177,7 @@ async function handleReactionEvent(eventData: any) {
         throw new Error('Local data files not found');
       }
     } catch (localError) {
-      console.log('⚠️ Local data not available, trying Redis:', localError.message);
+      console.log('⚠️ Local data not available, trying Redis:', localError instanceof Error ? localError.message : String(localError));
 
       // Fallback to Redis system
       const isRedisAvailable = process.env.REDIS_URL && process.env.REDIS_URL.startsWith('https');
