@@ -28,13 +28,13 @@ export async function GET(request: NextRequest) {
       totalParticipants: stats.totalParticipants
     };
 
-    // Convert leaderboard to admin format
+    // Convert leaderboard to admin format with real user data
     const topUsers = leaderboard.map((user) => ({
       rank: user.rank,
       userFid: user.fid.toString(),
-      username: `user_${user.fid}`,
-      displayName: `User ${user.fid}`,
-      pfpUrl: '', // No PFP data in Redis service
+      username: user.username || `user_${user.fid}`, // Use real username or fallback
+      displayName: user.displayName || `User ${user.fid}`, // Use real displayName or fallback
+      pfpUrl: user.pfpUrl || '', // Use real profile picture URL if available
       ticketsCount: user.tickets,
       isTopThree: user.isTopThree
     }));
