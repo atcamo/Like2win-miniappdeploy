@@ -7,10 +7,11 @@ import { dailyRaffleRedisService } from '@/lib/services/dailyRaffleRedisService'
  */
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Loading admin stats...');
+    console.log('📊 Loading admin stats - FORCED REDIS DAILY VERSION...');
 
-    // Use Redis-based daily raffle service for real-time daily data
-    console.log('⚡ Using Redis daily raffle service for admin stats...');
+    // FORCE: Never use local data files, always use Redis daily raffle system
+    console.log('⚡ Using Redis daily raffle service for admin stats (FORCED)...');
+    console.log('🚫 Local data files explicitly ignored in this version');
 
     const raffleInfo = dailyRaffleRedisService.getRaffleInfo();
     const stats = await dailyRaffleRedisService.getTotalStats();
