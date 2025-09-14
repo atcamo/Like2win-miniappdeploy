@@ -69,37 +69,45 @@ export async function POST(request: NextRequest) {
  */
 async function handleReactionEvent(eventData: any) {
   try {
-    const reaction = eventData.reaction;
-    const cast = eventData.cast;
+    console.log('🔍 Processing reaction event with data:', JSON.stringify(eventData, null, 2));
+
+    // Handle real Neynar webhook format
+    const reactionType = eventData.reaction_type; // 1 = like, 2 = recast
+    const target = eventData.target || eventData.cast; // Use target first, fallback to cast
     const user = eventData.user;
 
-    if (!reaction || !cast || !user) {
+    if (!reactionType || !target || !user) {
+      console.log('❌ Incomplete reaction data:', {
+        hasReactionType: !!reactionType,
+        hasTarget: !!target,
+        hasUser: !!user
+      });
       return NextResponse.json({ error: 'Incomplete reaction data' }, { status: 400 });
     }
 
     // Check if this is a reaction to a Like2Win official post
-    const isLike2WinPost = isOfficialLike2WinPost(cast);
-    
+    const isLike2WinPost = isOfficialLike2WinPost(target);
+
     if (!isLike2WinPost) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Reaction not on Like2Win official post',
-        processed: false 
+        processed: false
       });
     }
 
-    // Determine engagement type
+    // Determine engagement type based on Neynar reaction_type
     let engagementType: string;
-    switch (reaction.type) {
-      case 'like':
+    switch (reactionType) {
+      case 1: // Like
         engagementType = 'like';
         break;
-      case 'recast':
+      case 2: // Recast
         engagementType = 'recast';
         break;
       default:
-        return NextResponse.json({ 
-          message: `Reaction type ${reaction.type} not supported`,
-          processed: false 
+        return NextResponse.json({
+          message: `Reaction type ${reactionType} not supported`,
+          processed: false
         });
     }
 
@@ -181,10 +189,10 @@ async function handleMentionEvent(eventData: any) {
 }
 
 /**
- * Check if a cast is from an official Like2Win account
+ * Check if a cast/target is from an official Like2Win account
  */
-function isOfficialLike2WinPost(cast: any): boolean {
-  if (!cast || !cast.author) return false;
+function isOfficialLike2WinPost(target: any): boolean {
+  if (!target) return false;
 
   // Define official Like2Win account identifiers
   const officialAccounts = [
@@ -192,11 +200,21 @@ function isOfficialLike2WinPost(cast: any): boolean {
     '1206612',           // Official Like2Win FID
   ];
 
-  const authorUsername = cast.author.username?.toLowerCase();
-  const authorFid = cast.author.fid?.toString();
+  // Handle both old format (cast.author) and new format (target.author)
+  const author = target.author;
+  if (!author) return false;
+
+  const authorUsername = author.username?.toLowerCase();
+  const authorFid = author.fid?.toString();
+
+  console.log('🔍 Checking if official Like2Win post:', {
+    authorUsername,
+    authorFid,
+    isOfficial: officialAccounts.includes(authorUsername) || officialAccounts.includes(authorFid)
+  });
 
   // For production: Only process likes on official Like2Win posts
-  return officialAccounts.includes(authorUsername) || 
+  return officialAccounts.includes(authorUsername) ||
          officialAccounts.includes(authorFid);
 }
 
