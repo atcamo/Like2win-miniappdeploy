@@ -64,5 +64,5 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Export the log functions for use by the actual webhook
-export { addLog, webhookLogs };
+// Note: addLog and webhookLogs are available but not exported as Route fields
+// They can be imported by other modules if needed
