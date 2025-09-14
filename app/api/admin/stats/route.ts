@@ -51,13 +51,21 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      source: 'redis_daily_service',
+      source: 'redis_daily_service_v3_forced', // Force complete cache invalidation
+      deploymentVersion: '2025-09-14-REDIS-FORCED',
+      timestamp: Date.now(), // Force unique response
       data: {
         currentRaffle,
         topUsers,
         totalUsers: stats.totalParticipants,
         systemHealth,
         lastUpdated: new Date().toISOString()
+      },
+      debug: {
+        redisAvailable: debugInfo.redisAvailable,
+        currentDate: dailyRaffleRedisService.getRaffleInfo().date,
+        tickets: stats.totalTickets,
+        participants: stats.totalParticipants
       }
     });
 
