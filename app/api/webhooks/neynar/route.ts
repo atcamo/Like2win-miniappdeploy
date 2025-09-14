@@ -11,11 +11,12 @@ import { dailyRaffleService } from '@/lib/services/dailyRaffleService';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     console.log('📨 Neynar webhook received:', {
       type: body.type,
       timestamp: new Date().toISOString(),
-      data: body.data ? 'present' : 'missing'
+      data: body.data ? 'present' : 'missing',
+      fullBody: JSON.stringify(body, null, 2)
     });
 
     // Validate webhook signature (if needed)
