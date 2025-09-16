@@ -5,11 +5,19 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 export async function GET() {
   try {
+    // Check if database URL is available
+    if (!process.env.DATABASE_URL) {
+      console.log('⚠️ DATABASE_URL not configured, falling back to local data');
+      return NextResponse.redirect('/api/audit/local');
+    }
+
     const { Pool } = require('pg');
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: false },
-      max: 1
+      max: 1,
+      connectionTimeoutMillis: 5000,
+      idleTimeoutMillis: 10000
     });
 
     // Get all completed raffles with winner information - using safe field selection
@@ -143,10 +151,26 @@ export async function GET() {
 
   } catch (error) {
     console.error('❌ Error fetching audit data:', error);
+
+    // If database connection fails, try fallback to local data
+    if (error instanceof Error && error.message.includes('reach database server')) {
+      console.log('🔄 Database unreachable, redirecting to local audit data...');
+      try {
+        const localResponse = await fetch(`${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/api/audit/local`);
+        if (localResponse.ok) {
+          const localData = await localResponse.json();
+          return NextResponse.json(localData);
+        }
+      } catch (fallbackError) {
+        console.error('❌ Fallback also failed:', fallbackError);
+      }
+    }
+
     return NextResponse.json(
-      { 
+      {
         error: 'Failed to fetch audit data',
-        details: error instanceof Error ? error.message : String(error)
+        details: error instanceof Error ? error.message : String(error),
+        fallback: 'Try /api/audit/local for offline data'
       },
       { status: 500 }
     );

@@ -1,0 +1,66 @@
+{
+  "432789": {
+    "username": "atcamo",
+    "displayName": "atcamo",
+    "tickets": 7,
+    "ticketRange": "9-15",
+    "engagements": ["like", "follow"],
+    "pfpUrl": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/99e3b512-7bb0-4fea-6456-81c5c4c8a400/rectcrop3"
+  },
+  "123456": {
+    "username": "user1",
+    "displayName": "Test User 1",
+    "tickets": 5,
+    "ticketRange": "1-5",
+    "engagements": ["like", "follow"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  },
+  "234567": {
+    "username": "user2",
+    "displayName": "Test User 2",
+    "tickets": 8,
+    "ticketRange": "16-23",
+    "engagements": ["like", "follow", "recast"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  },
+  "345678": {
+    "username": "user3",
+    "displayName": "Test User 3",
+    "tickets": 3,
+    "ticketRange": "6-8",
+    "engagements": ["like"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  },
+  "456789": {
+    "username": "user4",
+    "displayName": "Test User 4",
+    "tickets": 6,
+    "ticketRange": "24-29",
+    "engagements": ["like", "follow"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  },
+  "567890": {
+    "username": "user5",
+    "displayName": "Test User 5",
+    "tickets": 4,
+    "ticketRange": "30-33",
+    "engagements": ["like", "recast"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  },
+  "678901": {
+    "username": "user6",
+    "displayName": "Test User 6",
+    "tickets": 7,
+    "ticketRange": "34-40",
+    "engagements": ["like", "follow", "comment"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  },
+  "789012": {
+    "username": "user7",
+    "displayName": "Test User 7",
+    "tickets": 5,
+    "ticketRange": "41-45",
+    "engagements": ["like", "follow"],
+    "pfpUrl": "https://via.placeholder.com/64"
+  }
+}
