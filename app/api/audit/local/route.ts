@@ -9,9 +9,9 @@ export async function GET() {
   try {
     console.log('🔍 Local Audit: Loading local data files...');
 
-    // Load local raffle data
-    const raffleDataPath = join(process.cwd(), 'data', 'local-raffle-data.json');
-    const userTicketsPath = join(process.cwd(), 'data', 'local-user-tickets.json');
+    // Load local raffle data from public directory (Vercel compatible)
+    const raffleDataPath = join(process.cwd(), 'public', 'data', 'local-raffle-data.json');
+    const userTicketsPath = join(process.cwd(), 'public', 'data', 'local-user-tickets.json');
     
     if (!existsSync(raffleDataPath) || !existsSync(userTicketsPath)) {
       return NextResponse.json({
