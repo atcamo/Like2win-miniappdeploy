@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@/lib/generated/prisma';
+import { createDegenDistributor } from '@/lib/services/degenDistribution';
 
 const prisma = new PrismaClient();
 
@@ -179,6 +180,31 @@ async function executeCurrentRaffle() {
 
     console.log(`🏆 Winner selected: User ${winner.userFid} with ${winner.ticketsCount} tickets (ticket #${winningTicket})`);
 
+    // 🚀 DISTRIBUTE DEGEN TOKENS TO WINNER
+    let distributionResult = null;
+    try {
+      const distributor = createDegenDistributor();
+      if (distributor) {
+        console.log(`💰 Distributing ${completedRaffle.firstPrize} DEGEN to winner...`);
+        distributionResult = await distributor.distributeToWinner(
+          winner.userFid.toString(),
+          completedRaffle.firstPrize || 500
+        );
+
+        if (distributionResult.success) {
+          console.log(`✅ Distribution successful: ${distributionResult.transactionHash}`);
+        } else {
+          console.error(`❌ Distribution failed: ${distributionResult.error}`);
+        }
+      }
+    } catch (distributionError) {
+      console.error('❌ Error during token distribution:', distributionError);
+      distributionResult = {
+        success: false,
+        error: distributionError instanceof Error ? distributionError.message : String(distributionError)
+      };
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Daily raffle executed successfully',
@@ -195,7 +221,13 @@ async function executeCurrentRaffle() {
           winningTicket: winningTicket,
           prize: completedRaffle.firstPrize
         },
-        executedAt: completedRaffle.executedAt?.toISOString()
+        executedAt: completedRaffle.executedAt?.toISOString(),
+        distribution: distributionResult ? {
+          success: distributionResult.success,
+          transactionHash: distributionResult.transactionHash,
+          message: distributionResult.message,
+          error: distributionResult.error
+        } : { success: false, error: 'Distribution service not available' }
       },
       timestamp: new Date().toISOString()
     });
