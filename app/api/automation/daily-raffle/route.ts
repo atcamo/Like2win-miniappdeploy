@@ -248,15 +248,40 @@ async function startNextRaffle() {
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
     // Set start to 00:01 UTC tomorrow
     const startDate = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 0, 1, 0, 0);
-    
+
     // Set end to 23:59 UTC tomorrow
     const endDate = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 23, 59, 59, 999);
-    
+
     const dayOfWeek = startDate.getDay() || 7; // Sunday = 7, Monday = 1, etc.
     const weekPeriod = `Daily ${startDate.toISOString().split('T')[0]}`;
+
+    // Check if raffle for this date already exists
+    const existingRaffle = await prisma.raffle.findUnique({
+      where: { weekPeriod }
+    });
+
+    if (existingRaffle) {
+      console.log(`ℹ️ Raffle for ${weekPeriod} already exists: ${existingRaffle.id} (${existingRaffle.status})`);
+
+      return NextResponse.json({
+        success: true,
+        message: 'Daily raffle already exists for this date',
+        raffle: {
+          id: existingRaffle.id,
+          weekPeriod: existingRaffle.weekPeriod,
+          dayNumber: existingRaffle.dayNumber,
+          startDate: existingRaffle.startDate.toISOString(),
+          endDate: existingRaffle.endDate.toISOString(),
+          prizeAmount: existingRaffle.prizeAmount,
+          status: existingRaffle.status
+        },
+        action: 'found_existing',
+        timestamp: new Date().toISOString()
+      });
+    }
 
     // Create new daily raffle
     const newRaffle = await prisma.raffle.create({
@@ -288,6 +313,7 @@ async function startNextRaffle() {
         prizeAmount: newRaffle.prizeAmount,
         status: newRaffle.status
       },
+      action: 'created_new',
       timestamp: new Date().toISOString()
     });
 
