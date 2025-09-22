@@ -17,6 +17,7 @@ import {
   Like2WinLogo,
   ParticipationModes
 } from './Like2WinComponents';
+import { RecentWinners } from './RecentWinners';
 
 /**
  * Frame-aware landing page that adapts based on environment
@@ -188,60 +189,8 @@ export function FrameAwareLanding() {
             </div>
           </section>
 
-          {/* Recent Winners - Social Proof */}
-          <section className="px-4 py-4">
-            <div className="max-w-md mx-auto">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="text-lg">🏆</div>
-                  <h3 className="font-bold text-gray-800 text-sm">Ganadores Recientes</h3>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between py-2 px-3 bg-white/70 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full flex items-center justify-center text-xs">
-                        🎉
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-800 text-sm">@alice.eth</div>
-                        <div className="text-xs text-gray-500">Hace 3 días</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-green-600 text-sm">2,500 $DEGEN</div>
-                      <div className="text-xs text-gray-500">127 tickets</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between py-2 px-3 bg-white/70 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-xs">
-                        🎯
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-800 text-sm">@cryptobob</div>
-                        <div className="text-xs text-gray-500">Hace 1 semana</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-green-600 text-sm">1,800 $DEGEN</div>
-                      <div className="text-xs text-gray-500">89 tickets</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-4 pt-3 border-t border-green-200">
-                  <a 
-                    href="/admin" 
-                    className="block text-center text-sm font-semibold text-green-700 hover:text-green-800 transition-colors"
-                  >
-                    Ver Leaderboard Completo →
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
+          {/* Recent Winners - Real Data */}
+          <RecentWinners limit={3} />
 
           {/* Final CTA - Urgency & FOMO */}
           <section className="px-4 py-4">
